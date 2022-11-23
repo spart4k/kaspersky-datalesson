@@ -1,0 +1,17 @@
+@mixin defaultFontSize {
+  font-size: 1.8rem;
+  line-height: 1.1666666667;
+}
+
+@mixin container {
+  width: 100%;
+  padding: 0 3rem;
+}
+
+@mixin containerMobile {
+  width: 100%;
+  padding: 0 1.5rem;
+}
+
+$tabletWidth: 900px;
+$mobileWidth: 649px;

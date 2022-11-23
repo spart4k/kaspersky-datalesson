@@ -1,0 +1,38 @@
+.portraitDummy {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+  z-index: 9999999;
+  background: linear-gradient(180deg, #3D84ED 0%, #1B5FC5 100.09%);
+  &__text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 90%;
+    font-size: 4rem;
+    text-align: center;
+    color: white;
+    transform: translate(-50%, -50%);
+  }
+}
+.text {
+  &__img {
+    width: 11rem;
+    height: auto;
+  }
+  &__title {
+    display: block;
+    line-height: 15rem;
+  }
+}
+@media (orientation: portrait) {
+  .portraitDummy {
+    display: block;
+  }
+}
