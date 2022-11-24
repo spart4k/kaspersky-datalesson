@@ -1,13 +1,13 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <router-view/>
+      <router-view />
     </component>
     <PortalTarget name="popup" multiple></PortalTarget>
   </div>
 </template>
-<script>
 
+<script>
 export default {
   name: 'App',
   metaInfo: {
@@ -15,18 +15,26 @@ export default {
   },
   computed: {
     layout() {
-      return this.$route.meta.layout || 'default-layout'
+      return this.$route.meta.layout || 'default-layout';
     },
   },
-  // created() {
-  //   const { session_id: session } = this.$route.query
+  created() {
+    const { session_id: session } = this.$route.query;
 
-  //   if (session) {
-  //     this.$store.commit('SET_SESSION', session)
-  //   }
-  // },
-}
+    const lsVar = 'sessionId_5d5151'
+
+    if (session) {
+      localStorage.setItem(lsVar, JSON.stringify(session));
+      this.$router.push('/');
+    }
+
+    if (localStorage.getItem(lsVar)) {
+      this.$store.dispatch('setSession', JSON.parse(localStorage.getItem(lsVar)));
+    }
+  },
+};
 </script>
+
 <style lang="scss">
-  @import './styles/main.scss';
+@import './styles/main.scss';
 </style>

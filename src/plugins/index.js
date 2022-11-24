@@ -1,4 +1,3 @@
-import './flowAdaptiveVue'
 import './vuelidate'
 import './vuePortal'
 import './vueMq'

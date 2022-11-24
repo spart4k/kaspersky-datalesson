@@ -19,6 +19,7 @@ module.exports = {
     'max-len': 0,
     'import/extensions': 0,
     'no-tabs': 0,
+    'semi': 0,
   },
   parserOptions: {
     parser: 'babel-eslint',

@@ -1,6 +1,7 @@
 @import './_normalize.scss';
 @import './_variables.scss';
 @import './_transitions.scss';
+@import './_fonts.scss';
 
 * {
   box-sizing: border-box;
@@ -14,6 +15,11 @@ body {
   font-size: 1.8rem;
   line-height: 1.1666666667;
   font-family: 'Noto Sans', sans-serif;
+  font-weight: 500;
   height: 100%;
   width: 100%;
+}
+
+img {
+  max-width: 100%;
 }

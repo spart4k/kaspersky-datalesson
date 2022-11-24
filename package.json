@@ -13,7 +13,6 @@
     "core-js": "^3.4.3",
     "element-closest-polyfill": "^1.0.2",
     "eslint-import-resolver-alias": "^1.1.2",
-    "flow-adaptive-vue": "^1.0.0",
     "gsap": "^3.6.0",
     "imports-loader": "^0.8.0",
     "interactjs": "^1.10.2",
@@ -25,7 +24,7 @@
     "vue-mq": "^1.0.1",
     "vue-router": "^3.0.3",
     "vuelidate": "^0.7.4",
-    "vuex": "^3.1.2",
+    "vuex": "^3.6.2",
     "ymaps": "^0.2.1"
   },
   "devDependencies": {
