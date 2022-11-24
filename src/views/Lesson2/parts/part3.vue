@@ -40,6 +40,7 @@
         <p :class="$style.cardText">Метеостанции</p>
       </Card>
     </div>
+    <v-popup-msg :items="[{ text: 'Задание: расставь главные точки пути так, чтобы по ним можно было нарисовать линию пути.', buttonTitle: 'Начать' }]" />
     <v-modal v-if="isModalActive" :isActive="isModalActive" :toggleActive="closeModal">
       <div :class="$style.modalInner">
         <img src="../assets/prof.png" alt="" />

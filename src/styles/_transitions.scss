@@ -13,3 +13,11 @@
 .reveal-leave-active {
   animation: reveal .3s ease reverse;
 }
+
+.fade-list-leave-active {
+  position: absolute;
+}
+.fade-list-enter, .fade-list-leave-to {
+  opacity: 0;
+  //transform: translateY(4rem);
+}
