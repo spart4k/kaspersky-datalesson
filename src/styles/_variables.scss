@@ -1,16 +1,22 @@
+@use 'sass:math';
+
+@function rem($value, $delimeter: 16) {
+  @return math.div($value, $delimeter) * 1rem
+};
+
 @mixin defaultFontSize {
-  font-size: 1.8rem;
+  font-size: rem(18);
   line-height: 1.1666666667;
 }
 
 @mixin container {
   width: 100%;
-  padding: 0 3rem;
+  padding: 0 rem(30);
 }
 
 @mixin containerMobile {
   width: 100%;
-  padding: 0 1.5rem;
+  padding: 0 rem(15);
 }
 
 $tabletWidth: 900px;

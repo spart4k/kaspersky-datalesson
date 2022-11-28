@@ -26,11 +26,11 @@ export default {
 }
 
 .btnWrapper {
-  width: 54rem;
+  width: rem(540);
   display: flex;
   justify-content: space-between;
   position: absolute;
-  bottom: 5.1rem;
+  bottom: rem(51);
   left: 50%;
   transform: translateX(-50%);
 }

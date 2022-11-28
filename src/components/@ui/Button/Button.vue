@@ -17,38 +17,42 @@ export default {
 
 <style lang="scss" module>
 .wrapper {
-  border-radius: 1.2rem;
+  border-radius: rem(12);
   cursor: pointer;
   border: none;
+  transition: all .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  &:hover {
+    transform: scale(0.98);
+  }
 }
 
 .sm {
-  padding: 1.5rem 2.5rem;
-  height: 5.2rem;
+  padding: rem(15) rem(25);
+  height: rem(52);
   background-color: #986ce7;
   color: #fff;
   font-weight: 700;
-  font-size: 1.6rem;
-  line-height: 2.2rem;
+  font-size: rem(16);
+  line-height: rem(22);
 }
 
 .md {
   background-color: #fff;
-  height: 6rem;
-  width: 20rem;
+  height: rem(60);
+  width: rem(200);
   font-weight: 700;
-  font-size: 1.8rem;
-  line-height: 2.5rem;
+  font-size: rem(18);
+  line-height: rem(25);
   color: #000;
 }
 
 .lg {
   background-color: #ffcc00;
-  width: 32rem;
-  height: 6rem;
+  width: rem(320);
+  height: rem(60);
   font-weight: 700;
-  font-size: 1.8rem;
-  line-height: 2.5rem;
+  font-size: rem(18);
+  line-height: rem(25);
   color: #000;
 }
 </style>

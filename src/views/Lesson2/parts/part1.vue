@@ -1,6 +1,8 @@
 <template>
   <div :class="$style.wrapper">
-    <v-btn lg :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
+    <div :class="$style.btnWrapper">
+      <v-btn lg :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
+    </div>
   </div>
 </template>
 
@@ -22,9 +24,9 @@ export default {
   position: relative;
 }
 
-.btn {
+.btnWrapper {
   position: absolute;
-  bottom: 5.1rem;
+  bottom: rem(51);
   left: 50%;
   transform: translateX(-50%);
 }

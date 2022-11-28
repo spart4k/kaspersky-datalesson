@@ -1,7 +1,7 @@
 <template>
   <portal to="popup">
-    <transition name="reveal">
-      <div v-if="isActive" :class="$style.wrapper" @click.self="toggleActive">
+    <transition name="fade">
+      <div v-if="$props.isActive" :class="$style.wrapper" @click.self="$props.toggleActive || null">
         <div :class="$style.popup">
           <slot />
         </div>
@@ -17,14 +17,6 @@ export default {
     isActive: Boolean,
     toggleActive: Function,
   },
-  setup(props) {
-    const { isActive, toggleActive } = props;
-
-    return {
-      isActive,
-      toggleActive,
-    };
-  },
 };
 </script>
 
@@ -37,16 +29,17 @@ export default {
   bottom: 0;
   z-index: 1000;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
 }
 
 .popup {
-  width: 48rem;
+  width: rem(480);
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.05), 0px 5px 20px rgba(0, 0, 0, 0.15);
-  border-radius: 2rem;
+  border-radius: rem(20);
 }
 </style>

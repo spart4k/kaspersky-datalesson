@@ -1,0 +1,101 @@
+.wrapper {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-color: $lesson2bgColor;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10%;
+    width: rem(754);
+    height: 100%;
+    background-image: url('../assets/bg.svg');
+    background-size: 146% 146%;
+    background-position: -12% 43%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+}
+
+.modalInner {
+  padding: rem(30);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modalText {
+  font-size: rem(16);
+  line-height: rem(22);
+  text-align: center;
+}
+
+.stars {
+  position: absolute;
+  top: rem(15);
+  left: rem(10);
+  z-index: 10;
+  width: rem(320);
+  height: rem(96);
+}
+
+.cod {
+  position: absolute;
+  top: rem(30);
+  right: rem(30);
+  z-index: 10;
+  width: rem(149);
+  height: rem(179);
+}
+
+.cardWrapper {
+  width: rem(723);
+  height: rem(500);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: rem(80);
+  margin-top: rem(26);
+  z-index: 99;
+}
+
+.popupMsg {
+  position: absolute;
+  bottom: rem(92);
+  overflow: scroll;
+  right: rem(30);
+  z-index: 999;
+}
+
+.prof {
+  position: absolute;
+  bottom: rem(103);
+  right: rem(320);
+  width: rem(62);
+  height: rem(62);
+  background-image: url('../../../assets/img/prof.png');
+  background-size: contain;
+  z-index: 999;
+}
+
+.btn {
+  position: absolute;
+  bottom: rem(30);
+  right: rem(30);
+  z-index: 999;
+}
+
+.achieve {
+  width: rem(96);
+  height: rem(94);
+}
+
+.modalTextBottom {
+  margin-top: 0;
+  margin-bottom: rem(47);
+}

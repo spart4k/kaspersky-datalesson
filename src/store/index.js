@@ -6,15 +6,22 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     session: null,
+    level: null,
   },
   mutations: {
-    updateSession(state, session) {
+    setSession(state, session) {
       state.session = session
+    },
+    setLevel(state, level) {
+      state.level = level
     },
   },
   actions: {
-    setSession({ commit }, session) {
-      commit('updateSession', session)
+    updateSession({ commit }, session) {
+      commit('setSession', session)
+    },
+    updateLevel({ commit }, level) {
+      commit('setLevel', level)
     },
   },
   modules: {

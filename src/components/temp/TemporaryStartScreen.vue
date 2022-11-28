@@ -20,6 +20,7 @@
         <router-link :class="[$style.link, $style.disabled]" to="/lesson6">Lesson 6</router-link>
       </div>
       <p v-if="session" :class="$style.text">session_id: {{ session }}</p>
+      <p v-if="level" :class="$style.text2">level: {{ level }}</p>
     </div>
   </div>
 </template>
@@ -33,9 +34,11 @@ export default {
   setup() {
     const store = useStore();
     const session = computed(() => store.state.session);
+    const level = computed(() => store.state.level);
 
     return {
       session,
+      level,
     };
   },
 };
@@ -53,19 +56,19 @@ export default {
 
 .inner {
   background-color: #fdfdfd;
-  min-width: 40rem;
-  min-height: 20rem;
-  padding: 2rem;
-  border-radius: 10px;
+  min-width: rem(400);
+  min-height: rem(200);
+  padding: rem(20);
+  border-radius: rem(10);
 }
 
 .linkWrapper {
-  margin: 1rem;
+  margin: rem(10);
 }
 
 .link {
   color: #000;
-  font-size: 1.8rem;
+  font-size: rem(18);
   text-decoration: none;
   user-select: none;
   &:visited {
@@ -79,8 +82,14 @@ export default {
 }
 
 .text {
-  margin: 1rem;
-  margin-top: 3rem;
-  font-size: 1.4rem;
+  margin: rem(10);
+  margin-top: rem(30);
+  font-size: rem(14);
+}
+
+.text2 {
+  margin: rem(10);
+  margin-top: rem(10);
+  font-size: rem(14);
 }
 </style>

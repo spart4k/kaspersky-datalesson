@@ -1,49 +1,39 @@
 <template>
   <div :class="$style.wrapper">
     <img :class="$style.stars" src="../assets/stars1.svg" alt="" />
-    <img :class="$style.codd" src="../assets/cod_1.png" alt="" />
+    <img :class="$style.cod" ref="codRef" :src="isAnimated ? '/assets/img/lesson2/cod_2.svg' : '/assets/img/lesson2/cod_1.svg'" alt="" />
+    <img :class="$style.prof" src="../../../assets/img/prof.png" alt="" />
     <div :class="$style.cardWrapper">
-      <Card>
-        <div :class="$style.cardImgWrapper">
-          <img src="../assets/card1.png" alt="" />
-        </div>
-        <p :class="$style.cardText">Спутники</p>
-      </Card>
-      <Card>
-        <div :class="$style.cardImgWrapper">
-          <img src="../assets/card2.png" alt="" />
-        </div>
-        <p :class="$style.cardText">Домашние метеостанции</p>
-      </Card>
-      <Card>
-        <div :class="$style.cardImgWrapper">
-          <img src="../assets/card3.png" alt="" />
-        </div>
-        <p :class="$style.cardText">Метеорадары</p>
-      </Card>
-      <Card>
-        <div :class="$style.cardImgWrapper">
-          <img src="../assets/card4.png" alt="" />
-        </div>
-        <p :class="$style.cardText">Метеозонды</p>
-      </Card>
-      <Card>
-        <div :class="$style.cardImgWrapper">
-          <img src="../assets/card5.png" alt="" />
-        </div>
-        <p :class="$style.cardText">Барометры<br /> в телефонах</p>
-      </Card>
-      <Card>
-        <div :class="$style.cardImgWrapper">
-          <img src="../assets/card6.png" alt="" />
-        </div>
-        <p :class="$style.cardText">Метеостанции</p>
-      </Card>
+      <template v-for="index in 6">
+        <Card
+          :index="index"
+          :isActive="activeCards.includes(index)"
+          :isDisabled="stage === 1 || isSuccess"
+          :isWrong="
+            isCheckingInProgress &&
+            ((index === 2 && activeCards.includes(2)) || (index === 5 && activeCards.includes(5)))
+          "
+          :isNotSelected="isCheckingInProgress && !activeCards.includes(index)"
+          :key="index"
+          :class="`card${index}`"
+          @click="onCardClick(index)"
+        />
+      </template>
     </div>
-    <v-popup-msg :items="[{ text: 'Задание: расставь главные точки пути так, чтобы по ним можно было нарисовать линию пути.', buttonTitle: 'Начать' }]" />
-    <v-modal v-if="isModalActive" :isActive="isModalActive" :toggleActive="closeModal">
+    <v-popup-msg :items="messages" :task="messages" :class="$style.popupMsg" />
+    <transition name="fade">
+      <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
+      <v-btn
+        v-if="stage === 2 && activeCards.length >= 4 && !isCheckingInProgress"
+        sm
+        :class="$style.btn"
+        @click="checkCards"
+        >Проверить</v-btn
+      >
+    </transition>
+    <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="closeModal">
       <div :class="$style.modalInner">
-        <img src="../assets/prof.png" alt="" />
+        <img src="../../../assets/img/prof.png" alt="" />
         <p :class="$style.modalText">
           Центр обработки данных, сокращённо – ЦОД. Туда поступают данные с множества источников из
           разных точек планеты.
@@ -55,11 +45,21 @@
         <v-btn lg @click="closeModal">Начать</v-btn>
       </div>
     </v-modal>
+    <v-modal v-if="stage === 3" :isActive="isModalActive">
+      <div :class="$style.modalInner">
+        <img :class="$style.achieve" src="../assets/achieve.svg" alt="" />
+        <p :class="[$style.modalText, $style.modalTextBottom]">
+          Отличная работа! Ты получаешь золотое достижение «Инженер данных»!<br /> Продолжай в том же духе!
+        </p>
+        <v-btn lg @click="$router.push('/lesson3')">Продолжить</v-btn>
+      </div>
+    </v-modal>
   </div>
 </template>
 
 <script>
 import { ref } from 'vue';
+import gsap from 'gsap';
 import Card from '../components/Card/Card.vue';
 
 export default {
@@ -69,98 +69,111 @@ export default {
   },
   setup() {
     const isModalActive = ref(true);
+    const stage = ref(1);
+    const errorCount = ref(0);
+    const isCheckingInProgress = ref(false);
+    const isSuccess = ref(false);
+    const isAnimated = ref(false);
+    const messages = ref([
+      'Отметь все профессиональные источники данных, которые отправляют данные в ЦОД.',
+    ]);
+    const activeCards = ref([]);
+    const codRef = ref(null);
 
     const closeModal = () => {
       isModalActive.value = false;
     };
 
+    const onCardClick = (num) => {
+      if (activeCards.value.includes(num)) {
+        activeCards.value = activeCards.value.filter(el => el !== num);
+      } else {
+        activeCards.value.push(num);
+      }
+    };
+
+    const checkCards = () => {
+      isCheckingInProgress.value = true;
+      if (!activeCards.value.includes(2) && !activeCards.value.includes(5)) {
+        isSuccess.value = true;
+        messages.value.push('Правильно! Тебе удалось выделить все правильные источники данных.');
+        new Promise((resolve) => {
+          const { top, left } = codRef.value.getBoundingClientRect();
+          gsap.to('.card1', {
+            x: (i, el) => left - el.getBoundingClientRect().left,
+            y: (i, el) => top - el.getBoundingClientRect().top,
+            duration: 8,
+            scale: 0.8,
+          });
+          setTimeout(() => {
+            gsap.to('.card1', { opacity: 0, duration: 1 });
+          }, 6000);
+          gsap.to('.card3', {
+            x: (i, el) => left - el.getBoundingClientRect().left,
+            y: (i, el) => top - el.getBoundingClientRect().top,
+            duration: 6,
+            scale: 0.9,
+          });
+          setTimeout(() => {
+            gsap.to('.card3', { opacity: 0, duration: 1 });
+            isAnimated.value = true;
+          }, 4000);
+          gsap.to('.card4', {
+            x: (i, el) => left - el.getBoundingClientRect().left,
+            y: (i, el) => top - el.getBoundingClientRect().top,
+            duration: 11,
+            scale: 0.7,
+          });
+          setTimeout(() => {
+            gsap.to('.card4', { opacity: 0, duration: 1 });
+          }, 9000);
+          gsap.to('.card6', {
+            x: (i, el) => left - el.getBoundingClientRect().left,
+            y: (i, el) => top - el.getBoundingClientRect().top,
+            duration: 10,
+            scale: 0.6,
+          });
+          setTimeout(() => {
+            gsap.to('.card6', { opacity: 0, duration: 1 });
+          }, 8000);
+          setTimeout(() => {
+            resolve();
+          }, 10000);
+        }).then(() => {
+          stage.value = 3;
+          isModalActive.value = true;
+        })
+      } else {
+        if (activeCards.value.includes(2) || activeCards.value.includes(5)) errorCount.value += 1;
+        if (errorCount.value === 1) messages.value.push('Не забывай, что источники данных должны быть профессиональные.');
+        setTimeout(() => {
+          isCheckingInProgress.value = false;
+          stage.value = 2;
+          activeCards.value = [];
+        }, 3000);
+      }
+    };
+
+    const onNext = () => {
+      stage.value += 1;
+    };
+
     return {
       isModalActive,
       closeModal,
+      stage,
+      messages,
+      onNext,
+      activeCards,
+      onCardClick,
+      checkCards,
+      isCheckingInProgress,
+      isSuccess,
+      codRef,
+      isAnimated,
     };
   },
 };
 </script>
 
-<style lang="scss" module>
-.wrapper {
-  height: 100vh;
-  overflow: hidden;
-  position: relative;
-  background-color: $lesson2bgColor;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: -10%;
-    width: 75.4rem;
-    height: 100%;
-    background-image: url('../assets/bg.svg');
-    background-size: 146% 146%;
-    background-position: -12% 43%;
-    background-repeat: no-repeat;
-  }
-}
-
-.modalInner {
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.modalText {
-  font-size: 1.6rem;
-  line-height: 2.2rem;
-  text-align: center;
-}
-
-.stars {
-  position: absolute;
-  top: 1.5rem;
-  left: 1rem;
-  z-index: 10;
-  width: 32rem;
-  height: 9.6rem;
-}
-
-.codd {
-  position: absolute;
-  top: 1.5rem;
-  right: 1rem;
-  z-index: 10;
-  width: 18.9rem;
-  height: 21.9rem;
-}
-
-.cardWrapper {
-  width: 72.3rem;
-  height: 50rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: 8rem;
-  margin-top: 2.6rem;
-}
-
-.cardImgWrapper {
-  height: 15.2rem;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.cardText {
-  text-align: center;
-  margin: 0;
-  font-weight: 700;
-  font-size: 1.6rem;
-  line-height: 2.2rem;
-  color: #000;
-}
-</style>
+<style lang="scss" module src="./part3.scss"></style>

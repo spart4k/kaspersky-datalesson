@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.wrapper">
-    <transition name="reveal" mode="out-in">
+    <transition name="fade" mode="out-in">
       <part1 v-if="stage === 1" @next="next"></part1>
       <part2 v-if="stage === 2" @prev="prev" @next="next"></part2>
       <part3 v-if="stage === 3" @next="next"></part3>
@@ -22,7 +22,7 @@ export default {
     part3,
   },
   setup() {
-    const stage = ref(3);
+    const stage = ref(1);
 
     const next = () => {
       stage.value += 1;

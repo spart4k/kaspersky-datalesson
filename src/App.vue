@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import { BASE_URL } from './utils/constants';
+
 export default {
   name: 'App',
   metaInfo: {
@@ -18,18 +21,45 @@ export default {
       return this.$route.meta.layout || 'default-layout';
     },
   },
-  created() {
+  async created() {
     const { session_id: session } = this.$route.query;
 
-    const lsVar = 'sessionId_5d5151'
+    const lsVar = 'sessionId_5d5151';
+    const levelVar = 'level_5d5151';
 
     if (session) {
-      localStorage.setItem(lsVar, JSON.stringify(session));
+      const sessionData = await axios.get(`${BASE_URL}/api/v2/get_session`, {
+        params: { session_id: session },
+        headers: { Accept: 'application/json' },
+      });
+
+      let level;
+      switch (sessionData.data.id_trainer) {
+        case 74:
+          level = 1;
+          break;
+        case 75:
+          level = 2;
+          break;
+        case 76:
+          level = 3;
+          break;
+        default:
+          break;
+      }
+
+      console.log(sessionData.data);
+      localStorage.setItem(lsVar, session);
+      localStorage.setItem(levelVar, level);
       this.$router.push('/');
     }
 
     if (localStorage.getItem(lsVar)) {
-      this.$store.dispatch('setSession', JSON.parse(localStorage.getItem(lsVar)));
+      this.$store.dispatch('updateSession', localStorage.getItem(lsVar));
+    }
+
+    if (localStorage.getItem(levelVar)) {
+      this.$store.dispatch('updateLevel', localStorage.getItem(levelVar));
     }
   },
 };
