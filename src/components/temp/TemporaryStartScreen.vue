@@ -8,7 +8,7 @@
         <router-link :class="$style.link" to="/lesson2">Lesson 2</router-link>
       </div>
       <div :class="$style.linkWrapper">
-        <router-link :class="[$style.link, $style.disabled]" to="/lesson3">Lesson 3</router-link>
+        <router-link :class="$style.link" to="/lesson3">Lesson 3</router-link>
       </div>
       <div :class="$style.linkWrapper">
         <router-link :class="[$style.link, $style.disabled]" to="/lesson4">Lesson 4</router-link>

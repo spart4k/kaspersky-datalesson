@@ -102,43 +102,43 @@ export default {
           gsap.to('.card1', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 8,
-            scale: 0.8,
+            duration: 4,
+            scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card1', { opacity: 0, duration: 1 });
-          }, 6000);
+          }, 3000);
           gsap.to('.card3', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 6,
-            scale: 0.9,
+            duration: 3,
+            scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card3', { opacity: 0, duration: 1 });
             isAnimated.value = true;
-          }, 4000);
+          }, 2000);
           gsap.to('.card4', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 11,
-            scale: 0.7,
+            duration: 5,
+            scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card4', { opacity: 0, duration: 1 });
-          }, 9000);
+          }, 4000);
           gsap.to('.card6', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 10,
-            scale: 0.6,
+            duration: 4,
+            scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card6', { opacity: 0, duration: 1 });
-          }, 8000);
+          }, 3000);
           setTimeout(() => {
             resolve();
-          }, 10000);
+          }, 4500);
         }).then(() => {
           stage.value = 3;
           isModalActive.value = true;

@@ -14,3 +14,25 @@
 .fade-list-enter, .fade-list-leave-to {
   opacity: 0;
 }
+
+@keyframes wrongAnimation {
+  0% {
+    transform: rotate(0) scale(0.75);
+  }
+
+  25% {
+    transform: rotate(-6.93deg) scale(0.75);
+  }
+
+  50% {
+    transform: rotate(0) scale(0.75);
+  }
+
+  75% {
+    transform: rotate(6.93deg) scale(0.75);
+  }
+
+  100% {
+    transform: rotate(0) scale(0.75);
+  }
+}
