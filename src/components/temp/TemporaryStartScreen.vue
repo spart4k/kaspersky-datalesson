@@ -2,7 +2,7 @@
   <div :class="$style.wrapper">
     <div :class="$style.inner">
       <div :class="$style.linkWrapper">
-        <router-link :class="[$style.link, $style.disabled]" to="/lesson1">Lesson 1</router-link>
+        <router-link :class="$style.link" to="/lesson1">Lesson 1</router-link>
       </div>
       <div :class="$style.linkWrapper">
         <router-link :class="$style.link" to="/lesson2">Lesson 2</router-link>
