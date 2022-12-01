@@ -22,7 +22,7 @@ export default {
     part3,
   },
   setup() {
-    const stage = ref(3);
+    const stage = ref(1);
 
     const next = () => {
       stage.value += 1;
