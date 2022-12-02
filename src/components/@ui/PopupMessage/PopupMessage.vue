@@ -37,7 +37,6 @@ export default {
 <style lang="scss" module>
 .wrapper {
   -webkit-overflow-scrolling: touch;
-  max-height: 100%;
   pointer-events: auto;
   overflow: auto;
   -ms-overflow-style: none;

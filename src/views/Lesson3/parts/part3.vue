@@ -1,9 +1,11 @@
 <template>
   <div :class="$style.wrapper">
-    <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
+    <div :class="$style.starsWrapper">
+      <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
+    </div>
     <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" />
     <img :class="[$style.basket, 'basket']" :src="isBasketEmpty ? '/assets/img/lesson3/basket-empty.png' : '/assets/img/lesson3/basket-full.png'" alt="" />
-    <img v-if="isStackVisible" :class="$style.stack" src="../assets/stack.svg" alt="" />
+    <img :class="[$style.stack, isStackVisible && !isChatFullLength && $style.visible]" src="../assets/stack.svg" alt="" />
     <div :class="$style.window">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
@@ -13,12 +15,12 @@
         </template>
       </div>
     </div>
-    <template v-for="index in 7">
-      <Card :key="index" :data-num="index" :index="index" :class="[$style.card, 'draggable', 'disabled', `card${index}`]" />
+    <template v-for="index in level === '1' ? 6 : level === '2' ? 12 : 16">
+      <Card :key="index" :data-num="index" :index="index" :class="[$style.card, stage > 1 && $style.visible, 'draggable', `card${index}`]" />
     </template>
-    <v-popup-msg :items="messages" :class="$style.popupMsg" />
+    <v-popup-msg :items="messages" :class="[$style.popupMsg, isChatFullLength && $style.full]" />
     <transition name="fade">
-      <v-btn v-if="stage === 1" sm :class="$style.btn" @click="enableGame">Хорошо</v-btn>
+      <v-btn v-if="stage === 1 && messages.length >= texts.stage1[`level${level}`].length" sm :class="$style.btn" @click="enableGame">Хорошо</v-btn>
       <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson4')">Продолжить</v-btn>
     </transition>
     <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="startGame">
@@ -39,14 +41,15 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, computed } from 'vue';
 import gsap from 'gsap'
 import Draggable from 'gsap/Draggable'
-import debounce from 'debounce'
+// import debounce from 'debounce'
 import { isMobile } from 'mobile-device-detect';
 import Card from '../components/Card/Card.vue';
 import { pushPopup } from '@/utils/pushPopup';
 import texts from './texts';
+import { useStore } from '@/store';
 
 gsap.registerPlugin(Draggable)
 
@@ -67,15 +70,32 @@ export default {
     const isBasketEmpty = ref(true)
     const activeCard = ref(null)
     const isStackVisible = ref(true)
+    const isChatFullLength = ref(true)
 
-    const wrongCards = ['2'];
+    const store = useStore();
+    const level = computed(() => store.state.level);
+
+    let wrongCards;
+    switch (level.value) {
+      case '1':
+        wrongCards = ['2', '4'];
+        break;
+      case '2':
+        wrongCards = ['2', '3', '5', '7', '10', '11'];
+        break;
+      case '3':
+        wrongCards = [];
+        break;
+      default:
+        break;
+    }
 
     const onNext = () => {
       stage.value += 1;
     };
 
     const endGame = () => {
-      messages.value.push(texts.stage3)
+      messages.value.push(texts.stage3[`level${level.value}`])
       onNext()
       if (errorCount.value <= 1) {
         setTimeout(() => {
@@ -83,7 +103,7 @@ export default {
         }, 1000);
       } else {
         setTimeout(() => {
-          messages.value.push(texts.final)
+          pushPopup(texts.final[`level${level.value}`], messages.value)
           onNext()
         }, 1000);
       }
@@ -91,8 +111,9 @@ export default {
 
     watch(rightAnswersCount, () => {
       const rightElements = document.querySelectorAll('.snapped:not(.wrong)')
-      if (rightElements.length === 6) {
+      if ((level.value === '1' && rightElements.length === 4) || rightElements.length === 6) {
         isStackVisible.value = false
+        isChatFullLength.value = true
         endGame()
       }
     })
@@ -100,18 +121,18 @@ export default {
     const closeAchieveModal = () => {
       isModalActive.value = false;
       setTimeout(() => {
-        messages.value.push(texts.final)
+        pushPopup(texts.final[`level${level.value}`], messages.value)
         onNext()
       }, 1000);
     };
 
     const startGame = () => {
       isModalActive.value = false;
-      pushPopup(texts.stage1.level1, messages.value)
+      pushPopup(texts.stage1[`level${level.value}`], messages.value)
     }
 
     const enableGame = () => {
-      document.querySelectorAll('.draggable').forEach(el => el.classList.remove('disabled'))
+      isChatFullLength.value = false
       onNext()
     };
 
@@ -131,29 +152,33 @@ export default {
       factor.value = 16 * clientWidth.value / 1280
     }
 
-    const removeBlur = () => {
-      document.documentElement.style.filter = 'unset'
-    }
+    // const removeBlur = () => {
+    //   document.documentElement.style.filter = 'unset'
+    // }
 
     const onResize = () => {
       onInit()
       const elements = document.querySelectorAll('.draggable')
       elements.forEach(el => {
-        el.style.left = `${clientWidth.value / 1.33}px`
-        el.style.top = `${3.75 * factor.value}px`
+        el.style.left = `${clientWidth.value / 1.23}px`
+        el.style.top = `${1.5625 * factor.value}px`
         el.style.transform = 'rotate(-9deg) '
         return el
       })
-      document.documentElement.style.filter = 'blur(15px)'
+      // document.documentElement.style.filter = 'blur(15px)'
       document.querySelectorAll('.occupied').forEach(el => el.classList.remove('occupied'))
       document.querySelectorAll('.wrong').forEach(el => el.classList.remove('wrong'))
       document.querySelectorAll('.snapped').forEach(el => el.classList.remove('snapped'))
     }
 
     onMounted(() => {
+      //temp
+      // startGame()
+      // enableGame()
+
       onInit()
       window.addEventListener('resize', onResize)
-      window.addEventListener('resize', debounce(removeBlur, 500))
+      // window.addEventListener('resize', debounce(removeBlur, 500))
       const targets = document.querySelectorAll('.droppable');
       const overlapThreshold = '80%';
 
@@ -170,7 +195,6 @@ export default {
           gsap.to(target, {
             rotate: 0,
             duration: 0.2,
-            scale: 0.75,
           });
         },
 
@@ -192,13 +216,14 @@ export default {
           if (this.hitTest(basket)) {
             if (!wrongCards.includes(activeCard.value)) {
               target.classList.add('wrong')
-              messages.value.push(texts.wrong.level1[`card${activeCard.value}`])
+              messages.value.push(texts.wrong[`level${level.value}`][`card${activeCard.value}`])
               errorCount.value += 1
             } else {
               gsap.to(target, {
                 opacity: 0,
-                duration: 0.5,
+                duration: 0.1,
               });
+              messages.value.push(texts.right[`level${level.value}`])
               setTimeout(() => {
                 target.remove()
               }, 500);
@@ -215,8 +240,8 @@ export default {
                 gsap.to(target, {
                   x: 0,
                   y: 0,
-                  left: box.left - factor.value * 1.9,
-                  top: box.top - factor.value * 2,
+                  left: box.left,
+                  top: box.top,
                   duration: 0.1,
                 });
 
@@ -233,11 +258,11 @@ export default {
                 snapMade = true;
                 if (wrongCards.includes(activeCard.value)) {
                   target.classList.add('wrong')
-                  messages.value.push(texts.wrong.level1[`card${activeCard.value}`])
+                  messages.value.push(texts.wrong[`level${level.value}`][`card${activeCard.value}`])
                   target.targetAttachedTo.classList.remove('occupied');
                   errorCount.value += 1
                 } else {
-                  messages.value.push(texts.right.level1)
+                  messages.value.push(texts.right[`level${level.value}`])
                   rightAnswersCount.value += 1
                 }
               }
@@ -252,9 +277,8 @@ export default {
             gsap.to(target, {
               x: 0,
               y: 0,
-              left: clientWidth.value / 1.33,
-              top: 3.75 * factor.value,
-              scale: 1,
+              left: clientWidth.value / 1.23,
+              top: 1.5625 * factor.value,
               rotate: -9,
               duration: 0.3,
             });
@@ -276,6 +300,8 @@ export default {
       errorCount,
       texts,
       isStackVisible,
+      isChatFullLength,
+      level,
     };
   },
 };
@@ -299,10 +325,6 @@ export default {
 
 .snapped {
   border: 1px solid #91C0F8;
-}
-
-.disabled {
-  pointer-events: none;
 }
 
 </style>

@@ -17,22 +17,22 @@
 
 @keyframes wrongAnimation {
   0% {
-    transform: rotate(0) scale(0.75);
+    transform: rotate(0);
   }
 
   25% {
-    transform: rotate(-6.93deg) scale(0.75);
+    transform: rotate(-6.93deg);
   }
 
   50% {
-    transform: rotate(0) scale(0.75);
+    transform: rotate(0);
   }
 
   75% {
-    transform: rotate(6.93deg) scale(0.75);
+    transform: rotate(6.93deg);
   }
 
   100% {
-    transform: rotate(0) scale(0.75);
+    transform: rotate(0);
   }
 }

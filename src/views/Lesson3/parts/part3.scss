@@ -36,13 +36,24 @@
   text-align: center;
 }
 
-.stars {
+.starsWrapper {
   position: absolute;
-  top: rem(15);
-  left: rem(10);
+  background-color: #fff;
+  width: rem(280);
+  height: rem(56);
+  top: rem(30);
+  left: rem(30);
   z-index: 10;
-  width: rem(320);
-  height: rem(96);
+  display: flex;
+  align-items: center;
+  border-radius: rem(32);
+  box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
+}
+
+.stars {
+  margin-left: rem(4);
+  width: rem(257);
+  height: rem(48);
 }
 
 .basket {
@@ -108,21 +119,31 @@
 
 .stack {
   position: absolute;
-  top: rem(256);
-  right: rem(56);
+  top: rem(140);
+  right: rem(0);
   width: rem(281);
   height: rem(159);
   z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s;
+  &.visible {
+    opacity: 1;
+  }
 }
 
 .card {
   position: absolute;
-  top: rem(60);
-  right: rem(70);
-  width: rem(249);
-  height: rem(249);
+  top: rem(25);
+  right: rem(50);
   z-index: 99;
   box-shadow: 0px rem(2.25) rem(3.38) rgba(0, 0, 0, 0.03), 0px rem(5.63) rem(12) rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  &.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
 }
 
 .popupMsg {
@@ -131,6 +152,16 @@
   overflow: scroll;
   right: rem(30);
   z-index: 999;
+  overflow: auto;
+  max-height: 40vh;
+  -webkit-mask-image:-webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,1) 7%,rgba(0,0,0,1) 100%);
+  @media screen and (max-height: 800px) {
+    max-height: 35vh
+  }
+  &.full {
+    -webkit-mask-image: unset;
+    max-height: unset;
+  }
 }
 
 .prof {
