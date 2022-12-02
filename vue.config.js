@@ -8,6 +8,7 @@ module.exports = {
     sourceMap: true,
   },
   configureWebpack: {
+    devtool: 'inline-source-map',
     module: {
       rules: [
         {

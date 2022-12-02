@@ -1,7 +1,7 @@
 <template>
   <div :class="[$style.wrapper, $props.isDisabled && $style.disabled, $props.isActive && $style.active, $props.isWrong && $style.wrong, $props.isNotSelected && $style.notSelected]" @click="$emit('click')">
     <div :class="$style.cardImgWrapper">
-      <img :src="`/assets/img/lesson2/card${index}.png`" alt="" />
+      <img :src="`/assets/img/lesson2/card${index}.svg`" alt="" />
     </div>
     <p :class="$style.cardText">
       {{titles[index - 1]}}

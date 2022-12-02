@@ -27,8 +27,6 @@ export default {
     const store = useStore();
     const level = computed(() => store.state.level);
 
-    console.log(typeof level.value);
-
     let titles;
 
     switch (level.value) {
