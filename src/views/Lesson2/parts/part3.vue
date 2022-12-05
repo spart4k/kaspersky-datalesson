@@ -9,7 +9,7 @@
       :src="isAnimated ? '/assets/img/lesson2/cod_2.svg' : '/assets/img/lesson2/cod_1.svg'"
       alt=""
     />
-    <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" />
+    <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" @click="toggleMobileChat" />
     <div :class="$style.cardWrapper">
       <template v-for="index in 6">
         <Card
@@ -27,9 +27,9 @@
         />
       </template>
     </div>
-    <v-popup-msg :items="messages" :task="messages" :class="$style.popupMsg" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="$style.popupMsg" />
     <transition name="fade">
-      <v-btn v-if="stage === 1 && messages.length >= texts.start[`level${level}`].length" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
+      <v-btn v-if="stage === 1 && messages.length >= texts.start[`level${level}`].length" sm :class="$style.btn" @click="onGameInit">Хорошо</v-btn>
       <v-btn
         v-if="stage === 2 && activeCards.length >= 4 && !isCheckingInProgress"
         sm
@@ -98,13 +98,27 @@ export default {
     const messages = ref([]);
     const activeCards = ref([]);
     const codRef = ref(null);
+    const isMobileChatOpened = ref(true);
 
     const store = useStore();
     const level = computed(() => store.state.level);
 
+    const onNext = () => {
+      stage.value += 1;
+    };
+
+    const toggleMobileChat = () => {
+      isMobileChatOpened.value = !isMobileChatOpened.value
+    }
+
     const onGameStart = () => {
       isModalActive.value = false;
       pushPopup(texts.start[`level${level.value}`], messages.value);
+    };
+
+    const onGameInit = () => {
+      isMobileChatOpened.value = false;
+      onNext();
     };
 
     const onCardClick = (num) => {
@@ -187,10 +201,6 @@ export default {
       onNext();
     };
 
-    const onNext = () => {
-      stage.value += 1;
-    };
-
     return {
       isModalActive,
       onGameStart,
@@ -208,6 +218,9 @@ export default {
       closeAchieveModal,
       errorCount,
       level,
+      isMobileChatOpened,
+      onGameInit,
+      toggleMobileChat,
     };
   },
 };

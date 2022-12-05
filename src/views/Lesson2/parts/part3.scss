@@ -16,6 +16,11 @@
     background-repeat: no-repeat;
     pointer-events: none;
   }
+  @media screen and (max-width: 450px) {
+    padding-left: rem(15);
+    padding-right: rem(15);
+    overflow-y: auto;
+  }
 }
 
 .modalInner {
@@ -43,12 +48,21 @@
   align-items: center;
   border-radius: rem(32);
   box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
+  @media screen and (max-width: 450px) {
+    width: rem(240);
+    height: rem(48);
+    top: rem(15);
+    left: rem(15);
+  }
 }
 
 .stars {
   margin-left: rem(4);
   width: rem(257);
   height: rem(48);
+  @media screen and (max-width: 450px) {
+    width: rem(224);
+  }
 }
 
 .cod {
@@ -58,14 +72,21 @@
   z-index: 4;
   width: rem(149);
   height: rem(179);
+  @media screen and (max-width: 450px) {
+    width: rem(58);
+    height: rem(71);
+    top: rem(15);
+    right: rem(15);
+  }
 }
 
 .cardWrapper {
   width: rem(723);
-  height: rem(500);
+  height: rem(472);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  row-gap: rem(30);
+  column-gap: rem(30);
   flex-wrap: wrap;
   position: absolute;
   top: 50%;
@@ -73,6 +94,13 @@
   left: rem(80);
   margin-top: rem(26);
   z-index: 99;
+  @media screen and (max-width: 450px) {
+    width: 92%;
+    top: rem(315);
+    left: 4%;
+    row-gap: 4%;
+    column-gap: 4%;
+  }
 }
 
 .popupMsg {
@@ -82,6 +110,11 @@
   right: rem(30);
   z-index: 999;
   max-height: calc(100vh - 20rem);
+  @media screen and (max-width: 450px) {
+    max-height: unset;
+    height: 100vh;
+    width: 100vw;
+  }
 }
 
 .prof {
@@ -93,6 +126,15 @@
   background-image: url('../../../assets/img/leader.svg');
   background-size: contain;
   z-index: 999;
+  @media screen and (max-width: 450px) {
+    right: rem(15);
+    bottom: rem(25);
+    z-index: 9999;
+    border: 2px solid #FFFFFF;
+    border-radius: 50%;
+    cursor: pointer;
+    position: fixed;
+  }
 }
 
 .btn {
@@ -100,6 +142,10 @@
   bottom: rem(30);
   right: rem(30);
   z-index: 999;
+  @media screen and (max-width: 450px) {
+    left: rem(15);
+    right: unset;
+  }
 }
 
 .achieveModal {
