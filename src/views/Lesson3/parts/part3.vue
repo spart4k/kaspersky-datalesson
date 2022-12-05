@@ -18,7 +18,16 @@
       src="../assets/stack.svg"
       alt=""
     />
-    <div :class="$style.window">
+    <div v-if="level === '1'" :class="$style.window">
+      <img :class="$style.controls" src="../assets/controls.svg" alt="" />
+      <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
+      <div :class="[$style.inner, $style.level1]">
+        <template v-for="index in 4">
+          <div :key="index" :class="[$style.droparea, 'droppable', `drop${index}`]"></div>
+        </template>
+      </div>
+    </div>
+    <div v-if="level === '2'" :class="$style.window">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
       <div :class="$style.inner">
@@ -27,12 +36,21 @@
         </template>
       </div>
     </div>
+    <div v-if="level === '3'" :class="[$style.window, $style.level3]">
+      <img :class="$style.controls" src="../assets/controls.svg" alt="" />
+      <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
+      <div :class="$style.inner">
+        <template v-for="index in 7">
+          <div :key="index" :class="[$style.droparea, $style.level3, 'droppable', `drop${index}`]"></div>
+        </template>
+      </div>
+    </div>
     <template v-for="index in level === '1' ? 6 : level === '2' ? 12 : 16">
       <Card
         :key="index"
         :data-num="index"
         :index="index"
-        :class="[$style.card, stage > 1 && $style.visible, 'draggable', `card${index}`]"
+        :class="[$style.card, level === '3' && $style.level3, stage > 1 && $style.visible, 'draggable', `card${index}`]"
       />
     </template>
     <v-popup-msg :items="messages" :class="[$style.popupMsg, isChatFullLength && $style.full]" />
@@ -119,7 +137,7 @@ export default {
         wrongCards = ['2', '3', '5', '7', '10', '11'];
         break;
       case '3':
-        wrongCards = [];
+        wrongCards = ['2', '3', '5', '7', '10', '11', '13', '14', '15'];
         break;
       default:
         break;
@@ -146,7 +164,7 @@ export default {
 
     watch(rightAnswersCount, () => {
       const rightElements = document.querySelectorAll('.snapped:not(.wrong)');
-      if ((level.value === '1' && rightElements.length === 4) || rightElements.length === 6) {
+      if ((level.value === '1' && rightElements.length === 4) || (level.value === '2' && rightElements.length === 6) || (level.value === '3' && rightElements.length === 7)) {
         isStackVisible.value = false;
         isChatFullLength.value = true;
         endGame();
@@ -197,8 +215,8 @@ export default {
         elements.forEach((el) => el.remove());
       } else {
         elements.forEach((el) => {
-          el.style.left = `${clientWidth.value / 1.23}px`;
-          el.style.top = `${1.5625 * factor.value}px`;
+          el.style.left = level.value !== '3' ? `${clientWidth.value / 1.23}px` : `${clientWidth.value / 1.21}px`;
+          el.style.top = level.value !== '3' ? `${1.5625 * factor.value}px` : `${2.1875 * factor.value}px`;
           el.style.transform = 'rotate(-9deg) ';
           return el;
         });
@@ -320,8 +338,8 @@ export default {
             gsap.to(target, {
               x: 0,
               y: 0,
-              left: clientWidth.value / 1.23,
-              top: 1.5625 * factor.value,
+              left: level.value !== '3' ? clientWidth.value / 1.23 : clientWidth.value / 1.21,
+              top: level.value !== '3' ? 1.5625 * factor.value : 2.1875 * factor.value,
               rotate: -9,
               duration: 0.3,
             });

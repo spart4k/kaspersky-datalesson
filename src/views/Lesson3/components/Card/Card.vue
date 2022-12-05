@@ -1,19 +1,16 @@
 <template>
-  <div
-    :class="$style.wrapper"
-    :style="{ zIndex: 100 - index }"
-  >
-    <div :class="$style.cardImgWrapper" >
+  <div :class="[$style.wrapper, level === '3' && $style.level3]" :style="{ zIndex: 100 - index }">
+    <div :class="[$style.cardImgWrapper, level === '3' && $style.level3]">
       <img :src="`/assets/img/lesson3/level${level}/card${index}.png`" alt="" />
     </div>
-    <p :class="$style.cardText">
+    <p :class="[$style.cardText, level === '3' && $style.level3]">
       {{ titles[index - 1] }}
     </p>
   </div>
 </template>
 
 <script>
-import { computed } from 'vue'
+import { computed } from 'vue';
 import { useStore } from '@/store';
 
 export default {
@@ -58,7 +55,22 @@ export default {
         break;
       case '3':
         titles = [
-          
+          'Количество осадков за последние 12 часов',
+          'Текущее расстояние от Земли до Марса',
+          'Показания домашней метеостанции',
+          'Влажность воздуха',
+          'Высота полёта птичьих стай',
+          'Уровень облачности',
+          'Уровень прозрачности воздуха',
+          'Скорость и направление ветра',
+          'Температура воздуха',
+          'Количество инея на окнах',
+          'Положение созвездий в ночном небе',
+          'Атмосферное давление в разных точках страны',
+          'Количество ртути в термометре',
+          'Среднее давление в покрышках 1000 автомобилей',
+          'Коэффициент сопротивления воздуха движению внутри него',
+          'Интенсивность солнечного света (солнечная радиация)',
         ];
         break;
       default:
@@ -84,6 +96,9 @@ export default {
   color: #000;
   user-select: none;
   transform: rotate(-9deg);
+  &.level3 {
+    padding: rem(7) rem(8);
+  }
 }
 
 .cardImgWrapper {
@@ -98,6 +113,10 @@ export default {
     max-width: 100%;
     max-height: 100%;
   }
+  &.level3 {
+    height: rem(95);
+    margin-bottom: rem(3);
+  }
 }
 
 .cardText {
@@ -107,5 +126,9 @@ export default {
   font-size: rem(11);
   line-height: rem(17);
   color: inherit;
+  &.level3 {
+    font-size: rem(9.6);
+    line-height: rem(13);
+  }
 }
 </style>
