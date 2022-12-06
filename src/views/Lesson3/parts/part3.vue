@@ -3,7 +3,7 @@
     <div :class="$style.starsWrapper">
       <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
     </div>
-    <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" />
+    <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" @click="toggleMobileChat" />
     <img
       :class="[$style.basket, 'basket']"
       :src="
@@ -53,10 +53,10 @@
         :class="[$style.card, level === '3' && $style.level3, stage > 1 && $style.visible, 'draggable', `card${index}`]"
       />
     </template>
-    <v-popup-msg :items="messages" :class="[$style.popupMsg, isChatFullLength && $style.full]" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="[$style.popupMsg, isChatFullLength && $style.full]" />
     <transition name="fade">
       <v-btn
-        v-if="stage === 1 && messages.length >= texts.stage1[`level${level}`].length"
+        v-if="stage === 1 && messages.length >= texts.stage1[`level${level}`].length && (!isMobile || isMobile && isMobileChatOpened)"
         sm
         :class="$style.btn"
         @click="enableGame"
@@ -103,6 +103,7 @@ import Card from '../components/Card/Card.vue';
 import { pushPopup } from '@/utils/pushPopup';
 import texts from './texts';
 import { useStore } from '@/store';
+import useMobile from '@/hooks/useMobile';
 
 gsap.registerPlugin(Draggable);
 
@@ -124,9 +125,12 @@ export default {
     const activeCard = ref(null);
     const isStackVisible = ref(true);
     const isChatFullLength = ref(true);
+    const isMobileChatOpened = ref(true);
 
     const store = useStore();
     const level = computed(() => store.state.level);
+
+    const isMobile = useMobile();
 
     let wrongCards;
     switch (level.value) {
@@ -162,6 +166,10 @@ export default {
       }
     };
 
+    const toggleMobileChat = () => {
+      isMobileChatOpened.value = !isMobileChatOpened.value
+    }
+
     watch(rightAnswersCount, () => {
       const rightElements = document.querySelectorAll('.snapped:not(.wrong)');
       if ((level.value === '1' && rightElements.length === 4) || (level.value === '2' && rightElements.length === 6) || (level.value === '3' && rightElements.length === 7)) {
@@ -170,6 +178,12 @@ export default {
         endGame();
       }
     });
+
+    watch(isMobile, () => {
+      if (!isMobile.value) {
+        isMobileChatOpened.value = false
+      }
+    })
 
     const closeAchieveModal = () => {
       isModalActive.value = false;
@@ -185,7 +199,11 @@ export default {
     };
 
     const enableGame = () => {
-      isChatFullLength.value = false;
+      if (!isMobile) {
+        isChatFullLength.value = false;
+      } else {
+        isMobileChatOpened.value = false;
+      }
       onNext();
     };
 
@@ -203,11 +221,8 @@ export default {
       clientWidth.value = document.body.clientWidth;
       clientHeight.value = document.body.clientHeight;
       factor.value = (16 * clientWidth.value) / 1280;
+      document.body.classList.add('fixed')
     };
-
-    // const removeBlur = () => {
-    //   document.documentElement.style.filter = 'unset'
-    // }
 
     const onResize = () => {
       const elements = document.querySelectorAll('.draggable');
@@ -215,14 +230,13 @@ export default {
         elements.forEach((el) => el.remove());
       } else {
         elements.forEach((el) => {
-          el.style.left = level.value !== '3' ? `${clientWidth.value / 1.23}px` : `${clientWidth.value / 1.21}px`;
-          el.style.top = level.value !== '3' ? `${1.5625 * factor.value}px` : `${2.1875 * factor.value}px`;
+          el.style.left = isMobile.value ? `${clientWidth.value / 3.5}px` : level.value !== '3' ? `${clientWidth.value / 1.23}px` : `${clientWidth.value / 1.21}px`;
+          el.style.top = isMobile.value ? `${clientHeight.value - 150}px` : level.value !== '3' ? `${1.5625 * factor.value}px` : `${2.1875 * factor.value}px`;
           el.style.transform = 'rotate(-9deg) ';
           return el;
         });
       }
       onInit();
-      // document.documentElement.style.filter = 'blur(15px)'
       document.querySelectorAll('.occupied').forEach((el) => el.classList.remove('occupied'));
       document.querySelectorAll('.wrong').forEach((el) => el.classList.remove('wrong'));
       document.querySelectorAll('.snapped').forEach((el) => el.classList.remove('snapped'));
@@ -235,7 +249,6 @@ export default {
 
       onInit();
       window.addEventListener('resize', onResize);
-      // window.addEventListener('resize', debounce(removeBlur, 500))
       const targets = document.querySelectorAll('.droppable');
       const overlapThreshold = '80%';
 
@@ -338,8 +351,8 @@ export default {
             gsap.to(target, {
               x: 0,
               y: 0,
-              left: level.value !== '3' ? clientWidth.value / 1.23 : clientWidth.value / 1.21,
-              top: level.value !== '3' ? 1.5625 * factor.value : 2.1875 * factor.value,
+              left: isMobile.value ? clientWidth.value / 3.5 : level.value !== '3' ? clientWidth.value / 1.23 : clientWidth.value / 1.21,
+              top: isMobile.value ? clientHeight.value - 150 : level.value !== '3' ? 1.5625 * factor.value : 2.1875 * factor.value,
               rotate: -9,
               duration: 0.3,
             });
@@ -363,6 +376,9 @@ export default {
       isStackVisible,
       isChatFullLength,
       level,
+      toggleMobileChat,
+      isMobileChatOpened,
+      isMobile,
     };
   },
 };

@@ -1,0 +1,118 @@
+.main {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { 
+    display: none;
+  }
+  pointer-events: none;
+}
+
+.outer {
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  &.opened {
+    @media screen and (max-width: 450px) {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12.5px);
+      position: fixed;
+      pointer-events: all;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  }
+}
+
+.wrapper {
+  -webkit-overflow-scrolling: touch;
+  pointer-events: all;
+  overflow: auto;
+  @media screen and (max-width: 450px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: rem(102);
+    overflow-y: scroll;
+
+    & span {
+      // position: absolute;
+      // bottom: 0;
+    }
+  }
+}
+
+.popupWrap {
+  margin-bottom: rem(10);
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
+    opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  border-radius: rem(20);
+  overflow: hidden;
+  &:last-child {
+    border-radius: rem(20) rem(20) rem(20) 0;
+  }
+  @media screen and (max-width: 450px) {
+    width: 94%;
+    position: relative;
+    left: 3%;
+    &:first-child  {
+      margin-top: rem(10);
+    }
+  }
+}
+
+.popup {
+  width: rem(280);
+  padding: rem(15);
+  background: #fff;
+  @media screen and (max-width: 450px) {
+    width: 100%;
+  }
+}
+
+.text {
+  font-weight: 500;
+  font-size: rem(14);
+  line-height: rem(19);
+  color: #000;
+}
+
+@keyframes pushAnimation {
+  0% {
+    transform: translateX(-50%) translateY(-200%);
+  }
+
+  10% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  90% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(-200%);
+  }
+}
+
+.pushMsg {
+  width: 80%;
+  position: fixed;
+  top: rem(20);
+  left: 50%;
+  transform: translateX(-50%) translateY(-200%);
+  background-color: #fff;
+  border-radius: rem(10);
+  box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
+  z-index: 9999;
+  padding: rem(10) rem(15);
+  font-size: rem(14);
+  animation: none;
+  &.animating {
+    animation-name: pushAnimation;
+    animation-duration: 5s;
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+}

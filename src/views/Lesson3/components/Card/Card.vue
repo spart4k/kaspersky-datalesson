@@ -99,6 +99,9 @@ export default {
   &.level3 {
     padding: rem(7) rem(8);
   }
+  @media screen and (max-width: 450px) {
+    padding: rem(10);
+  }
 }
 
 .cardImgWrapper {
@@ -113,9 +116,14 @@ export default {
     max-width: 100%;
     max-height: 100%;
   }
-  &.level3 {
-    height: rem(95);
-    margin-bottom: rem(3);
+  @media screen and (min-width: 451px) {
+    &.level3 {
+      height: rem(95);
+      margin-bottom: rem(3);
+    }
+  }
+  @media screen and (max-width: 450px) {
+    height: 60%;
   }
 }
 
@@ -129,6 +137,11 @@ export default {
   &.level3 {
     font-size: rem(9.6);
     line-height: rem(13);
+  }
+  @media screen and (max-width: 450px) {
+    font-size: rem(10);
+    line-height: rem(15);
+    width: 100%;
   }
 }
 </style>

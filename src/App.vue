@@ -51,7 +51,7 @@ export default {
       console.log(sessionData.data);
       localStorage.setItem(lsVar, session);
       localStorage.setItem(levelVar, level);
-      this.$router.push('/');
+      // this.$router.push('/');
     }
 
     if (localStorage.getItem(lsVar)) {

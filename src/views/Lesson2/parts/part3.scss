@@ -143,7 +143,7 @@
   right: rem(30);
   z-index: 999;
   @media screen and (max-width: 450px) {
-    left: rem(15);
+    left: rem(30);
     right: unset;
   }
 }
@@ -156,6 +156,9 @@
   background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%),
     #ffffff;
   border-radius: rem(20);
+  @media screen and (max-width: 450px) {
+    padding: rem(30) rem(15);
+  }
 }
 
 .achieve {
@@ -169,6 +172,10 @@
   font-size: rem(21);
   line-height: rem(29);
   text-align: center;
+  @media screen and (max-width: 450px) {
+    font-size: rem(16);
+    line-height: rem(22);
+  }
 }
 
 .modalTextBottom {

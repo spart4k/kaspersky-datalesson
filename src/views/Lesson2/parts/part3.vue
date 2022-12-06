@@ -29,7 +29,7 @@
     </div>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="$style.popupMsg" />
     <transition name="fade">
-      <v-btn v-if="stage === 1 && messages.length >= texts.start[`level${level}`].length" sm :class="$style.btn" @click="onGameInit">Хорошо</v-btn>
+      <v-btn v-if="stage === 1 && messages.length >= texts.start[`level${level}`].length && (!isMobile || isMobile && isMobileChatOpened)" sm :class="$style.btn" @click="onGameInit">Хорошо</v-btn>
       <v-btn
         v-if="stage === 2 && activeCards.length >= 4 && !isCheckingInProgress"
         sm
@@ -76,11 +76,12 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import gsap from 'gsap';
 import Card from '../components/Card/Card.vue';
 import { useStore } from '@/store';
 import { pushPopup } from '@/utils/pushPopup';
+import useMobile from '@/hooks/useMobile';
 import texts from './texts';
 
 export default {
@@ -103,9 +104,17 @@ export default {
     const store = useStore();
     const level = computed(() => store.state.level);
 
+    const isMobile = useMobile();
+
     const onNext = () => {
       stage.value += 1;
     };
+
+    watch(isMobile, () => {
+      if (!isMobile.value) {
+        isMobileChatOpened.value = false
+      }
+    })
 
     const toggleMobileChat = () => {
       isMobileChatOpened.value = !isMobileChatOpened.value
@@ -221,6 +230,7 @@ export default {
       isMobileChatOpened,
       onGameInit,
       toggleMobileChat,
+      isMobile,
     };
   },
 };
