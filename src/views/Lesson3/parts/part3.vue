@@ -152,6 +152,7 @@ export default {
     };
 
     const endGame = () => {
+      if (isMobile.value) isMobileChatOpened.value = true;
       messages.value.push(texts.stage3[`level${level.value}`]);
       onNext();
       if (errorCount.value <= 1) {
@@ -199,7 +200,7 @@ export default {
     };
 
     const enableGame = () => {
-      if (!isMobile) {
+      if (!isMobile.value) {
         isChatFullLength.value = false;
       } else {
         isMobileChatOpened.value = false;
@@ -225,6 +226,7 @@ export default {
     };
 
     const onResize = () => {
+      if (clientWidth.value === document.body.clientWidth) return
       const elements = document.querySelectorAll('.draggable');
       if (stage.value === 4 || (stage.value === 3 && isModalActive.value)) {
         elements.forEach((el) => el.remove());

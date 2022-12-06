@@ -5,6 +5,7 @@
     display: none;
   }
   pointer-events: none;
+  z-index: 1200;
 }
 
 .outer {
@@ -79,24 +80,6 @@
   color: #000;
 }
 
-@keyframes pushAnimation {
-  0% {
-    transform: translateX(-50%) translateY(-200%);
-  }
-
-  10% {
-    transform: translateX(-50%) translateY(0);
-  }
-
-  90% {
-    transform: translateX(-50%) translateY(0);
-  }
-
-  100% {
-    transform: translateX(-50%) translateY(-200%);
-  }
-}
-
 .pushMsg {
   width: 80%;
   position: fixed;
@@ -106,13 +89,10 @@
   background-color: #fff;
   border-radius: rem(10);
   box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
-  z-index: 9999;
   padding: rem(10) rem(15);
   font-size: rem(14);
-  animation: none;
+  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   &.animating {
-    animation-name: pushAnimation;
-    animation-duration: 5s;
-    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+    transform: translateX(-50%) translateY(-10%);
   }
 }

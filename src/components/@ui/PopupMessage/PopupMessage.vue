@@ -1,24 +1,19 @@
 <template>
-  <div :class="$style.main" ref="wrapperRef">
+  <div :class="$style.main" ref="mainRef">
     <div
       :class="[isMobile && $style.outer, isOpened && $style.opened]"
       @click.self="$emit('toggle')"
-    >
-      
-    </div>
-    <div v-if="!isMobile || (isMobile && isOpened)" :class="$style.wrapper" >
-        <transition-group name="fade-list" :class="$style.list">
-          <div v-for="(item, index) in items" :class="$style.popupWrap" :key="index">
-            <div :class="$style.popup">
-              <div :class="$style.text">{{ item }}</div>
-            </div>
+    ></div>
+    <div :class="$style.wrapper" ref="wrapperRef">
+      <transition-group name="fade-list" :class="$style.list">
+        <div v-for="(item, index) in items" :class="$style.popupWrap" :key="index">
+          <div :class="$style.popup">
+            <div :class="$style.text">{{ item }}</div>
           </div>
-        </transition-group>
-      </div>
-    <div
-      v-if="isMobile && !isOpened && pushMsg"
-      :class="[$style.pushMsg, pushMsg && $style.animating]"
-    >
+        </div>
+      </transition-group>
+    </div>
+    <div v-if="isMobile && !isOpened" :class="[$style.pushMsg, pushMsg && $style.animating]">
       {{ pushMsg }}
     </div>
   </div>
@@ -36,6 +31,7 @@ export default {
     isOpened: Boolean,
   },
   setup(props) {
+    const mainRef = ref(null);
     const wrapperRef = ref(null);
     const pushMsg = ref(null);
 
@@ -45,14 +41,13 @@ export default {
 
     watch(props.items, () => {
       pushMsg.value = props.items[props.items.length - 1];
-      if (!timeout) {
-        timeout = setTimeout(() => {
-          pushMsg.value = null;
-        }, 5000);
-      }
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        pushMsg.value = null;
+      }, 3000);
       if (!isMobile.value) {
         setTimeout(() => {
-          wrapperRef.value.scrollTop = wrapperRef.value.scrollHeight;
+          mainRef.value.scrollTop = mainRef.value.scrollHeight;
         }, 0);
       }
     });
@@ -60,24 +55,28 @@ export default {
     const isOpened = computed(() => (props.isOpened ? true : false));
 
     watch(isOpened, () => {
-      if (isOpened.value) {
-        document.body.classList.add('fixed')
-      } else {
-        document.body.classList.remove('fixed')
+      // if (isOpened.value) {
+      //   document.body.classList.add('fixed')
+      // } else {
+      //   document.body.classList.remove('fixed')
+      // }
+      if (isMobile.value) {
+        wrapperRef.value.scrollTop = wrapperRef.value.scrollHeight;
+        pushMsg.value = null;
+        timeout && !isOpened && clearTimeout(timeout);
       }
-      pushMsg.value = null;
-      // timeout && !isOpened && clearTimeout(timeout);
     });
 
     onMounted(() => {
-      document.body.classList.add('fixed')
+      document.body.classList.add('fixed');
     });
 
     return {
-      wrapperRef,
+      mainRef,
       isMobile,
       pushMsg,
       isOpened,
+      wrapperRef,
     };
   },
 };
