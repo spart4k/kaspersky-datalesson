@@ -5,7 +5,6 @@ module.exports = {
   },
   extends: [
     'plugin:vue/essential',
-    '@vue/airbnb',
   ],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -20,6 +19,7 @@ module.exports = {
     'import/extensions': 0,
     'no-tabs': 0,
     'semi': 0,
+    'vue/no-unused-components': 0
   },
   parserOptions: {
     parser: 'babel-eslint',

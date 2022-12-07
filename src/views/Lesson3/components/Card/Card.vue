@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="[$style.wrapper, $props.isDragging && $style.isDragging]"
+    :class="$style.wrapper"
     :style="{ zIndex: 100 - index }"
   >
     <div :class="$style.cardImgWrapper" >
@@ -13,17 +13,11 @@
 </template>
 
 <script>
-import { onMounted } from 'vue';
-
 export default {
   name: 'Card',
   components: {},
   props: {
     index: Number,
-    isDragging: Boolean,
-    // isActive: Boolean,
-    // isWrong: Boolean,
-    // isNotSelected: Boolean,
   },
   setup(props) {
     const { index } = props;
@@ -38,23 +32,6 @@ export default {
       'Атмосферное давление в разных точках страны',
     ];
 
-    onMounted(() => {
-      // const position = { x: 0, y: 0 };
-      // interact('.draggable').draggable({
-      //   listeners: {
-      //     start(event) {
-      //       console.log(event.type, event.target);
-      //     },
-      //     move(event) {
-      //       position.x += event.dx;
-      //       position.y += event.dy;
-
-      //       event.target.style.transform = `translate(${position.x}px, ${position.y}px)`;
-      //     },
-      //   },
-      // });
-    });
-
     return {
       titles,
       index,
@@ -64,28 +41,6 @@ export default {
 </script>
 
 <style lang="scss" module>
-@keyframes wrongAnimation {
-  0% {
-    transform: rotate(0);
-  }
-
-  25% {
-    transform: rotate(-6.93deg);
-  }
-
-  50% {
-    transform: rotate(0);
-  }
-
-  75% {
-    transform: rotate(6.93deg);
-  }
-
-  100% {
-    transform: rotate(0);
-  }
-}
-
 .wrapper {
   width: rem(249);
   height: rem(249);
@@ -95,14 +50,6 @@ export default {
   color: #000;
   user-select: none;
   transform: rotate(-9deg);
-}
-
-.wrong {
-  border: 3px solid red !important;
-  animation-name: wrongAnimation;
-  animation-duration: 0.3s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
 }
 
 .cardImgWrapper {

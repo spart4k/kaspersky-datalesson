@@ -2,8 +2,8 @@
   <div :class="$style.wrapper">
     <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
     <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" />
-    <img :class="[$style.basket, 'basket']" src="../assets/basket.png" alt="" />
-    <img :class="$style.stack" src="../assets/stack.svg" alt="" />
+    <img :class="[$style.basket, 'basket']" :src="isBasketEmpty ? '/assets/img/lesson3/basket-empty.png' : '/assets/img/lesson3/basket-full.png'" alt="" />
+    <img v-if="isStackVisible" :class="$style.stack" src="../assets/stack.svg" alt="" />
     <div :class="$style.window">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
@@ -14,47 +14,39 @@
       </div>
     </div>
     <template v-for="index in 7">
-      <Card :key="index" :index="index" :class="[$style.card, 'draggable', `card${index}`]" />
+      <Card :key="index" :data-num="index" :index="index" :class="[$style.card, 'draggable', 'disabled', `card${index}`]" />
     </template>
-    <v-popup-msg :items="messages" :task="messages" :class="$style.popupMsg" />
+    <v-popup-msg :items="messages" :class="$style.popupMsg" />
     <transition name="fade">
-      <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
-      <v-btn
-        v-if="stage === 2 && activeCards.length >= 4 && !isCheckingInProgress"
-        sm
-        :class="$style.btn"
-        @click="checkCards"
-        >Проверить</v-btn
-      >
+      <v-btn v-if="stage === 1" sm :class="$style.btn" @click="enableGame">Хорошо</v-btn>
+      <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson4')">Продолжить</v-btn>
     </transition>
-    <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="closeModal">
+    <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="startGame">
       <div :class="$style.modalInner">
         <img :class="$style.modalImg" src="../../../assets/img/leader.svg" alt="" />
-        <p :class="$style.modalText">
-          Найди данные, которые не подойдут для расчета погоды. Например, данные из ненужных
-          источников. Или данные, в которых ошиблись приборы.
-        </p>
-        <v-btn lg @click="closeModal">Начать</v-btn>
+        <p :class="$style.modalText">{{texts.start}}</p>
+        <v-btn lg @click="startGame">Начать</v-btn>
       </div>
     </v-modal>
     <v-modal v-if="stage === 3" :isActive="isModalActive">
-      <div :class="$style.modalInner">
-        <!-- <img :class="$style.achieve" src="../assets/achieve.svg" alt="" /> -->
-        <p :class="[$style.modalText, $style.modalTextBottom]">
-          Отличная работа! Ты получаешь золотое достижение «Инженер данных»!<br />
-          Продолжай в том же духе!
-        </p>
-        <v-btn lg @click="$router.push('/lesson4')">Продолжить</v-btn>
+      <div :class="$style.achieveModal">
+        <img :class="$style.achieve" :src="errorCount === 0 ? '/assets/img/lesson3/achieveGold.png' : '/assets/img/lesson3/achieveSilver.png'" alt="" />
+        <p :class="[$style.modalTextAchieve, $style.modalTextBottom]">{{errorCount === 0 ? texts.achieveGold : texts.achieveSilver}}</p>
+        <v-btn lg @click="closeAchieveModal">Продолжить</v-btn>
       </div>
     </v-modal>
   </div>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import gsap from 'gsap'
 import Draggable from 'gsap/Draggable'
+import debounce from 'debounce'
+import { isMobile } from 'mobile-device-detect';
+import { pushPopup } from '@/utils/pushPopup';
 import Card from '../components/Card/Card.vue';
+import texts from './texts';
 
 gsap.registerPlugin(Draggable)
 
@@ -64,24 +56,63 @@ export default {
     Card,
   },
   setup() {
-    const isModalActive = ref(false);
+    const isModalActive = ref(true);
     const stage = ref(1);
-    // const errorCount = ref(0);
-    const messages = ref([
-      'Перетащи в окно программы подходящие данные, а в корзину – ненужные для прогноза.',
-    ]);
+    const errorCount = ref(0);
+    const rightAnswersCount = ref(0);
+    const messages = ref([]);
     const factor = ref(null);
+    const clientWidth = ref(null);
+    const clientHeight = ref(null);
+    const isBasketEmpty = ref(true)
+    const activeCard = ref(null)
+    const isStackVisible = ref(true)
 
-    // const wrongCards = ['card2'];
-
-    const closeModal = () => {
-      isModalActive.value = false;
-    };
-
-    const checkCards = () => {};
+    const wrongCards = ['2'];
 
     const onNext = () => {
       stage.value += 1;
+    };
+
+    const endGame = () => {
+      messages.value.push(texts.stage3)
+      onNext()
+      if (errorCount.value <= 1) {
+        setTimeout(() => {
+          isModalActive.value = true
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          messages.value.push(texts.final)
+          onNext()
+        }, 1000);
+      }
+    }
+
+    watch(rightAnswersCount, () => {
+      const rightElements = document.querySelectorAll('.snapped:not(.wrong)')
+      if (rightElements.length === 6) {
+        isStackVisible.value = false
+        endGame()
+      }
+    })
+
+    const closeAchieveModal = () => {
+      isModalActive.value = false;
+      setTimeout(() => {
+        messages.value.push(texts.final)
+        onNext()
+      }, 1000);
+    };
+
+    const startGame = () => {
+      isModalActive.value = false;
+      pushPopup(texts.stage1.level1, messages.value)
+    }
+
+    const enableGame = () => {
+      document.querySelectorAll('.draggable').forEach(el => el.classList.remove('disabled'))
+      onNext()
     };
 
     const moveCenter = (e, el) => {
@@ -94,25 +125,37 @@ export default {
       });
     }
 
-    const onResize = () => {
-      const { clientWidth } = document.body
-      factor.value = 16 * clientWidth / 1280
+    const onInit = () => {
+      clientWidth.value = document.body.clientWidth
+      clientHeight.value = document.body.clientHeight
+      factor.value = 16 * clientWidth.value / 1280
     }
 
-    const onRemove = () => {
-      console.log('remove');
+    const removeBlur = () => {
+      document.documentElement.style.filter = 'unset'
+    }
+
+    const onResize = () => {
+      onInit()
+      const elements = document.querySelectorAll('.draggable')
+      elements.forEach((el) => {
+        el.style.left = `${clientWidth.value / 1.33}px`
+        el.style.top = `${3.75 * factor.value}px`
+        el.style.transform = 'rotate(-9deg) '
+        return el
+      })
+      document.documentElement.style.filter = 'blur(15px)'
+      document.querySelectorAll('.occupied').forEach(el => el.classList.remove('occupied'))
+      document.querySelectorAll('.wrong').forEach(el => el.classList.remove('wrong'))
+      document.querySelectorAll('.snapped').forEach(el => el.classList.remove('snapped'))
     }
 
     onMounted(() => {
-      onResize()
+      onInit()
       window.addEventListener('resize', onResize)
+      window.addEventListener('resize', debounce(removeBlur, 500))
       const targets = document.querySelectorAll('.droppable');
       const overlapThreshold = '80%';
-
-      const position = document.querySelectorAll('.draggable')[0].getBoundingClientRect();
-      const draggableCoordinates = {
-        left: position.left, top: position.top, bottom: position.bottom, right: position.right,
-      }
 
       Draggable.create('.draggable', {
         type: 'left,top',
@@ -120,8 +163,9 @@ export default {
           let { target } = e;
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
           if (target.classList.contains('wrong')) target.classList.remove('wrong');
-          window.addEventListener('mousemove', moveCenter(e, target))
-          window.removeEventListener('mousemove', moveCenter(e, target))
+          if (target.classList.contains('snapped')) target.classList.remove('snapped');
+          if (!isMobile) window.addEventListener('mousemove', moveCenter(e, target), { once: true })
+          activeCard.value = target.dataset.num;
 
           gsap.to(target, {
             rotate: 0,
@@ -144,13 +188,24 @@ export default {
           let snapMade = false;
           let { target } = e;
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
-          // const basket = document.querySelector('.basket');
-          // if (this.hitTest(basket)) {
-          //   gsap.to(target, {
-          //     opacity: 0,
-          //     duration: 0.2,
-          //   });
-          // }
+          const basket = document.querySelector('.basket');
+          if (this.hitTest(basket)) {
+            if (!wrongCards.includes(activeCard.value)) {
+              target.classList.add('wrong')
+              messages.value.push(texts.wrong.level1[`card${activeCard.value}`])
+              errorCount.value += 1
+            } else {
+              gsap.to(target, {
+                opacity: 0,
+                duration: 0.5,
+              });
+              setTimeout(() => {
+                target.remove()
+              }, 500);
+              isBasketEmpty.value = false
+            }
+            return
+          }
           for (let i = 0; i < targets.length; i += 1) {
             if (this.hitTest(targets[i], overlapThreshold)) {
               if (!targets[i].classList.contains('occupied')) {
@@ -160,7 +215,7 @@ export default {
                 gsap.to(target, {
                   x: 0,
                   y: 0,
-                  left: box.left - factor.value * 2,
+                  left: box.left - factor.value * 1.9,
                   top: box.top - factor.value * 2,
                   duration: 0.1,
                 });
@@ -176,9 +231,14 @@ export default {
                 target.classList.add('snapped');
                 targets[i].classList.remove('showOver');
                 snapMade = true;
-                if (target.classList.contains('card2')) {
+                if (wrongCards.includes(activeCard.value)) {
                   target.classList.add('wrong')
-                  messages.value.push('Если бы это была Луна, а не Марс, это ещё могло бы иметь значение. А Марс – слишком далеко от нас.')
+                  messages.value.push(texts.wrong.level1[`card${activeCard.value}`])
+                  target.targetAttachedTo.classList.remove('occupied');
+                  errorCount.value += 1
+                } else {
+                  messages.value.push(texts.right.level1)
+                  rightAnswersCount.value += 1
                 }
               }
             }
@@ -192,25 +252,30 @@ export default {
             gsap.to(target, {
               x: 0,
               y: 0,
-              left: draggableCoordinates.left,
-              top: draggableCoordinates.top,
+              left: clientWidth.value / 1.33,
+              top: 3.75 * factor.value,
               scale: 1,
               rotate: -9,
               duration: 0.3,
             });
           }
+          activeCard.value = null
         },
       });
     });
 
     return {
       isModalActive,
-      closeModal,
+      startGame,
+      closeAchieveModal,
       stage,
       messages,
       onNext,
-      checkCards,
-      onRemove,
+      isBasketEmpty,
+      enableGame,
+      errorCount,
+      texts,
+      isStackVisible,
     };
   },
 };
@@ -224,12 +289,20 @@ export default {
 }
 
 .wrong {
-  border: 3px solid red !important;
+  border: 2px solid red !important;
   color: red !important;
   animation-name: wrongAnimation;
   animation-duration: 0.3s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
+}
+
+.snapped {
+  border: 1px solid #91C0F8;
+}
+
+.disabled {
+  pointer-events: none;
 }
 
 </style>

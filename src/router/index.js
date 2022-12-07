@@ -29,6 +29,12 @@ const routes = [
     name: 'lesson3',
     component: Lesson3,
   },
+  {
+    path: '/lesson4',
+    name: 'lesson4',
+    // component: Lesson4,
+    redirect: '/',
+  },
 ]
 
 const router = new VueRouter({

@@ -30,6 +30,12 @@
     background-repeat: no-repeat;
     pointer-events: none;
   }
+  &.zoomSingle {
+    &::before {
+      background-image: url('../assets/singleearth.svg');
+      height: rem(187);
+    }
+  }
   .appliances {
     position: absolute;
     left: rem(120);
@@ -63,6 +69,29 @@
         width: rem(120);
         height: rem(264);
         margin-right: rem(90);
+        &::before {
+          transition: .5s;
+          opacity: 0;
+          content: '';
+          left: 23%;
+          transform: translateX(-50%);
+          top: -10%;
+          position: absolute;
+          display: block;
+          width: 100%;
+          height: 100%;
+          background-image: url('../assets/precipitationLighting.svg');
+          background-size: cover;
+          background-repeat: no-repeat;
+          // filter: blur(15px);
+        }
+        &.lighting {
+          &::before {
+            opacity: 1;
+            transition: .5s;
+            // display: block;
+          }
+        }
         &::after {
           left: 33%;
           width: rem(139);
@@ -89,6 +118,66 @@
       }
     }
   }
+  .wrapSingle {
+    position: absolute;
+    left: rem(187);
+    bottom: 0;
+    height: rem(570);
+    width: rem(506);
+    &.precipitation {
+      .wrap {
+        width: 100%;
+        height: 100%;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    &.home {
+      width: rem(775);
+      height: 100%;
+      left: rem(70);
+      .wrap {
+        height: 100%;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    &.mill {
+      
+      .wrap {
+        height: 100%;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .wrap {
+      position: relative;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      .hitBox {
+        position: absolute;
+        left: 50%;
+        top: rem(205);
+        transform: translate(-50%, 0);
+        width: rem(30);
+        height: rem(20);
+        &.home {
+          left: 26%;
+          top: unset;
+          bottom: 45%;
+        }
+      }
+    }
+    
+  }
 }
 
 .modalInner {
@@ -96,6 +185,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
+  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
+  border-radius: 20px;
 }
 
 .modalText {
@@ -164,8 +256,8 @@
 }
 
 .achieve {
-  width: rem(96);
-  height: rem(94);
+  width: rem(150);
+  height: rem(150);
 }
 
 .modalTextBottom {

@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.wrapper">
+  <div :class="$style.wrapper" ref="wrapperRef">
     <transition-group name="fade-list" :class="$style.list">
       <div v-for="(item, index) in items" :class="$style.popupWrap" :key="index">
         <div :class="$style.popup">
@@ -11,15 +11,26 @@
 </template>
 
 <script>
+import { watch, ref } from 'vue';
+
 export default {
   name: 'PopupMessage',
   components: {},
   props: {
     items: Array,
-    task: Array,
   },
-  setup() {
-    return {};
+  setup(props) {
+    const wrapperRef = ref(null)
+
+    watch(props.items, () => {
+      setTimeout(() => {
+        wrapperRef.value.scrollTop = wrapperRef.value.scrollHeight
+      }, 0);
+    })
+
+    return {
+      wrapperRef,
+    };
   },
 };
 </script>
@@ -31,7 +42,7 @@ export default {
   overflow: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
-  z-index: 1000;
+  z-index: 5;
 
   &::-webkit-scrollbar {
     display: none;
