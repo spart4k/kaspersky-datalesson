@@ -106,16 +106,6 @@
   }
 }
 
-.popupMsg {
-  position: absolute;
-  bottom: rem(92);
-  overflow: scroll;
-  // right: rem(30);
-  z-index: 999;
-  overflow: auto;
-  max-height: 100%;
-}
-
 .btn {
   position: absolute;
   bottom: rem(30);
