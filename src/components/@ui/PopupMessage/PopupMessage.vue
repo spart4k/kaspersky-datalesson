@@ -1,12 +1,12 @@
 <template>
-  <div :class="$style.main" ref="mainRef">
+  <div :class="[$style.main, isOpened && $style.opened]" ref="mainRef">
     <div
       :class="[isMobile && $style.outer, isOpened && $style.opened]"
       @click.self="$emit('toggle')"
     ></div>
-    <div :class="$style.wrapper" ref="wrapperRef">
+    <div :class="[$style.wrapper, !isOpened && $style.hidden]">
       <transition-group name="fade-list" :class="$style.list">
-        <div v-for="(item, index) in items" :class="$style.popupWrap" :key="index">
+        <div v-for="(item, index) in items" :class="[$style.popupWrap, 'message']" :key="index">
           <div :class="$style.popup">
             <div :class="$style.text">{{ item }}</div>
           </div>
@@ -61,7 +61,10 @@ export default {
       //   document.body.classList.remove('fixed')
       // }
       if (isMobile.value) {
-        wrapperRef.value.scrollTop = wrapperRef.value.scrollHeight;
+        setTimeout(() => {
+          const bottomElem = document.querySelector('.message:last-child')
+          bottomElem.scrollIntoView()
+        }, 0);
         pushMsg.value = null;
         timeout && !isOpened && clearTimeout(timeout);
       }
@@ -76,7 +79,6 @@ export default {
       isMobile,
       pushMsg,
       isOpened,
-      wrapperRef,
     };
   },
 };

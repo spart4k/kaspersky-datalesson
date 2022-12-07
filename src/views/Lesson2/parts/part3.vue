@@ -9,7 +9,7 @@
       :src="isAnimated ? '/assets/img/lesson2/cod_2.svg' : '/assets/img/lesson2/cod_1.svg'"
       alt=""
     />
-    <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" @click="toggleMobileChat" />
+    <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
     <div :class="$style.cardWrapper">
       <template v-for="index in 6">
         <Card
@@ -100,6 +100,7 @@ export default {
     const activeCards = ref([]);
     const codRef = ref(null);
     const isMobileChatOpened = ref(true);
+    const mobileChatCounter = ref(0);
 
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -118,6 +119,7 @@ export default {
 
     const toggleMobileChat = () => {
       isMobileChatOpened.value = !isMobileChatOpened.value
+      mobileChatCounter.value = 0
     }
 
     const onGameStart = () => {
@@ -143,6 +145,7 @@ export default {
       if (!activeCards.value.includes(2) && !activeCards.value.includes(5)) {
         isSuccess.value = true;
         messages.value.push(texts.final[`level${level.value}`]);
+        mobileChatCounter.value += 1
         new Promise((resolve) => {
           const { top, left } = codRef.value.getBoundingClientRect();
           gsap.to('.card1', {
@@ -195,8 +198,14 @@ export default {
         });
       } else {
         if (activeCards.value.includes(2) || activeCards.value.includes(5)) errorCount.value += 1;
-        if (errorCount.value === 1) messages.value.push(texts.wrong[`level${level.value}`].error1);
-        if (errorCount.value === 2) messages.value.push(texts.wrong[`level${level.value}`].error2);
+        if (errorCount.value === 1) {
+          messages.value.push(texts.wrong[`level${level.value}`].error1);
+          mobileChatCounter.value += 1
+        } 
+        if (errorCount.value === 2) {
+          messages.value.push(texts.wrong[`level${level.value}`].error2);
+          mobileChatCounter.value += 1
+        } 
         setTimeout(() => {
           isCheckingInProgress.value = false;
           stage.value = 2;
@@ -231,6 +240,7 @@ export default {
       onGameInit,
       toggleMobileChat,
       isMobile,
+      mobileChatCounter,
     };
   },
 };

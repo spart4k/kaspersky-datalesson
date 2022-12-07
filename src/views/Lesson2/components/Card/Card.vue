@@ -116,7 +116,7 @@ export default {
   }
   @media screen and (max-width: 450px) {
     width: 48%;
-    height: rem(142);
+    height: 18vh;
     padding: rem(10);
     position: relative;
     & img {
@@ -154,7 +154,7 @@ export default {
   align-items: center;
   justify-content: center;
   @media screen and (max-width: 450px) {
-    height: rem(70);
+    height: 65%;
   }
 }
 

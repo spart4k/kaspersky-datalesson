@@ -3,7 +3,7 @@
     <div :class="$style.starsWrapper">
       <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
     </div>
-    <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" @click="toggleMobileChat" />
+    <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
     <img
       :class="[$style.basket, 'basket']"
       :src="
@@ -126,6 +126,7 @@ export default {
     const isStackVisible = ref(true);
     const isChatFullLength = ref(true);
     const isMobileChatOpened = ref(true);
+    const mobileChatCounter = ref(0);
 
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -169,6 +170,7 @@ export default {
 
     const toggleMobileChat = () => {
       isMobileChatOpened.value = !isMobileChatOpened.value
+      mobileChatCounter.value = 0
     }
 
     watch(rightAnswersCount, () => {
@@ -182,7 +184,10 @@ export default {
 
     watch(isMobile, () => {
       if (!isMobile.value) {
-        isMobileChatOpened.value = false
+        isMobileChatOpened.value = false;
+        if (stage.value > 1) isChatFullLength.value = false;
+      } else {
+        isChatFullLength.value = true;
       }
     })
 
@@ -290,6 +295,7 @@ export default {
             if (!wrongCards.includes(activeCard.value)) {
               target.classList.add('wrong');
               messages.value.push(texts.wrong[`level${level.value}`][`card${activeCard.value}`]);
+              mobileChatCounter.value += 1
               errorCount.value += 1;
             } else {
               gsap.to(target, {
@@ -297,6 +303,7 @@ export default {
                 duration: 0.1,
               });
               messages.value.push(texts.right[`level${level.value}`]);
+              mobileChatCounter.value += 1
               setTimeout(() => {
                 target.remove();
               }, 500);
@@ -335,10 +342,12 @@ export default {
                   messages.value.push(
                     texts.wrong[`level${level.value}`][`card${activeCard.value}`]
                   );
+                  mobileChatCounter.value += 1
                   target.targetAttachedTo.classList.remove('occupied');
                   errorCount.value += 1;
                 } else {
                   messages.value.push(texts.right[`level${level.value}`]);
+                  mobileChatCounter.value += 1
                   rightAnswersCount.value += 1;
                 }
               }
@@ -381,6 +390,7 @@ export default {
       toggleMobileChat,
       isMobileChatOpened,
       isMobile,
+      mobileChatCounter,
     };
   },
 };

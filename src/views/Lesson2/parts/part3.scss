@@ -96,45 +96,24 @@
   z-index: 99;
   @media screen and (max-width: 450px) {
     width: 92%;
-    top: rem(315);
     left: 4%;
     row-gap: 4%;
     column-gap: 4%;
+    height: 60vh;
+    margin-top: 0;
+    top: rem(100);
+    transform: unset;
   }
 }
 
 .popupMsg {
   position: absolute;
   bottom: rem(92);
+  overflow: scroll;
+  // right: rem(30);
+  z-index: 999;
   overflow: auto;
-  right: rem(30);
-  z-index: 999;
-  max-height: calc(100vh - 20rem);
-  @media screen and (max-width: 450px) {
-    max-height: unset;
-    height: 100vh;
-    width: 100vw;
-  }
-}
-
-.prof {
-  position: absolute;
-  bottom: rem(103);
-  right: rem(320);
-  width: rem(62);
-  height: rem(62);
-  background-image: url('../../../assets/img/leader.svg');
-  background-size: contain;
-  z-index: 999;
-  @media screen and (max-width: 450px) {
-    right: rem(15);
-    bottom: rem(25);
-    z-index: 9999;
-    border: 2px solid #FFFFFF;
-    border-radius: 50%;
-    cursor: pointer;
-    position: fixed;
-  }
+  max-height: 100%;
 }
 
 .btn {
@@ -143,8 +122,10 @@
   right: rem(30);
   z-index: 1300;
   @media screen and (max-width: 450px) {
-    left: rem(30);
+    left: rem(15);
+    bottom: rem(30);
     right: unset;
+    position: fixed;
   }
 }
 
