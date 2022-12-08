@@ -1,20 +1,23 @@
 <template>
-  <div :class="[$style.main, isOpened && $style.opened]" ref="mainRef">
+  <div :class="$style.outer">
     <div
-      :class="[isMobile && $style.outer, isOpened && $style.opened]"
+      v-if="isMobile && isOpened"
+      :class="[isMobile && $style.overlay, isOpened && $style.opened]"
       @click.self="$emit('toggle')"
     ></div>
-    <div :class="[$style.wrapper, !isOpened && $style.hidden]">
-      <transition-group name="fade-list" :class="$style.list">
-        <div v-for="(item, index) in items" :class="[$style.popupWrap, 'message']" :key="index">
-          <div :class="$style.popup">
-            <div :class="$style.text">{{ item }}</div>
+    <div :class="[$style.main, isOpened && $style.opened]" ref="mainRef">
+      <div :class="[$style.wrapper, !isOpened && $style.hidden]">
+        <transition-group name="fade-list" :class="$style.list">
+          <div v-for="(item, index) in items" :class="[$style.popupWrap, 'message']" :key="index">
+            <div :class="$style.popup">
+              <div :class="$style.text">{{ item }}</div>
+            </div>
           </div>
-        </div>
-      </transition-group>
-    </div>
-    <div v-if="isMobile && !isOpened" :class="[$style.pushMsg, pushMsg && $style.animating]">
-      {{ pushMsg }}
+        </transition-group>
+      </div>
+      <div v-if="isMobile && !isOpened" :class="[$style.pushMsg, pushMsg && $style.animating]">
+        {{ pushMsg }}
+      </div>
     </div>
   </div>
 </template>
@@ -62,8 +65,8 @@ export default {
       // }
       if (isMobile.value) {
         setTimeout(() => {
-          const bottomElem = document.querySelector('.message:last-child')
-          bottomElem.scrollIntoView()
+          const bottomElem = document.querySelector('.message:last-child');
+          bottomElem.scrollIntoView();
         }, 0);
         pushMsg.value = null;
         timeout && !isOpened && clearTimeout(timeout);
