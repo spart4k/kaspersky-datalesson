@@ -1,4 +1,4 @@
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, onUnmounted, computed } from 'vue'
 
 export default function useMobile() {
   const clientWidth = ref(null);
@@ -12,6 +12,10 @@ export default function useMobile() {
   onMounted(() => {
     onResize();
     window.addEventListener('resize', onResize);
+  });
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', onResize);
   });
 
   return isMobile;

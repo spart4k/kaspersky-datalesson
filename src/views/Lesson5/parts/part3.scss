@@ -1,0 +1,230 @@
+.wrapper {
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background-color: $lesson5bgColor;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10%;
+    width: rem(754);
+    height: 100%;
+    background-image: url('../assets/bg.svg');
+    background-size: 146% 146%;
+    background-position: -12% 43%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+  @media screen and (max-width: 450px) {
+    padding-left: rem(15);
+    padding-right: rem(15);
+    overflow-y: auto;
+  }
+}
+
+.modalInner {
+  padding: rem(30);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modalText {
+  font-size: rem(16);
+  line-height: rem(22);
+  text-align: center;
+}
+
+.starsWrapper {
+  position: absolute;
+  background-color: #fff;
+  width: rem(280);
+  height: rem(56);
+  top: rem(30);
+  left: rem(30);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  border-radius: rem(32);
+  box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
+  @media screen and (max-width: 450px) {
+    width: rem(240);
+    height: rem(48);
+    top: rem(15);
+    left: rem(15);
+  }
+}
+
+.stars {
+  margin-left: rem(4);
+  width: rem(257);
+  height: rem(48);
+  @media screen and (max-width: 450px) {
+    width: rem(224);
+  }
+}
+
+.btn {
+  position: absolute;
+  bottom: rem(30);
+  right: rem(30);
+  z-index: 1300;
+  @media screen and (max-width: 450px) {
+    left: rem(15);
+    bottom: rem(30);
+    right: unset;
+    position: fixed;
+  }
+}
+
+.achieveModal {
+  padding: rem(40) rem(30);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%),
+    #ffffff;
+  border-radius: rem(20);
+  @media screen and (max-width: 450px) {
+    padding: rem(30) rem(15);
+  }
+}
+
+.achieve {
+  width: rem(151);
+  height: rem(151);
+  margin-bottom: rem(20);
+}
+
+.modalTextAchieve {
+  font-weight: 500;
+  font-size: rem(21);
+  line-height: rem(29);
+  text-align: center;
+  @media screen and (max-width: 450px) {
+    font-size: rem(16);
+    line-height: rem(22);
+  }
+}
+
+.modalTextBottom {
+  margin-top: 0;
+  margin-bottom: rem(47);
+}
+
+.window {
+  width: rem(467);
+  height: auto;
+  position: absolute;
+  top: rem(235);
+  transform: translateY(-50%);
+  left: rem(30);
+  margin-top: rem(35);
+  z-index: 99;
+  background-color: #fff;
+  border-radius: rem(20);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.05), 0px 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.controls {
+  position: absolute;
+  top: rem(18);
+  left: rem(15);
+  width: rem(62);
+  height: rem(16);
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
+}
+
+.title {
+  font-weight: 700;
+  font-size: rem(16);
+  line-height: rem(22);
+  color: #000;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.table {
+  margin-top: rem(57);
+  width: 100%;
+  text-align: left;
+  margin-bottom: rem(20);
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 3%;
+    left: 67%;
+    width: 1px;
+    height: 97%;
+    background-color: #F0E1FE;
+    z-index: -1;
+  }
+}
+
+.thead {
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 5%;
+    width: 90%;
+    height: 1px;
+    background-color: #F0E1FE;
+  }
+}
+
+.forecast {
+  height: rem(42);
+  font-weight: 700;
+  font-size: rem(16);
+  line-height: rem(22);
+  color: #000;
+  padding-left: rem(40);
+}
+
+.fact {
+  height: rem(42);
+  font-weight: 700;
+  font-size: rem(16);
+  line-height: rem(22);
+  color: #000;
+  text-align: center;
+  transition: opacity .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.columnTitle {
+  font-weight: 700;
+  font-size: rem(12);
+  line-height: rem(16);
+  color: #000;
+  height: rem(42);
+  &:nth-child(1) {
+    padding-left: rem(40);
+  }
+  &:nth-child(2) {
+    text-align: center;
+  }
+  &:nth-child(3) {
+    text-align: center;
+  }
+}
+
+.row {
+  width: 100%;
+  z-index: 9;
+}
+
+.divider {
+  height: rem(6);
+}
+
+.hidden {
+  opacity: 0;
+}

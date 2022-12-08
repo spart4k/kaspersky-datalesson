@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.wrapper">
+  <div :class="$style.wrapper" id="wrapper">
     <div :class="$style.starsWrapper">
       <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
     </div>
@@ -260,6 +260,7 @@ export default {
       const overlapThreshold = '80%';
 
       Draggable.create('.draggable', {
+        bounds: '#wrapper',
         type: 'left,top',
         onDragStart(e) {
           let { target } = e;
