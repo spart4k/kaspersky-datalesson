@@ -16,6 +16,11 @@
     background-repeat: no-repeat;
     pointer-events: none;
   }
+  @media screen and (max-width: 450px) {
+    padding-left: rem(15);
+    padding-right: rem(15);
+    overflow-y: auto;
+  }
 }
 
 .modalInner {
@@ -31,30 +36,57 @@
   text-align: center;
 }
 
-.stars {
+.starsWrapper {
   position: absolute;
-  top: rem(15);
-  left: rem(10);
+  background-color: #fff;
+  width: rem(280);
+  height: rem(56);
+  top: rem(30);
+  left: rem(30);
   z-index: 10;
-  width: rem(320);
-  height: rem(96);
+  display: flex;
+  align-items: center;
+  border-radius: rem(32);
+  box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
+  @media screen and (max-width: 450px) {
+    width: rem(240);
+    height: rem(48);
+    top: rem(15);
+    left: rem(15);
+  }
+}
+
+.stars {
+  margin-left: rem(4);
+  width: rem(257);
+  height: rem(48);
+  @media screen and (max-width: 450px) {
+    width: rem(224);
+  }
 }
 
 .cod {
   position: absolute;
   top: rem(30);
   right: rem(30);
-  z-index: 10;
+  z-index: 4;
   width: rem(149);
   height: rem(179);
+  @media screen and (max-width: 450px) {
+    width: rem(58);
+    height: rem(71);
+    top: rem(15);
+    right: rem(15);
+  }
 }
 
 .cardWrapper {
   width: rem(723);
-  height: rem(500);
+  height: rem(472);
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  row-gap: rem(30);
+  column-gap: rem(30);
   flex-wrap: wrap;
   position: absolute;
   top: 50%;
@@ -62,37 +94,69 @@
   left: rem(80);
   margin-top: rem(26);
   z-index: 99;
+  @media screen and (max-width: 450px) {
+    width: 92%;
+    left: 4%;
+    row-gap: 4%;
+    column-gap: 4%;
+    height: 60vh;
+    margin-top: 0;
+    top: rem(100);
+    transform: unset;
+  }
 }
 
 .popupMsg {
   position: absolute;
   bottom: rem(92);
   overflow: scroll;
-  right: rem(30);
+  // right: rem(30);
   z-index: 999;
-}
-
-.prof {
-  position: absolute;
-  bottom: rem(103);
-  right: rem(320);
-  width: rem(62);
-  height: rem(62);
-  background-image: url('../../../assets/img/prof.png');
-  background-size: contain;
-  z-index: 999;
+  overflow: auto;
+  max-height: 100%;
 }
 
 .btn {
   position: absolute;
   bottom: rem(30);
   right: rem(30);
-  z-index: 999;
+  z-index: 1300;
+  @media screen and (max-width: 450px) {
+    left: rem(15);
+    bottom: rem(30);
+    right: unset;
+    position: fixed;
+  }
+}
+
+.achieveModal {
+  padding: rem(40) rem(30);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%),
+    #ffffff;
+  border-radius: rem(20);
+  @media screen and (max-width: 450px) {
+    padding: rem(30) rem(15);
+  }
 }
 
 .achieve {
-  width: rem(96);
-  height: rem(94);
+  width: rem(151);
+  height: rem(151);
+  margin-bottom: rem(20);
+}
+
+.modalTextAchieve {
+  font-weight: 500;
+  font-size: rem(21);
+  line-height: rem(29);
+  text-align: center;
+  @media screen and (max-width: 450px) {
+    font-size: rem(16);
+    line-height: rem(22);
+  }
 }
 
 .modalTextBottom {

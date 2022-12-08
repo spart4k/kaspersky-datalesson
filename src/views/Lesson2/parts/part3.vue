@@ -1,8 +1,15 @@
 <template>
   <div :class="$style.wrapper">
-    <img :class="$style.stars" src="../assets/stars1.svg" alt="" />
-    <img :class="$style.cod" ref="codRef" :src="isAnimated ? '/assets/img/lesson2/cod_2.svg' : '/assets/img/lesson2/cod_1.svg'" alt="" />
-    <img :class="$style.prof" src="../../../assets/img/prof.png" alt="" />
+    <div :class="$style.starsWrapper">
+      <img :class="$style.stars" src="../assets/stars1.svg" alt="" />
+    </div>
+    <img
+      :class="$style.cod"
+      ref="codRef"
+      :src="isAnimated ? '/assets/img/lesson2/cod_2.svg' : '/assets/img/lesson2/cod_1.svg'"
+      alt=""
+    />
+    <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
     <div :class="$style.cardWrapper">
       <template v-for="index in 6">
         <Card
@@ -20,9 +27,9 @@
         />
       </template>
     </div>
-    <v-popup-msg :items="messages" :task="messages" :class="$style.popupMsg" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="$style.popupMsg" />
     <transition name="fade">
-      <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
+      <v-btn v-if="stage === 1 && messages.length >= texts.start[`level${level}`].length && (!isMobile || isMobile && isMobileChatOpened)" sm :class="$style.btn" @click="onGameInit">Хорошо</v-btn>
       <v-btn
         v-if="stage === 2 && activeCards.length >= 4 && !isCheckingInProgress"
         sm
@@ -30,10 +37,13 @@
         @click="checkCards"
         >Проверить</v-btn
       >
+      <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson3')"
+        >Продолжить</v-btn
+      >
     </transition>
-    <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="closeModal">
+    <v-modal v-if="stage === 1" :isActive="isModalActive">
       <div :class="$style.modalInner">
-        <img src="../../../assets/img/prof.png" alt="" />
+        <img src="../../../assets/img/leader.svg" alt="" />
         <p :class="$style.modalText">
           Центр обработки данных, сокращённо – ЦОД. Туда поступают данные с множества источников из
           разных точек планеты.
@@ -42,25 +52,37 @@
           Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
           требуются.
         </p>
-        <v-btn lg @click="closeModal">Начать</v-btn>
+        <v-btn lg @click="onGameStart">Начать</v-btn>
       </div>
     </v-modal>
     <v-modal v-if="stage === 3" :isActive="isModalActive">
-      <div :class="$style.modalInner">
-        <img :class="$style.achieve" src="../assets/achieve.svg" alt="" />
-        <p :class="[$style.modalText, $style.modalTextBottom]">
-          Отличная работа! Ты получаешь золотое достижение «Инженер данных»!<br /> Продолжай в том же духе!
+      <div :class="$style.achieveModal">
+        <img
+          :class="$style.achieve"
+          :src="
+            errorCount === 0
+              ? '/assets/img/lesson2/achieveGold.png'
+              : '/assets/img/lesson2/achieveSilver.png'
+          "
+          alt=""
+        />
+        <p :class="[$style.modalTextAchieve, $style.modalTextBottom]">
+          {{ errorCount === 0 ? texts.achieveGold : texts.achieveSilver }}
         </p>
-        <v-btn lg @click="$router.push('/lesson3')">Продолжить</v-btn>
+        <v-btn lg @click="closeAchieveModal">Продолжить</v-btn>
       </div>
     </v-modal>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed, watch } from 'vue';
 import gsap from 'gsap';
 import Card from '../components/Card/Card.vue';
+import { useStore } from '@/store';
+import { pushPopup } from '@/utils/pushPopup';
+import useMobile from '@/hooks/useMobile';
+import texts from './texts';
 
 export default {
   name: 'part3',
@@ -74,19 +96,45 @@ export default {
     const isCheckingInProgress = ref(false);
     const isSuccess = ref(false);
     const isAnimated = ref(false);
-    const messages = ref([
-      'Отметь все профессиональные источники данных, которые отправляют данные в ЦОД.',
-    ]);
+    const messages = ref([]);
     const activeCards = ref([]);
     const codRef = ref(null);
+    const isMobileChatOpened = ref(true);
+    const mobileChatCounter = ref(0);
 
-    const closeModal = () => {
+    const store = useStore();
+    const level = computed(() => store.state.level);
+
+    const isMobile = useMobile();
+
+    const onNext = () => {
+      stage.value += 1;
+    };
+
+    watch(isMobile, () => {
+      if (!isMobile.value) {
+        isMobileChatOpened.value = false
+      }
+    })
+
+    const toggleMobileChat = () => {
+      isMobileChatOpened.value = !isMobileChatOpened.value
+      mobileChatCounter.value = 0
+    }
+
+    const onGameStart = () => {
       isModalActive.value = false;
+      pushPopup(texts.start[`level${level.value}`], messages.value);
+    };
+
+    const onGameInit = () => {
+      isMobileChatOpened.value = false;
+      onNext();
     };
 
     const onCardClick = (num) => {
       if (activeCards.value.includes(num)) {
-        activeCards.value = activeCards.value.filter(el => el !== num);
+        activeCards.value = activeCards.value.filter((el) => el !== num);
       } else {
         activeCards.value.push(num);
       }
@@ -96,7 +144,8 @@ export default {
       isCheckingInProgress.value = true;
       if (!activeCards.value.includes(2) && !activeCards.value.includes(5)) {
         isSuccess.value = true;
-        messages.value.push('Правильно! Тебе удалось выделить все правильные источники данных.');
+        messages.value.push(texts.final[`level${level.value}`]);
+        mobileChatCounter.value += 1
         new Promise((resolve) => {
           const { top, left } = codRef.value.getBoundingClientRect();
           gsap.to('.card1', {
@@ -140,12 +189,23 @@ export default {
             resolve();
           }, 4500);
         }).then(() => {
-          stage.value = 3;
-          isModalActive.value = true;
-        })
+          onNext();
+          if (errorCount.value < 2) {
+            isModalActive.value = true;
+          } else {
+            onNext();
+          }
+        });
       } else {
         if (activeCards.value.includes(2) || activeCards.value.includes(5)) errorCount.value += 1;
-        if (errorCount.value === 1) messages.value.push('Не забывай, что источники данных должны быть профессиональные.');
+        if (errorCount.value === 1) {
+          messages.value.push(texts.wrong[`level${level.value}`].error1);
+          mobileChatCounter.value += 1
+        } 
+        if (errorCount.value === 2) {
+          messages.value.push(texts.wrong[`level${level.value}`].error2);
+          mobileChatCounter.value += 1
+        } 
         setTimeout(() => {
           isCheckingInProgress.value = false;
           stage.value = 2;
@@ -154,13 +214,14 @@ export default {
       }
     };
 
-    const onNext = () => {
-      stage.value += 1;
+    const closeAchieveModal = () => {
+      isModalActive.value = false;
+      onNext();
     };
 
     return {
       isModalActive,
-      closeModal,
+      onGameStart,
       stage,
       messages,
       onNext,
@@ -171,6 +232,15 @@ export default {
       isSuccess,
       codRef,
       isAnimated,
+      texts,
+      closeAchieveModal,
+      errorCount,
+      level,
+      isMobileChatOpened,
+      onGameInit,
+      toggleMobileChat,
+      isMobile,
+      mobileChatCounter,
     };
   },
 };

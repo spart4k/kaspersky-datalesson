@@ -16,6 +16,13 @@
     background-repeat: no-repeat;
     pointer-events: none;
   }
+  @media screen and (max-width: 450px) {
+    height: unset;
+    min-height: 100vh;
+    &::after {
+      display: none;
+    }
+  }
 }
 
 .modalImg {
@@ -36,13 +43,33 @@
   text-align: center;
 }
 
-.stars {
+.starsWrapper {
   position: absolute;
-  top: rem(15);
-  left: rem(10);
+  background-color: #fff;
+  width: rem(280);
+  height: rem(56);
+  top: rem(30);
+  left: rem(30);
   z-index: 10;
-  width: rem(320);
-  height: rem(96);
+  display: flex;
+  align-items: center;
+  border-radius: rem(32);
+  box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
+  @media screen and (max-width: 450px) {
+    width: rem(240);
+    height: rem(48);
+    top: rem(15);
+    left: rem(15);
+  }
+}
+
+.stars {
+  margin-left: rem(4);
+  width: rem(257);
+  height: rem(48);
+  @media screen and (max-width: 450px) {
+    width: rem(224);
+  }
 }
 
 .basket {
@@ -52,6 +79,13 @@
   z-index: 100;
   width: rem(86);
   height: rem(115);
+  @media screen and (max-width: 450px) {
+    position: fixed;
+    width: rem(53);
+    height: rem(70);
+    left: rem(15);
+    bottom: rem(15);
+  }
 }
 
 .window {
@@ -66,6 +100,19 @@
   background-color: #fff;
   border-radius: rem(20);
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.05), 0px 5px 20px rgba(0, 0, 0, 0.15);
+  @media screen and (min-width: 451px) {
+    &.level3 {
+      width: rem(700);
+      height: rem(421);
+      left: rem(170);
+    }
+  }
+  @media screen and (max-width: 450px) {
+    position: unset;
+    height: 100%;
+    background: unset;
+    box-shadow: unset;
+  }
 }
 
 .controls {
@@ -74,6 +121,9 @@
   left: rem(15);
   width: rem(62);
   height: rem(16);
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 }
 
 .title {
@@ -85,6 +135,9 @@
   left: 50%;
   top: 0;
   transform: translateX(-50%);
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 }
 
 .inner {
@@ -93,8 +146,27 @@
   justify-content: space-between;
   flex-wrap: wrap;
   row-gap: rem(20);
+  column-gap: rem(20);
   margin-top: rem(61);
   padding: rem(20);
+  &.level1 {
+    max-width: rem(436);
+    margin-left: auto;
+    margin-right: auto;
+  }
+  @media screen and (max-width: 450px) {
+    position: absolute;
+    left: 0;
+    top: rem(35);
+    width: 100vw;
+    margin-top: 0;
+    padding: rem(15);
+    row-gap: unset;
+    column-gap: unset;
+    &.level1 {
+      max-width: unset;
+    }
+  }
 }
 
 .droparea {
@@ -104,25 +176,87 @@
   background-image: url('../assets/placeholder.svg');
   background-repeat: no-repeat;
   background-size: contain;
+  @media screen and (min-width: 451px) {
+    &.level3 {
+      width: rem(150);
+      height: rem(150);
+      background-image: url('../assets/placeholder-sm.svg');
+      background-repeat: no-repeat;
+      background-size: contain;
+      &:last-child {
+        margin-right: auto;
+      }
+    }
+  }
+  @media screen and (max-width: 450px) {
+    background-image: url('../assets/placeholder-mobile.svg');
+    background-repeat: no-repeat;
+    background-size: 50% 50%;
+    background-position: center center;
+    border: 1px dashed #fba559;
+    width: 44vw;
+    height: 18vh;
+    margin-bottom: rem(15);
+    position: relative;
+    &.level3 {
+      height: 16vh;
+      &:last-child {
+        margin-right: auto;
+        margin-left: auto;
+      }
+    }
+  }
 }
 
 .stack {
   position: absolute;
-  top: rem(256);
-  right: rem(56);
+  top: rem(140);
+  right: rem(0);
   width: rem(281);
   height: rem(159);
   z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s;
+  &.visible {
+    opacity: 1;
+  }
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
 }
 
 .card {
   position: absolute;
-  top: rem(60);
-  right: rem(70);
-  width: rem(249);
-  height: rem(249);
+  top: rem(25);
+  right: rem(50);
   z-index: 99;
   box-shadow: 0px rem(2.25) rem(3.38) rgba(0, 0, 0, 0.03), 0px rem(5.63) rem(12) rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  &.visible {
+    opacity: 1;
+    pointer-events: all;
+  }
+  @media screen and (min-width: 451px) {
+    &.level3 {
+      width: rem(150);
+      height: rem(150);
+      right: rem(70);
+      top: rem(35);
+    }
+  }
+  @media screen and (max-width: 450px) {
+    width: 44vw;
+    height: 18vh;
+    position: fixed;
+    top: unset;
+    bottom: 0;
+    left: 28%;
+    &.level3 {
+      height: 16vh;
+    }
+  }
 }
 
 .popupMsg {
@@ -131,24 +265,31 @@
   overflow: scroll;
   right: rem(30);
   z-index: 999;
-}
-
-.prof {
-  position: absolute;
-  bottom: rem(103);
-  right: rem(320);
-  width: rem(62);
-  height: rem(62);
-  background-image: url('../../../assets/img/prof.png');
-  background-size: contain;
-  z-index: 999;
+  overflow: auto;
+  max-height: calc(100vh - 25rem);
+  -webkit-mask-image: -webkit-linear-gradient(
+    top,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 7%,
+    rgba(0, 0, 0, 1) 100%
+  );
+  &.full {
+    -webkit-mask-image: unset;
+    max-height: calc(100vh - 7rem);
+  }
 }
 
 .btn {
   position: absolute;
   bottom: rem(30);
   right: rem(30);
-  z-index: 999;
+  z-index: 1300;
+  @media screen and (max-width: 450px) {
+    left: rem(15);
+    bottom: rem(30);
+    right: unset;
+    position: fixed;
+  }
 }
 
 .achieveModal {
@@ -159,6 +300,9 @@
   background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%),
     #ffffff;
   border-radius: rem(20);
+  @media screen and (max-width: 450px) {
+    padding: rem(30) rem(15);
+  }
 }
 
 .achieve {
@@ -172,6 +316,10 @@
   font-size: rem(21);
   line-height: rem(29);
   text-align: center;
+  @media screen and (max-width: 450px) {
+    font-size: rem(16);
+    line-height: rem(22);
+  }
 }
 
 .modalTextBottom {

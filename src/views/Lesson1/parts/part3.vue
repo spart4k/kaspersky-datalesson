@@ -30,13 +30,13 @@
       <div :class="$style.wrap">
         <!-- <img :src="require(`../assets/${precipitationChoosed}Single.svg`)" alt=""> -->
         <component @successAnswer="successAnswer" @emitClick="successSingle" :is="precipitationChoosed"></component>
-        <div 
+        <!-- <div 
         :class="[
           $style.hitBox,
           $style[precipitationChoosed]
         ]"
         @click="clickAnswer"
-        ></div> 
+        ></div>  -->
       </div>
     </div>
     <v-popup-msg :items="messages" :task="messages" :class="$style.popupMsg" />
@@ -272,6 +272,9 @@ export default {
     const successAnswer = (appliance) => {
       console.log('prop')
       console.log(appliance)
+      if (appliance === 'precipitation' && stage.value === 3) {
+        onNext()
+      }
       if (appliance === 'temp' && stage.value === 6) {
         onNext()
       }

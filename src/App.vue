@@ -35,13 +35,13 @@ export default {
 
       let level;
       switch (sessionData.data.id_trainer) {
-        case 74:
+        case 77:
           level = 1;
           break;
-        case 75:
+        case 78:
           level = 2;
           break;
-        case 76:
+        case 79:
           level = 3;
           break;
         default:
@@ -51,7 +51,7 @@ export default {
       console.log(sessionData.data);
       localStorage.setItem(lsVar, session);
       localStorage.setItem(levelVar, level);
-      this.$router.push('/');
+      // this.$router.push('/');
     }
 
     if (localStorage.getItem(lsVar)) {

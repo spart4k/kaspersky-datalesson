@@ -1,0 +1,36 @@
+.wrapper {
+  position: absolute;
+  bottom: rem(103);
+  right: rem(320);
+  width: rem(62);
+  height: rem(62);
+  background-image: url('./speaker.svg');
+  background-size: contain;
+  z-index: 999;
+  @media screen and (max-width: 450px) {
+    right: rem(15);
+    bottom: rem(25);
+    z-index: 9999;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    position: fixed;
+  }
+}
+
+.digit {
+  width: rem(24);
+  height: rem(24);
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: rem(14);
+  color: #fff;
+  position: absolute;
+  top: rem(-2);
+  left: rem(-2);
+}

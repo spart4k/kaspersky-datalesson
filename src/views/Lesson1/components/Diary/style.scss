@@ -2,7 +2,7 @@
   position: absolute;
   right: rem(30);
   top: rem(30);
-  z-index: 1000;
+  z-index: 1300;
   .wrap {
     // width: rem(352);
     position: relative;
@@ -134,6 +134,8 @@
       position: absolute;
       right: -.5rem;
       top: -.5rem;
+      width: rem(32);
+      height: rem(32);
       &:hover {
         cursor: pointer;
       }

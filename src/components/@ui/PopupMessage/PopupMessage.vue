@@ -1,75 +1,87 @@
 <template>
-  <div :class="$style.wrapper" ref="wrapperRef">
-    <transition-group name="fade-list" :class="$style.list">
-      <div v-for="(item, index) in items" :class="$style.popupWrap" :key="index">
-        <div :class="$style.popup">
-          <div :class="$style.text">{{ item }}</div>
+  <div :class="[$style.main, isOpened && $style.opened]" ref="mainRef">
+    <div
+      :class="[isMobile && $style.outer, isOpened && $style.opened]"
+      @click.self="$emit('toggle')"
+    ></div>
+    <div :class="[$style.wrapper, !isOpened && $style.hidden]">
+      <transition-group name="fade-list" :class="$style.list">
+        <div v-for="(item, index) in items" :class="[$style.popupWrap, 'message']" :key="index">
+          <div :class="$style.popup">
+            <div :class="$style.text">{{ item }}</div>
+          </div>
         </div>
-      </div>
-    </transition-group>
+      </transition-group>
+    </div>
+    <div v-if="isMobile && !isOpened" :class="[$style.pushMsg, pushMsg && $style.animating]">
+      {{ pushMsg }}
+    </div>
   </div>
 </template>
 
 <script>
-import { watch, ref } from 'vue';
+import { watch, ref, onMounted, computed } from 'vue';
+import useMobile from '@/hooks/useMobile';
 
 export default {
   name: 'PopupMessage',
   components: {},
   props: {
     items: Array,
+    isOpened: Boolean,
   },
   setup(props) {
-    const wrapperRef = ref(null)
+    const mainRef = ref(null);
+    const wrapperRef = ref(null);
+    const pushMsg = ref(null);
+
+    let timeout = null;
+
+    const isMobile = useMobile();
 
     watch(props.items, () => {
-      setTimeout(() => {
-        wrapperRef.value.scrollTop = wrapperRef.value.scrollHeight
-      }, 0);
-    })
+      pushMsg.value = props.items[props.items.length - 1];
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        pushMsg.value = null;
+      }, 3000);
+      if (!isMobile.value) {
+        setTimeout(() => {
+          mainRef.value.scrollTop = mainRef.value.scrollHeight;
+        }, 0);
+      }
+    });
+
+    const isOpened = computed(() => (props.isOpened ? true : false));
+
+    watch(isOpened, () => {
+      // if (isOpened.value) {
+      //   document.body.classList.add('fixed')
+      // } else {
+      //   document.body.classList.remove('fixed')
+      // }
+      if (isMobile.value) {
+        setTimeout(() => {
+          const bottomElem = document.querySelector('.message:last-child')
+          bottomElem.scrollIntoView()
+        }, 0);
+        pushMsg.value = null;
+        timeout && !isOpened && clearTimeout(timeout);
+      }
+    });
+
+    onMounted(() => {
+      document.body.classList.add('fixed');
+    });
 
     return {
-      wrapperRef,
+      mainRef,
+      isMobile,
+      pushMsg,
+      isOpened,
     };
   },
 };
 </script>
-<style lang="scss" module>
-.wrapper {
-  -webkit-overflow-scrolling: touch;
-  max-height: 100%;
-  pointer-events: auto;
-  overflow: auto;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-  z-index: 5;
 
-  &::-webkit-scrollbar {
-    display: none;
-  }
-}
-
-.popupWrap {
-  margin-bottom: rem(10);
-  transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1),
-    opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  border-radius: rem(20);
-  overflow: hidden;
-  &:last-child {
-    border-radius: rem(20) rem(20) rem(20) 0;
-  }
-}
-
-.popup {
-  width: rem(280);
-  padding: rem(15);
-  background: #fff;
-}
-
-.text {
-  font-weight: 500;
-  font-size: rem(14);
-  line-height: rem(19);
-  color: #000;
-}
-</style>
+<style lang="scss" module src="./PopupMessage.scss"></style>

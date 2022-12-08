@@ -1,10 +1,33 @@
 <template>
   <div :class="$style.wrapper">
-    <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
-    <img :class="$style.prof" src="../../../assets/img/leader.svg" alt="" />
-    <img :class="[$style.basket, 'basket']" :src="isBasketEmpty ? '/assets/img/lesson3/basket-empty.png' : '/assets/img/lesson3/basket-full.png'" alt="" />
-    <img v-if="isStackVisible" :class="$style.stack" src="../assets/stack.svg" alt="" />
-    <div :class="$style.window">
+    <div :class="$style.starsWrapper">
+      <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
+    </div>
+    <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
+    <img
+      :class="[$style.basket, 'basket']"
+      :src="
+        isBasketEmpty
+          ? '/assets/img/lesson3/basket-empty.png'
+          : '/assets/img/lesson3/basket-full.png'
+      "
+      alt=""
+    />
+    <img
+      :class="[$style.stack, isStackVisible && !isChatFullLength && $style.visible]"
+      src="../assets/stack.svg"
+      alt=""
+    />
+    <div v-if="level === '1'" :class="$style.window">
+      <img :class="$style.controls" src="../assets/controls.svg" alt="" />
+      <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
+      <div :class="[$style.inner, $style.level1]">
+        <template v-for="index in 4">
+          <div :key="index" :class="[$style.droparea, 'droppable', `drop${index}`]"></div>
+        </template>
+      </div>
+    </div>
+    <div v-if="level === '2'" :class="$style.window">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
       <div :class="$style.inner">
@@ -13,25 +36,57 @@
         </template>
       </div>
     </div>
-    <template v-for="index in 7">
-      <Card :key="index" :data-num="index" :index="index" :class="[$style.card, 'draggable', 'disabled', `card${index}`]" />
+    <div v-if="level === '3'" :class="[$style.window, $style.level3]">
+      <img :class="$style.controls" src="../assets/controls.svg" alt="" />
+      <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
+      <div :class="$style.inner">
+        <template v-for="index in 7">
+          <div :key="index" :class="[$style.droparea, $style.level3, 'droppable', `drop${index}`]"></div>
+        </template>
+      </div>
+    </div>
+    <template v-for="index in level === '1' ? 6 : level === '2' ? 12 : 16">
+      <Card
+        :key="index"
+        :data-num="index"
+        :index="index"
+        :class="[$style.card, level === '3' && $style.level3, stage > 1 && $style.visible, 'draggable', `card${index}`]"
+      />
     </template>
-    <v-popup-msg :items="messages" :class="$style.popupMsg" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="[$style.popupMsg, isChatFullLength && $style.full]" />
     <transition name="fade">
-      <v-btn v-if="stage === 1" sm :class="$style.btn" @click="enableGame">Хорошо</v-btn>
-      <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson4')">Продолжить</v-btn>
+      <v-btn
+        v-if="stage === 1 && messages.length >= texts.stage1[`level${level}`].length && (!isMobile || isMobile && isMobileChatOpened)"
+        sm
+        :class="$style.btn"
+        @click="enableGame"
+        >Хорошо</v-btn
+      >
+      <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson4')"
+        >Продолжить</v-btn
+      >
     </transition>
     <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="startGame">
       <div :class="$style.modalInner">
         <img :class="$style.modalImg" src="../../../assets/img/leader.svg" alt="" />
-        <p :class="$style.modalText">{{texts.start}}</p>
+        <p :class="$style.modalText">{{ texts.start }}</p>
         <v-btn lg @click="startGame">Начать</v-btn>
       </div>
     </v-modal>
     <v-modal v-if="stage === 3" :isActive="isModalActive">
       <div :class="$style.achieveModal">
-        <img :class="$style.achieve" :src="errorCount === 0 ? '/assets/img/lesson3/achieveGold.png' : '/assets/img/lesson3/achieveSilver.png'" alt="" />
-        <p :class="[$style.modalTextAchieve, $style.modalTextBottom]">{{errorCount === 0 ? texts.achieveGold : texts.achieveSilver}}</p>
+        <img
+          :class="$style.achieve"
+          :src="
+            errorCount === 0
+              ? '/assets/img/lesson3/achieveGold.png'
+              : '/assets/img/lesson3/achieveSilver.png'
+          "
+          alt=""
+        />
+        <p :class="[$style.modalTextAchieve, $style.modalTextBottom]">
+          {{ errorCount === 0 ? texts.achieveGold : texts.achieveSilver }}
+        </p>
         <v-btn lg @click="closeAchieveModal">Продолжить</v-btn>
       </div>
     </v-modal>
@@ -39,16 +94,18 @@
 </template>
 
 <script>
-import { ref, onMounted, watch } from 'vue';
-import gsap from 'gsap'
-import Draggable from 'gsap/Draggable'
-import debounce from 'debounce'
+import { ref, onMounted, watch, computed } from 'vue';
+import gsap from 'gsap';
+import Draggable from 'gsap/Draggable';
+// import debounce from 'debounce'
 import { isMobile } from 'mobile-device-detect';
 import { pushPopup } from '@/utils/pushPopup';
 import Card from '../components/Card/Card.vue';
 import texts from './texts';
+import { useStore } from '@/store';
+import useMobile from '@/hooks/useMobile';
 
-gsap.registerPlugin(Draggable)
+gsap.registerPlugin(Draggable);
 
 export default {
   name: 'part3',
@@ -64,96 +121,141 @@ export default {
     const factor = ref(null);
     const clientWidth = ref(null);
     const clientHeight = ref(null);
-    const isBasketEmpty = ref(true)
-    const activeCard = ref(null)
-    const isStackVisible = ref(true)
+    const isBasketEmpty = ref(true);
+    const activeCard = ref(null);
+    const isStackVisible = ref(true);
+    const isChatFullLength = ref(true);
+    const isMobileChatOpened = ref(true);
+    const mobileChatCounter = ref(0);
 
-    const wrongCards = ['2'];
+    const store = useStore();
+    const level = computed(() => store.state.level);
+
+    const isMobile = useMobile();
+
+    let wrongCards;
+    switch (level.value) {
+      case '1':
+        wrongCards = ['2', '4'];
+        break;
+      case '2':
+        wrongCards = ['2', '3', '5', '7', '10', '11'];
+        break;
+      case '3':
+        wrongCards = ['2', '3', '5', '7', '10', '11', '13', '14', '15'];
+        break;
+      default:
+        break;
+    }
 
     const onNext = () => {
       stage.value += 1;
     };
 
     const endGame = () => {
-      messages.value.push(texts.stage3)
-      onNext()
+      if (isMobile.value) isMobileChatOpened.value = true;
+      messages.value.push(texts.stage3[`level${level.value}`]);
+      onNext();
       if (errorCount.value <= 1) {
         setTimeout(() => {
-          isModalActive.value = true
+          isModalActive.value = true;
         }, 1000);
       } else {
         setTimeout(() => {
-          messages.value.push(texts.final)
-          onNext()
+          pushPopup(texts.final[`level${level.value}`], messages.value);
+          onNext();
         }, 1000);
       }
+    };
+
+    const toggleMobileChat = () => {
+      isMobileChatOpened.value = !isMobileChatOpened.value
+      mobileChatCounter.value = 0
     }
 
     watch(rightAnswersCount, () => {
-      const rightElements = document.querySelectorAll('.snapped:not(.wrong)')
-      if (rightElements.length === 6) {
-        isStackVisible.value = false
-        endGame()
+      const rightElements = document.querySelectorAll('.snapped:not(.wrong)');
+      if ((level.value === '1' && rightElements.length === 4) || (level.value === '2' && rightElements.length === 6) || (level.value === '3' && rightElements.length === 7)) {
+        isStackVisible.value = false;
+        isChatFullLength.value = true;
+        endGame();
+      }
+    });
+
+    watch(isMobile, () => {
+      if (!isMobile.value) {
+        isMobileChatOpened.value = false;
+        if (stage.value > 1) isChatFullLength.value = false;
+      } else {
+        isChatFullLength.value = true;
       }
     })
 
     const closeAchieveModal = () => {
       isModalActive.value = false;
       setTimeout(() => {
-        messages.value.push(texts.final)
-        onNext()
+        pushPopup(texts.final[`level${level.value}`], messages.value);
+        onNext();
       }, 1000);
     };
 
     const startGame = () => {
       isModalActive.value = false;
-      pushPopup(texts.stage1.level1, messages.value)
-    }
+      pushPopup(texts.stage1[`level${level.value}`], messages.value);
+    };
 
     const enableGame = () => {
-      document.querySelectorAll('.draggable').forEach(el => el.classList.remove('disabled'))
-      onNext()
+      if (!isMobile.value) {
+        isChatFullLength.value = false;
+      } else {
+        isMobileChatOpened.value = false;
+      }
+      onNext();
     };
 
     const moveCenter = (e, el) => {
-      if (el.classList.contains('snapped')) return
-      const position = el.getBoundingClientRect()
+      if (el.classList.contains('snapped')) return;
+      const position = el.getBoundingClientRect();
       gsap.to(el, {
-        x: (e.pageX - position.left) - position.width / 2,
-        y: (e.pageY - position.top) - position.height / 2,
+        x: e.pageX - position.left - position.width / 2,
+        y: e.pageY - position.top - position.height / 2,
         duration: 0.1,
       });
-    }
+    };
 
     const onInit = () => {
-      clientWidth.value = document.body.clientWidth
-      clientHeight.value = document.body.clientHeight
-      factor.value = 16 * clientWidth.value / 1280
-    }
-
-    const removeBlur = () => {
-      document.documentElement.style.filter = 'unset'
-    }
+      clientWidth.value = document.body.clientWidth;
+      clientHeight.value = document.body.clientHeight;
+      factor.value = (16 * clientWidth.value) / 1280;
+      document.body.classList.add('fixed')
+    };
 
     const onResize = () => {
-      onInit()
-      const elements = document.querySelectorAll('.draggable')
-      elements.forEach((el) => {
-        el.style.left = `${clientWidth.value / 1.33}px`
-        el.style.top = `${3.75 * factor.value}px`
-        el.style.transform = 'rotate(-9deg) '
-        return el
-      })
-      document.documentElement.style.filter = 'blur(15px)'
-      document.querySelectorAll('.occupied').forEach(el => el.classList.remove('occupied'))
-      document.querySelectorAll('.wrong').forEach(el => el.classList.remove('wrong'))
-      document.querySelectorAll('.snapped').forEach(el => el.classList.remove('snapped'))
-    }
+      if (clientWidth.value === document.body.clientWidth) return
+      const elements = document.querySelectorAll('.draggable');
+      if (stage.value === 4 || (stage.value === 3 && isModalActive.value)) {
+        elements.forEach((el) => el.remove());
+      } else {
+        elements.forEach((el) => {
+          el.style.left = isMobile.value ? `${clientWidth.value / 3.5}px` : level.value !== '3' ? `${clientWidth.value / 1.23}px` : `${clientWidth.value / 1.21}px`;
+          el.style.top = isMobile.value ? `${clientHeight.value - 150}px` : level.value !== '3' ? `${1.5625 * factor.value}px` : `${2.1875 * factor.value}px`;
+          el.style.transform = 'rotate(-9deg) ';
+          return el;
+        });
+      }
+      onInit();
+      document.querySelectorAll('.occupied').forEach((el) => el.classList.remove('occupied'));
+      document.querySelectorAll('.wrong').forEach((el) => el.classList.remove('wrong'));
+      document.querySelectorAll('.snapped').forEach((el) => el.classList.remove('snapped'));
+    };
 
     onMounted(() => {
-      onInit()
-      window.addEventListener('resize', onResize)
-      window.addEventListener('resize', debounce(removeBlur, 500))
+      //temp
+      // startGame()
+      // enableGame()
+
+      onInit();
+      window.addEventListener('resize', onResize);
       const targets = document.querySelectorAll('.droppable');
       const overlapThreshold = '80%';
 
@@ -164,13 +266,13 @@ export default {
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
           if (target.classList.contains('wrong')) target.classList.remove('wrong');
           if (target.classList.contains('snapped')) target.classList.remove('snapped');
-          if (!isMobile) window.addEventListener('mousemove', moveCenter(e, target), { once: true })
+          if (!isMobile)
+            window.addEventListener('mousemove', moveCenter(e, target), { once: true });
           activeCard.value = target.dataset.num;
 
           gsap.to(target, {
             rotate: 0,
             duration: 0.2,
-            scale: 0.75,
           });
         },
 
@@ -191,20 +293,23 @@ export default {
           const basket = document.querySelector('.basket');
           if (this.hitTest(basket)) {
             if (!wrongCards.includes(activeCard.value)) {
-              target.classList.add('wrong')
-              messages.value.push(texts.wrong.level1[`card${activeCard.value}`])
-              errorCount.value += 1
+              target.classList.add('wrong');
+              messages.value.push(texts.wrong[`level${level.value}`][`card${activeCard.value}`]);
+              mobileChatCounter.value += 1
+              errorCount.value += 1;
             } else {
               gsap.to(target, {
                 opacity: 0,
-                duration: 0.5,
+                duration: 0.1,
               });
+              messages.value.push(texts.right[`level${level.value}`]);
+              mobileChatCounter.value += 1
               setTimeout(() => {
-                target.remove()
+                target.remove();
               }, 500);
-              isBasketEmpty.value = false
+              isBasketEmpty.value = false;
             }
-            return
+            return;
           }
           for (let i = 0; i < targets.length; i += 1) {
             if (this.hitTest(targets[i], overlapThreshold)) {
@@ -215,13 +320,14 @@ export default {
                 gsap.to(target, {
                   x: 0,
                   y: 0,
-                  left: box.left - factor.value * 1.9,
-                  top: box.top - factor.value * 2,
+                  left: box.left,
+                  top: box.top,
                   duration: 0.1,
                 });
 
                 if (
-                  target.targetAttachedTo !== targets[i] && target.targetAttachedTo !== undefined
+                  target.targetAttachedTo !== targets[i] &&
+                  target.targetAttachedTo !== undefined
                 ) {
                   target.targetAttachedTo.classList.remove('occupied');
                   target.targetAttachedTo = undefined;
@@ -232,13 +338,17 @@ export default {
                 targets[i].classList.remove('showOver');
                 snapMade = true;
                 if (wrongCards.includes(activeCard.value)) {
-                  target.classList.add('wrong')
-                  messages.value.push(texts.wrong.level1[`card${activeCard.value}`])
+                  target.classList.add('wrong');
+                  messages.value.push(
+                    texts.wrong[`level${level.value}`][`card${activeCard.value}`]
+                  );
+                  mobileChatCounter.value += 1
                   target.targetAttachedTo.classList.remove('occupied');
-                  errorCount.value += 1
+                  errorCount.value += 1;
                 } else {
-                  messages.value.push(texts.right.level1)
-                  rightAnswersCount.value += 1
+                  messages.value.push(texts.right[`level${level.value}`]);
+                  mobileChatCounter.value += 1
+                  rightAnswersCount.value += 1;
                 }
               }
             }
@@ -252,14 +362,13 @@ export default {
             gsap.to(target, {
               x: 0,
               y: 0,
-              left: clientWidth.value / 1.33,
-              top: 3.75 * factor.value,
-              scale: 1,
+              left: isMobile.value ? clientWidth.value / 3.5 : level.value !== '3' ? clientWidth.value / 1.23 : clientWidth.value / 1.21,
+              top: isMobile.value ? clientHeight.value - 150 : level.value !== '3' ? 1.5625 * factor.value : 2.1875 * factor.value,
               rotate: -9,
               duration: 0.3,
             });
           }
-          activeCard.value = null
+          activeCard.value = null;
         },
       });
     });
@@ -276,6 +385,12 @@ export default {
       errorCount,
       texts,
       isStackVisible,
+      isChatFullLength,
+      level,
+      toggleMobileChat,
+      isMobileChatOpened,
+      isMobile,
+      mobileChatCounter,
     };
   },
 };
@@ -298,11 +413,6 @@ export default {
 }
 
 .snapped {
-  border: 1px solid #91C0F8;
+  border: 1px solid #91c0f8;
 }
-
-.disabled {
-  pointer-events: none;
-}
-
 </style>

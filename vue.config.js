@@ -5,8 +5,10 @@ module.exports = {
         prependData: '@import "@/styles/global.scss";',
       },
     },
+    sourceMap: true,
   },
   configureWebpack: {
+    devtool: 'inline-source-map',
     module: {
       rules: [
         {

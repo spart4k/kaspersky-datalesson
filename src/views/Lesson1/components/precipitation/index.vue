@@ -26,6 +26,7 @@
     <path d="M263.754 242.174H244.572" stroke="#095296"/>
     <path d="M258.523 199.014H249.804" stroke="#095296"/>
     <path d="M263.754 213.401H244.572" stroke="#095296"/>
+    <rect :class="$style.answer" @click="successAnswer" x="236" y="198" width="47" height="27" fill="#D9D9D9" fill-opacity="0.01"/>
     <path d="M258.523 228.987H249.804" stroke="#095296"/>
     <path d="M258.523 286.533H249.804" stroke="#095296"/>
     <path d="M263.754 299.72H244.572" stroke="#095296"/>
@@ -70,3 +71,34 @@
     </defs>
   </svg>    
 </template>
+
+<style scoped lang="scss"  module>
+  .answer {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+</style>
+
+<script>
+import { ref, onMounted } from 'vue';
+export default {
+  name: 'precipitation',
+  setup(props, ctx) {
+    const { emit } = ctx
+    const isShow = ref(false)
+    onMounted(() => {
+      isShow.value = true
+    })
+    const emitClick = () => emit('emitClick')
+    const successAnswer = () => {
+      emit('successAnswer', 'precipitation')
+    }
+    return {
+      isShow,
+      emitClick,
+      successAnswer
+    }
+  }
+}
+</script>

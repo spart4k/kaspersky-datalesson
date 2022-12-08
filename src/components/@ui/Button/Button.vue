@@ -54,5 +54,8 @@ export default {
   font-size: rem(18);
   line-height: rem(25);
   color: #000;
+  @media screen and (max-width: 450px) {
+    width: rem(260);
+  }
 }
 </style>
