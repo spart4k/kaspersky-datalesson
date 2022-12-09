@@ -1,0 +1,369 @@
+.wrapper {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+  background-color: $lesson1bgColor;
+  @media (max-width: $mobileWidth) { 
+    overflow: auto;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0%;
+    width: rem(360);
+    height: 100%;
+    max-height: 100%;
+    background-image: url('../assets/bg.svg');
+    background-size: cover;
+    // background-position: -12% 43%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+    @media (max-width: $mobileWidth) { 
+      display: none;
+    }
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0%;
+    width: rem(900);
+    height: rem(570);
+    background-image: url('../assets/earth.svg');
+    background-size: cover;
+    background-position: 0% 0%;
+    background-repeat: no-repeat;
+    pointer-events: none;
+  }
+  &.zoomSingle {
+    @media (max-width: $mobileWidth) {
+      overflow: hidden;
+    }
+    &::before {
+      background-image: url('../assets/singleearth.svg');
+      height: rem(187);
+      @media (max-width: $mobileWidth) {
+        background-image: url('../assets/singleearthMobile.svg');
+        height: 100%;
+        background-size: auto;
+        width: 100%;
+      }
+    }
+  }
+  .appliances {
+    position: absolute;
+    left: rem(120);
+    bottom: rem(43);
+    .wrap {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      > div {
+        position: relative;
+        img {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          z-index: 5;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          z-index: 1;
+          width: 200%;
+          height: rem(5);
+          background-image: url('../assets/shadow.svg');
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+      }
+      .precipitation {
+        width: rem(120);
+        height: rem(264);
+        margin-right: rem(90);
+        &::before {
+          transition: .5s;
+          opacity: 0;
+          content: '';
+          left: 23%;
+          transform: translateX(-50%);
+          top: -10%;
+          position: absolute;
+          display: block;
+          width: 100%;
+          height: 100%;
+          background-image: url('../assets/precipitationLighting.svg');
+          background-size: cover;
+          background-repeat: no-repeat;
+          // filter: blur(15px);
+        }
+        &.lighting {
+          &::before {
+            opacity: 1;
+            transition: .5s;
+            // display: block;
+          }
+        }
+        &::after {
+          left: 33%;
+          width: rem(139);
+        }
+      }
+      .home {
+        width: rem(133);
+        height: rem(295);
+        margin-right: rem(90);
+        transform: translate3d(0, -10%, 0);
+        &::after {
+          left: 0;
+          width: rem(246);
+        }
+        @media (max-width: $mobileWidth) {
+          
+        }
+      }
+      .mill {
+        width: rem(178);
+        height: rem(405);
+        transform: translate3d(0, 5%, 0);
+        &::after {
+          left: 51%;
+          width: rem(139);
+        }
+      }
+    }
+  }
+  .wrapSingle {
+    position: absolute;
+    left: rem(187);
+    bottom: 0;
+    height: rem(570);
+    width: rem(506);
+    @media (max-width: $mobileWidth) {
+      left: 50%;
+      bottom: unset;
+      transform: translate3d(-50%, -50% , 0);
+      width: rem(363);
+      height: 100%;
+      top: 50%;
+      .home {
+        width: 100%;
+      }
+    }
+    &.precipitation {
+      .wrap {
+        width: 100%;
+        height: 100%;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    &.home {
+      width: rem(775);
+      height: 100%;
+      left: rem(70);
+      @media (max-width: $mobileWidth) {
+        width: 100%;
+        left: 0;
+        top: 0;
+        transform: translate3d(0%, 0% , 0);
+        .wrap {
+          display: flex;
+          justify-content: center;
+          overflow: hidden;
+          svg {
+            // width: 90% !important;
+            @media (max-width: $mobileWidth) {
+              transform: scale(2);
+              transform-origin: 34% 50%;
+            }
+          }
+        }
+        
+      }
+      .wrap {
+        height: 100%;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    &.mill {
+      
+      .wrap {
+        height: 100%;
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .wrap {
+      position: relative;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+      .hitBox {
+        position: absolute;
+        left: 50%;
+        top: rem(205);
+        transform: translate(-50%, 0);
+        width: rem(30);
+        height: rem(20);
+        &.home {
+          left: 26%;
+          top: unset;
+          bottom: 45%;
+        }
+      }
+    }
+    
+  }
+}
+
+.modalInner {
+  padding: rem(30);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
+  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
+  border-radius: 20px;
+}
+
+.modalText {
+  font-size: rem(16);
+  line-height: rem(22);
+  text-align: center;
+}
+
+.stars {
+  position: absolute;
+  top: rem(30);
+  left: rem(30);
+  z-index: 10;
+  @media (max-width: $mobileWidth) {
+    position: fixed;
+    left: rem(15);
+    top: rem(15);
+  }
+}
+
+.cod {
+  position: absolute;
+  top: rem(30);
+  right: rem(30);
+  z-index: 10;
+  width: rem(149);
+  height: rem(179);
+}
+
+.cardWrapper {
+  width: rem(723);
+  height: rem(500);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: rem(80);
+  margin-top: rem(26);
+  z-index: 99;
+}
+
+.popupMsg {
+  position: absolute;
+  bottom: rem(92);
+  overflow: scroll;
+  right: rem(30);
+  z-index: 999;
+}
+
+.prof {
+  position: absolute;
+  bottom: rem(103);
+  right: rem(320);
+  width: rem(62);
+  height: rem(62);
+  background-image: url('../assets/prof.svg');
+  background-size: contain;
+  z-index: 999;
+  @media (max-width: $mobileWidth) {
+    position: fixed;
+    right: rem(15);
+    bottom: rem(15);
+  }
+}
+
+.btn {
+  position: absolute;
+  bottom: rem(30);
+  right: rem(30);
+  z-index: 999;
+  @media (max-width: $mobileWidth) {
+    position: fixed;
+    left: rem(15);
+    bottom: rem(15);
+    right: unset;
+    z-index: 10000;
+  }
+}
+
+.achieve {
+  width: rem(150);
+  height: rem(150);
+}
+
+.modalTextBottom {
+  margin-top: 0;
+  margin-bottom: rem(47);
+}
+
+.paginations {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  // transform: translate3d(-50%, -50%, 0);
+  width: 100%;
+  padding: 0 rem(15);
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+  .button {
+    width: rem(42);
+    height: rem(42);
+    border: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    // justify-content: center;
+    border-radius: 30px;
+    svg {
+      display: block;
+      margin: auto;
+      
+      // width: rem(42);
+      // height: rem(42);
+      // padding: 1rem;
+      &.left {
+        margin-right: rem(15);
+      }
+      &.right {
+        margin-left: rem(15);
+      }
+    }
+    @media (min-width: $mobileWidth) {
+      display: none;
+    }
+  }
+  
+}

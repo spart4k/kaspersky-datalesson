@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-// import Lesson1 from '@/views/Lesson1/Lesson1'
+import Lesson1 from '@/views/Lesson1/Lesson1'
 import Lesson2 from '@/views/Lesson2/Lesson2'
 import Lesson3 from '@/views/Lesson3/Lesson3'
 import Lesson5 from '@/views/Lesson5/Lesson5'
@@ -18,8 +18,7 @@ const routes = [
   {
     path: '/lesson1',
     name: 'lesson1',
-    // component: Lesson1,
-    redirect: '/',
+    component: Lesson1,
   },
   {
     path: '/lesson2',

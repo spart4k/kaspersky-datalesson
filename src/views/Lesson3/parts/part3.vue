@@ -99,8 +99,8 @@ import gsap from 'gsap';
 import Draggable from 'gsap/Draggable';
 // import debounce from 'debounce'
 import { isMobile } from 'mobile-device-detect';
-import Card from '../components/Card/Card.vue';
 import { pushPopup } from '@/utils/pushPopup';
+import Card from '../components/Card/Card.vue';
 import texts from './texts';
 import { useStore } from '@/store';
 import useMobile from '@/hooks/useMobile';

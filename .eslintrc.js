@@ -19,6 +19,7 @@ module.exports = {
     'import/extensions': 0,
     'no-tabs': 0,
     'semi': 0,
+    'vue/no-unused-components': 0
   },
   parserOptions: {
     parser: 'babel-eslint',
