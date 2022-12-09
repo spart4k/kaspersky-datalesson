@@ -11,7 +11,7 @@ export default {
     }
   },
   setup(props) {
-    const isOpen = ref(true)
+    const isOpen = ref(false)
     const form = ref([
       {
         title: 'Кол-во осадков',

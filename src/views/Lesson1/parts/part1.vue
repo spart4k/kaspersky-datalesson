@@ -18,7 +18,7 @@ export default {
 
 <style lang="scss" module>
 .wrapper {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   background-color: #ebebeb;
   position: relative;

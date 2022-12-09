@@ -3,6 +3,12 @@
   right: rem(30);
   top: rem(30);
   z-index: 1300;
+  @media (max-width: $mobileWidth) {
+    position: fixed;
+    right: rem(15);
+    top: rem(15);
+    z-index: 1000;
+  }
   .wrap {
     // width: rem(352);
     position: relative;
@@ -18,8 +24,12 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: rem(20) 0 rem(20) 0;
+      padding: rem(10) 0 rem(10) 0;
+      @media (max-width: $mobileWidth) {
+        padding: rem(20) 0 rem(20) 0;
+      }
       // transition: .4s;
+
       .title {
         transform-origin: center;
         transition: .4s;
@@ -27,6 +37,7 @@
       img {
         margin-right: rem(10);
         width: rem(40);
+
       }
       &:hover {
         cursor: pointer;
@@ -157,7 +168,12 @@
       min-width: rem(56);
       border-radius: 50%;
       .header {
-        padding: .5rem;
+        // padding: .5rem;
+        @media (max-width: $mobileWidth) {
+          padding: rem(7);
+          width: rem(56);
+          height: rem(56);
+        }
         img {
           margin-right: 0;
         }

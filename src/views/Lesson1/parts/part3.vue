@@ -3,9 +3,23 @@
     $style.wrapper,
     zoom === 'all' ? $style.zoomAll : $style.zoomSingle
   ]">
-    <img :class="$style.stars" src="../assets/stars1.svg" alt="" />
+    <!-- <img :class="$style.stars" src="../assets/stars1.svg" alt="" /> -->
+    <starts :class="$style.stars"/>
     <Diary ref="diaryComp" :stage="stage"/>
-    <img :class="$style.prof" src="../assets/prof.svg" alt="" />
+    <div v-if="zoom === 'all'" :class="$style.paginations">
+      <div :class="$style.button">
+        <svg :class="[ $style.arrow, $style.left ]" width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11 20L2 11L11 2" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>  
+      </div>
+      <div :class="$style.button">
+        <svg :class="[ $style.arrow, $style.right ]" width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 2L11 11L2 20" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>  
+      </div>      
+    </div>
+    <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
+    <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
     <div :class="$style.appliances">
       <div v-if="zoom === 'all'" :class="$style.wrap">
@@ -28,18 +42,10 @@
       $style[precipitationChoosed]
     ]">
       <div :class="$style.wrap">
-        <!-- <img :src="require(`../assets/${precipitationChoosed}Single.svg`)" alt=""> -->
         <component @successAnswer="successAnswer" @emitClick="successSingle" :is="precipitationChoosed"></component>
-        <!-- <div 
-        :class="[
-          $style.hitBox,
-          $style[precipitationChoosed]
-        ]"
-        @click="clickAnswer"
-        ></div>  -->
       </div>
     </div>
-    <v-popup-msg :items="messages" :task="messages" :class="$style.popupMsg" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
     <!-- <transition name="fade">
       <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
       <v-btn
@@ -54,13 +60,12 @@
       <div :class="$style.modalInner">
         <img src="../assets/prof.svg" alt="" />
         <p :class="$style.modalText">
-          Центр обработки данных, сокращённо – ЦОД. Туда поступают данные с множества источников из
-          разных точек планеты.
+          Погоду изучают метеорологи. Они анализируют погодные явления и прогнозируют их.
         </p>
-        <p :class="$style.modalText">
+        <!-- <p :class="$style.modalText">
           Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
           требуются.
-        </p>
+        </p> -->
         <v-btn lg @click="closeModal">Начать</v-btn>
       </div>
     </v-modal>
@@ -84,14 +89,18 @@ import Diary from '../components/Diary/index.vue';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
 import precipitation from '../components/precipitation/index.vue'
-
+import starts from '@/components/@ui/Stars'
+import speaker from '@/components/@ui/Speaker/Speaker.vue'
+import useMobile from '@/hooks/useMobile';
 export default {
   name: 'part3',
   components: {
     Diary,
     home,
     precipitation,
-    mill
+    mill,
+    starts,
+    speaker
     // Card,
   },
   setup() {
@@ -102,6 +111,8 @@ export default {
     const isAnimated = ref(false);
     const diaryComp = ref(null)
     const zoom = ref('all')
+    const isMobileChatOpened = ref(true)
+    const mobileChatCounter = ref(0);
     const isShowPrecipitation = reactive({
       precipitation: false,
       home: false,
@@ -113,6 +124,7 @@ export default {
       home: false,
       mill: false
     })
+    const isMobile = useMobile();
     const precipitationChoosed = ref('')
     const messages = ref([
       'Кликай на приборы, чтобы посмотреть на них поближе и зафиксировать их показания.',
@@ -128,10 +140,15 @@ export default {
       if (appliance === 'home' && stage.value !== 5 && stage.value !== 11 ) return
       if (appliance === 'mill' && stage.value !== 8) return
       stage.value += 1;
+      mobileChatCounter.value += 1
       console.log(stage.value)
       if (stage.value == 2) { 
-        showAppliance('precipitation') 
+        showAppliance('precipitation')
         showNextBtn.value = false
+        if (isMobile) {
+          isMobileChatOpened.value = false
+          mobileChatCounter.value = 0
+        }
       }
       if (stage.value === 3) {
         console.log(3)
@@ -269,6 +286,10 @@ export default {
     const successSingle = () => {
       console.log('log')
     }
+    const toggleMobileChat = () => {
+      isMobileChatOpened.value = !isMobileChatOpened.value
+      mobileChatCounter.value = 0
+    }
     const successAnswer = (appliance) => {
       console.log('prop')
       console.log(appliance)
@@ -313,7 +334,11 @@ export default {
       diaryComp,
       showNextBtn,
       successSingle,
-      successAnswer
+      successAnswer,
+      toggleMobileChat,
+      isMobileChatOpened,
+      mobileChatCounter,
+      isMobile
     };
   },
 };

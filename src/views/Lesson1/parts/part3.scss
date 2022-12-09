@@ -1,8 +1,11 @@
 .wrapper {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   position: relative;
   background-color: $lesson1bgColor;
+  @media (max-width: $mobileWidth) { 
+    overflow: auto;
+  }
   &::after {
     content: '';
     position: absolute;
@@ -16,6 +19,9 @@
     // background-position: -12% 43%;
     background-repeat: no-repeat;
     pointer-events: none;
+    @media (max-width: $mobileWidth) { 
+      display: none;
+    }
   }
   &::before {
     content: '';
@@ -31,9 +37,18 @@
     pointer-events: none;
   }
   &.zoomSingle {
+    @media (max-width: $mobileWidth) {
+      overflow: hidden;
+    }
     &::before {
       background-image: url('../assets/singleearth.svg');
       height: rem(187);
+      @media (max-width: $mobileWidth) {
+        background-image: url('../assets/singleearthMobile.svg');
+        height: 100%;
+        background-size: auto;
+        width: 100%;
+      }
     }
   }
   .appliances {
@@ -106,6 +121,9 @@
           left: 0;
           width: rem(246);
         }
+        @media (max-width: $mobileWidth) {
+          
+        }
       }
       .mill {
         width: rem(178);
@@ -124,6 +142,17 @@
     bottom: 0;
     height: rem(570);
     width: rem(506);
+    @media (max-width: $mobileWidth) {
+      left: 50%;
+      bottom: unset;
+      transform: translate3d(-50%, -50% , 0);
+      width: rem(363);
+      height: 100%;
+      top: 50%;
+      .home {
+        width: 100%;
+      }
+    }
     &.precipitation {
       .wrap {
         width: 100%;
@@ -138,6 +167,25 @@
       width: rem(775);
       height: 100%;
       left: rem(70);
+      @media (max-width: $mobileWidth) {
+        width: 100%;
+        left: 0;
+        top: 0;
+        transform: translate3d(0%, 0% , 0);
+        .wrap {
+          display: flex;
+          justify-content: center;
+          overflow: hidden;
+          svg {
+            // width: 90% !important;
+            @media (max-width: $mobileWidth) {
+              transform: scale(2);
+              transform-origin: 34% 50%;
+            }
+          }
+        }
+        
+      }
       .wrap {
         height: 100%;
         svg {
@@ -198,11 +246,14 @@
 
 .stars {
   position: absolute;
-  top: rem(15);
-  left: rem(10);
+  top: rem(30);
+  left: rem(30);
   z-index: 10;
-  width: rem(320);
-  height: rem(96);
+  @media (max-width: $mobileWidth) {
+    position: fixed;
+    left: rem(15);
+    top: rem(15);
+  }
 }
 
 .cod {
@@ -246,6 +297,11 @@
   background-image: url('../assets/prof.svg');
   background-size: contain;
   z-index: 999;
+  @media (max-width: $mobileWidth) {
+    position: fixed;
+    right: rem(15);
+    bottom: rem(15);
+  }
 }
 
 .btn {
@@ -253,6 +309,13 @@
   bottom: rem(30);
   right: rem(30);
   z-index: 999;
+  @media (max-width: $mobileWidth) {
+    position: fixed;
+    left: rem(15);
+    bottom: rem(15);
+    right: unset;
+    z-index: 10000;
+  }
 }
 
 .achieve {
@@ -263,4 +326,44 @@
 .modalTextBottom {
   margin-top: 0;
   margin-bottom: rem(47);
+}
+
+.paginations {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  // transform: translate3d(-50%, -50%, 0);
+  width: 100%;
+  padding: 0 rem(15);
+  display: flex;
+  justify-content: space-between;
+  z-index: 5;
+  .button {
+    width: rem(42);
+    height: rem(42);
+    border: 50%;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    // justify-content: center;
+    border-radius: 30px;
+    svg {
+      display: block;
+      margin: auto;
+      
+      // width: rem(42);
+      // height: rem(42);
+      // padding: 1rem;
+      &.left {
+        margin-right: rem(15);
+      }
+      &.right {
+        margin-left: rem(15);
+      }
+    }
+    @media (min-width: $mobileWidth) {
+      display: none;
+    }
+  }
+  
 }
