@@ -1,14 +1,14 @@
 <template>
-  <tr :class="[$style.row, $props.isClickable && $style.clickable, $props.isSelected && $style.selected, $props.isWrong && $style.wrong]" @click="$emit('click')">
+  <tr :class="[$style.row, $props.isClickable && $style.clickable, $props.isSelected && $style.selected, $props.isWrong && $style.wrong, $props.isCorrect && $style.correct]" @click="$emit('click')">
     <template v-if="level === '1'">
       <td :class="$style.cell">
-        <img :class="$style[level1ImgData[index - 1][0].slice(0, -4)]" :src="`/assets/img/lesson5/${level1ImgData[index - 1][0]}`" alt="" />
+        <img :class="$style[$props.stage > 5 ? level1ImgDataStage6[index - 1][0].slice(0, -4) : level1ImgData[index - 1][0].slice(0, -4)]" :src="`/assets/img/lesson5/${$props.stage > 5 ? level1ImgDataStage6[index - 1][0] : level1ImgData[index - 1][0]}`" alt="" />
       </td>
       <td :class="$style.cell">
-        <img :class="$style[level1ImgData[index - 1][1].slice(0, -4)]" :src="`/assets/img/lesson5/${level1ImgData[index - 1][1]}`" alt="" />
+        <img :class="$style[$props.stage > 5 ? level1ImgDataStage6[index - 1][1].slice(0, -4) : level1ImgData[index - 1][1].slice(0, -4)]" :src="`/assets/img/lesson5/${$props.stage > 5 ? level1ImgDataStage6[index - 1][1] : level1ImgData[index - 1][1]}`" alt="" />
       </td>
-      <td :class="[$style.cell, $props.stage < 2 && $style.hidden]">
-        <img :class="$style[level1ImgData[index - 1][2].slice(0, -4)]" :src="`/assets/img/lesson5/${level1ImgData[index - 1][2]}`" alt="" />
+      <td :class="[$style.cell, $props.stage < 2 && $style.hidden, $props.stage === 6 && $style.scaled]">
+        <img :class="$style[$props.stage > 5 ? level1ImgDataStage6[index - 1][2].slice(0, -4) : level1ImgData[index - 1][2].slice(0, -4)]" :src="`/assets/img/lesson5/${$props.stage > 5 ? level1ImgDataStage6[index - 1][2] : level1ImgData[index - 1][2]}`" alt="" />
       </td>
     </template>
   </tr>
@@ -26,6 +26,7 @@ export default {
     isSelected: Boolean,
     isClickable: Boolean,
     isWrong: Boolean,
+    isCorrect: Boolean,
   },
   setup(props) {
     const store = useStore();
@@ -40,9 +41,17 @@ export default {
       ['wind3.png', 'hot.png', 'hot.png'],
     ];
 
+    const level1ImgDataStage6 = [
+      ['wind3.png', 'cold.png', 'hot.png'],
+      ['wind1.png', 'cold.png', ''],
+      ['wind3.png', 'hot.png', 'cold.png'],
+      ['wind1.png', 'hot.png', ''],
+    ];
+
     return {
       level,
       level1ImgData,
+      level1ImgDataStage6,
       index,
       stage,
     };
@@ -74,7 +83,9 @@ export default {
   }
   &:nth-child(3) {
     text-align: center;
+    transform: scale(1);
     transition: opacity .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    mix-blend-mode: multiply;
   }
 }
 
@@ -106,6 +117,11 @@ export default {
   opacity: 0;
 }
 
+.scaled {
+  transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transform: scale(0) !important;
+}
+
 .row.selected {
   background-color: #DEF0FA;
   &:hover {
@@ -117,6 +133,26 @@ export default {
   background-color: #ff5353 !important;
   &:hover {
     background-color: #ff5353 !important;
+  }
+}
+
+.row.correct {
+  background-color: #FFDEDE;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: rem(14);
+    width: rem(14);
+    height: rem(14);
+    background-image: url('../assets/cross.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+  &:hover {
+    background-color: #FFDEDE;
   }
 }
 </style>

@@ -16,23 +16,33 @@
           <thead :class="$style.thead">
             <tr>
               <th colspan="2" :class="$style.forecast">Прогноз</th>
-              <th :class="[$style.fact, stage < 2 && $style.hidden]">Факт</th>
+              <th :class="[$style.fact, (stage < 2 || stage === 6) && $style.hidden, stage > 5 && $style.corrected]">{{stage > 5 ? 'Скорректированный прогноз' : 'Факт'}}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td :class="$style.columnTitle">Ветер</td>
               <td :class="$style.columnTitle">Температура</td>
-              <td :class="[$style.columnTitle, stage < 2 && $style.hidden]">Температура</td>
+              <td :class="[$style.columnTitle, (stage < 2 || stage === 6) && $style.hidden]">Температура</td>
             </tr>
             <template v-for="index in 4">
               <Row
                 :key="index"
                 :index="index"
                 :stage="stage"
-                :isClickable="stage === 2"
+                :isClickable="stage === 2 || stage === 6"
                 :isSelected="selectedRows.includes(index)"
-                :isWrong="isCheckingInProgress && selectedRows.includes(index)"
+                :isWrong="
+                  isCheckingInProgress &&
+                  (selectedRows.length !== correctRows.length || !selectedRows.every((el) => correctRows.includes(el))) &&
+                  selectedRows.includes(index)
+                "
+                :isCorrect="
+                  selectedRows.every((el) => correctRows.includes(el)) &&
+                  selectedRows.includes(index) &&
+                  stage > 2 &&
+                  stage < 6
+                "
                 :class="[$style.row, `row${index}`]"
                 @click="onRowClick(index)"
               />
@@ -41,6 +51,25 @@
           </tbody>
         </table>
       </div>
+    </div>
+    <div v-if="stage > 3" :class="$style.patternsWrapper">
+      <template v-for="index in 4">
+        <div
+          :class="[
+            $style.pattern,
+            isCheckingInProgress &&
+              selectedPattern !== 1 &&
+              selectedPattern === index &&
+              $style.wrong,
+            selectedPattern === 1 && selectedPattern === index && stage < 6 && $style.correct,
+            stage > 4 && selectedPattern !== index && $style.hidden, stage > 4 && selectedPattern === index && $style.disabled
+          ]"
+          :key="index"
+          @click="checkPattern(index)"
+        >
+          {{ texts.patterns[`level${level}`][index - 1] }}
+        </div>
+      </template>
     </div>
     <v-popup-msg
       :items="messages"
@@ -61,15 +90,18 @@
         >Хорошо</v-btn
       >
       <v-btn
-        v-if="stage === 2 && selectedRows.length > 0 && !isCheckingInProgress"
+        v-if="(stage === 2 || stage === 6) && selectedRows.length > 0 && !isCheckingInProgress"
         sm
         :class="$style.btn"
         @click="checkRows"
         >Проверить</v-btn
       >
-      <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson3')"
+      <v-btn v-if="stage === 3 || stage === 5" sm :class="$style.btn" @click="onNext"
         >Продолжить</v-btn
       >
+      <!-- <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson3')"
+        >Продолжить</v-btn
+      > -->
     </transition>
     <v-modal v-if="stage === 1" :isActive="isModalActive">
       <div :class="$style.modalInner">
@@ -107,7 +139,6 @@
 
 <script>
 import { ref, computed, watch, onMounted } from 'vue';
-// import gsap from 'gsap';
 import Row from '../components/Row.vue';
 import { useStore } from '@/store';
 import { pushPopup } from '@/utils/pushPopup';
@@ -128,11 +159,18 @@ export default {
     const mobileChatCounter = ref(0);
     const selectedRows = ref([]);
     const isCheckingInProgress = ref(false);
+    const selectedPattern = ref(null);
+    const task1ErrorsCount = ref(0);
+    const task2ErrorsCount = ref(0);
+    const task3ErrorsCount = ref(0);
 
     const store = useStore();
     const level = computed(() => store.state.level);
 
     const isMobile = useMobile();
+
+    const correctRows = level.value === '1' ? [2, 4] : undefined;
+    const correctRows2 = level.value === '1' ? [1, 3] : undefined;
 
     const onNext = () => {
       stage.value += 1;
@@ -155,16 +193,19 @@ export default {
     };
 
     watch(stage, () => {
-      // if (stage.value === 1) {
-      //   pushPopup(texts.start[`level${level.value}`], messages.value);
-      // }
       if (stage.value === 2) {
-        messages.value.push(texts.stage2[`level${level.value}`]);
+        pushPopup(texts.stage2.start[`level${level.value}`], messages.value);
+        mobileChatCounter.value += 2;
       }
-    });
-
-    onMounted(() => {
-      // stage.value = 1
+      if (stage.value === 4) {
+        messages.value.push(texts.stage4.start[`level${level.value}`]);
+        mobileChatCounter.value += 1;
+      }
+      if (stage.value === 6) {
+        selectedRows.value = [];
+        pushPopup(texts.stage6.start[`level${level.value}`], messages.value);
+        mobileChatCounter.value += 3;
+      }
     });
 
     const onGameInit = () => {
@@ -178,35 +219,81 @@ export default {
       } else {
         selectedRows.value.push(num);
       }
-      console.log(selectedRows.value);
     };
 
     const checkRows = () => {
       isCheckingInProgress.value = true;
-      if (false) {
-        // isSuccess.value = true;
-        // messages.value.push(texts.final[`level${level.value}`]);
-        // mobileChatCounter.value += 1;
-        
-          // if (errorCount.value < 2) {
-          //   isModalActive.value = true;
-          // } else {
-          //   onNext();
-          // }
+      if (stage.value === 2) {
+        if (selectedRows.value.length === correctRows.length && selectedRows.value.every((el) => correctRows.includes(el))) {
+          isCheckingInProgress.value = false;
+          messages.value.push(texts.stage2.final[`level${level.value}`]);
+          mobileChatCounter.value += 1;
+          onNext();
+        } else {
+          errorCount.value += 1;
+          task1ErrorsCount.value += 1;
+          if (task1ErrorsCount.value === 1) {
+            messages.value.push(texts.stage2.error1[`level${level.value}`]);
+            mobileChatCounter.value += 1;
+          }
+          if (task1ErrorsCount.value === 2) {
+            messages.value.push(texts.stage2.error2[`level${level.value}`]);
+            mobileChatCounter.value += 1;
+          }
+          setTimeout(() => {
+            isCheckingInProgress.value = false;
+            selectedRows.value = [];
+          }, 2000);
+        }
+      }
+
+      if (stage.value === 6) {
+        if (selectedRows.value.length === correctRows2.length && selectedRows.value.every((el) => correctRows2.includes(el))) {
+          isCheckingInProgress.value = false;
+          messages.value.push(texts.stage6.final[`level${level.value}`]);
+          mobileChatCounter.value += 1;
+          onNext();
+        } else {
+          errorCount.value += 1;
+          task3ErrorsCount.value += 1;
+          if (task3ErrorsCount.value === 1) {
+            messages.value.push(texts.stage6.error1[`level${level.value}`]);
+            mobileChatCounter.value += 1;
+          }
+          if (task3ErrorsCount.value === 2) {
+            messages.value.push(texts.stage6.error2[`level${level.value}`]);
+            mobileChatCounter.value += 1;
+          }
+          setTimeout(() => {
+            isCheckingInProgress.value = false;
+            selectedRows.value = [];
+          }, 2000);
+        }
+      }
+    };
+
+    const checkPattern = (num) => {
+      if (isCheckingInProgress.value) return;
+      isCheckingInProgress.value = true;
+      selectedPattern.value = num;
+      if (num === 1) {
+        isCheckingInProgress.value = false;
+        messages.value.push(texts.stage4.final[`level${level.value}`]);
+        mobileChatCounter.value += 1;
+        onNext();
       } else {
-        // if (activeCards.value.includes(2) || activeCards.value.includes(5)) errorCount.value += 1;
-        // if (errorCount.value === 1) {
-        //   messages.value.push(texts.wrong[`level${level.value}`].error1);
-        //   mobileChatCounter.value += 1;
-        // }
-        // if (errorCount.value === 2) {
-        //   messages.value.push(texts.wrong[`level${level.value}`].error2);
-        //   mobileChatCounter.value += 1;
-        // }
+        errorCount.value += 1;
+        task2ErrorsCount.value += 1;
+        if (task2ErrorsCount.value === 1) {
+          messages.value.push(texts.stage4.error1[`level${level.value}`]);
+          mobileChatCounter.value += 1;
+        }
+        if (task2ErrorsCount.value === 2) {
+          messages.value.push(texts.stage4.error2[`level${level.value}`]);
+          mobileChatCounter.value += 1;
+        }
         setTimeout(() => {
           isCheckingInProgress.value = false;
-          // stage.value = 2;
-          selectedRows.value = [];
         }, 2000);
       }
     };
@@ -235,6 +322,9 @@ export default {
       selectedRows,
       isCheckingInProgress,
       checkRows,
+      correctRows,
+      checkPattern,
+      selectedPattern,
     };
   },
 };
