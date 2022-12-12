@@ -3,6 +3,9 @@
     <div :class="$style.starsWrapper">
       <img :class="$style.stars" src="../assets/stars4.svg" alt="" />
     </div>
+    <div v-if="isMobile && stage > 3" :class="$style.patternsBtnWrapper">
+      <div :class="$style.patternsBtn" @click="isPatternWindowActive = true">?</div>
+    </div>
     <v-speaker
       v-if="stage > 1 || (stage === 1 && !isModalActive)"
       @toggle="toggleMobileChat"
@@ -11,26 +14,26 @@
     <div :class="$style.window">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Прогноз погоды</p>
-      <div :class="$style.tableWrapper">
-        <table :class="$style.table">
+        <table :class="[$style.table, level === '3' && $style.level3]">
           <thead :class="$style.thead">
             <tr>
-              <th colspan="2" :class="$style.forecast">Прогноз</th>
+              <th :colspan="level === '3' ? '3' : '2'" :class="$style.forecast">Прогноз</th>
               <th :class="[$style.fact, (stage < 2 || stage === 6) && $style.hidden, stage > 5 && $style.corrected]">{{stage > 5 ? 'Скорректированный прогноз' : 'Факт'}}</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td :class="$style.columnTitle">Ветер</td>
+              <td v-if="level === '3'" :class="$style.columnTitle">Дождь</td>
               <td :class="$style.columnTitle">Температура</td>
               <td :class="[$style.columnTitle, (stage < 2 || stage === 6) && $style.hidden]">Температура</td>
             </tr>
-            <template v-for="index in 4">
+            <template v-for="index in level === '3' && stage < 6 ? 8 : 4">
               <Row
                 :key="index"
                 :index="index"
                 :stage="stage"
-                :isClickable="stage === 2 || stage === 6"
+                :isClickable="(stage === 2 || stage === 6) && !isCheckingInProgress"
                 :isSelected="selectedRows.includes(index)"
                 :isWrong="
                   isCheckingInProgress &&
@@ -50,9 +53,10 @@
             </template>
           </tbody>
         </table>
-      </div>
     </div>
-    <div v-if="stage > 3" :class="$style.patternsWrapper">
+    <div v-if="stage > 3" :class="[$style.patternsWrapper, isMobile && isPatternWindowActive && $style.active]">
+      <p v-if="isMobile" :class="$style.patternsTitle">Выбери верное утверждение:</p>
+      <div v-if="isMobile" @click="isPatternWindowActive = false">Close</div>
       <template v-for="index in 4">
         <div
           :class="[
@@ -99,9 +103,9 @@
       <v-btn v-if="stage === 3 || stage === 5" sm :class="$style.btn" @click="onNext"
         >Продолжить</v-btn
       >
-      <!-- <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson3')"
+      <v-btn v-if="stage === 8" sm :class="$style.btn" @click="$router.push('/lesson6')"
         >Продолжить</v-btn
-      > -->
+      >
     </transition>
     <v-modal v-if="stage === 1" :isActive="isModalActive">
       <div :class="$style.modalInner">
@@ -117,14 +121,14 @@
         <v-btn lg @click="onGameStart">Начать</v-btn>
       </div>
     </v-modal>
-    <!-- <v-modal v-if="stage === 3" :isActive="isModalActive">
+    <v-modal v-if="stage === 7" :isActive="isModalActive">
       <div :class="$style.achieveModal">
         <img
           :class="$style.achieve"
           :src="
             errorCount === 0
-              ? '/assets/img/lesson2/achieveGold.png'
-              : '/assets/img/lesson2/achieveSilver.png'
+              ? '/assets/img/lesson5/achieveGold.png'
+              : '/assets/img/lesson5/achieveSilver.png'
           "
           alt=""
         />
@@ -133,7 +137,7 @@
         </p>
         <v-btn lg @click="closeAchieveModal">Продолжить</v-btn>
       </div>
-    </v-modal> -->
+    </v-modal>
   </div>
 </template>
 
@@ -163,14 +167,15 @@ export default {
     const task1ErrorsCount = ref(0);
     const task2ErrorsCount = ref(0);
     const task3ErrorsCount = ref(0);
+    const isPatternWindowActive = ref(true);
 
     const store = useStore();
     const level = computed(() => store.state.level);
 
     const isMobile = useMobile();
 
-    const correctRows = level.value === '1' ? [2, 4] : undefined;
-    const correctRows2 = level.value === '1' ? [1, 3] : undefined;
+    const correctRows = level.value === '3' ? [1, 2, 6, 7] : [2, 4];
+    const correctRows2 = level.value === '3' ? [2, 3] : [1, 3];
 
     const onNext = () => {
       stage.value += 1;
@@ -270,6 +275,18 @@ export default {
           }, 2000);
         }
       }
+
+      if (stage.value === 7) {
+        if (errorCount.value <= 1) {
+          setTimeout(() => {
+            isModalActive.value = true;
+          }, 1000);
+        } else {
+          setTimeout(() => {
+            onNext();
+          }, 1000);
+        }
+      }
     };
 
     const checkPattern = (num) => {
@@ -325,6 +342,7 @@ export default {
       correctRows,
       checkPattern,
       selectedPattern,
+      isPatternWindowActive,
     };
   },
 };

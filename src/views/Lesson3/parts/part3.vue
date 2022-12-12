@@ -8,8 +8,8 @@
       :class="[$style.basket, 'basket']"
       :src="
         isBasketEmpty
-          ? '/assets/img/lesson3/basket-empty.png'
-          : '/assets/img/lesson3/basket-full.png'
+          ? '/assets/img/lesson3/basket-empty.svg'
+          : '/assets/img/lesson3/basket-full.svg'
       "
       alt=""
     />

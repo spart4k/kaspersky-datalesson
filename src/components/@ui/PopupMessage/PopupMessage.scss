@@ -23,7 +23,7 @@
   scrollbar-width: none;
   bottom: rem(92);
   overflow: auto;
-  max-height: calc(100vh - 20rem);
+  max-height: calc(100vh - rem(20));
   @media screen and (max-width: 450px) {
     right: 0;
     position: fixed;

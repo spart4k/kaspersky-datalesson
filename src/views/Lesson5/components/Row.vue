@@ -1,14 +1,134 @@
 <template>
-  <tr :class="[$style.row, $props.isClickable && $style.clickable, $props.isSelected && $style.selected, $props.isWrong && $style.wrong, $props.isCorrect && $style.correct]" @click="$emit('click')">
-    <template v-if="level === '1'">
+  <tr
+    :class="[
+      $style.row,
+      $props.isClickable && $style.clickable,
+      $props.isSelected && $style.selected,
+      $props.isWrong && $style.wrong,
+      $props.isCorrect && $style.correct,
+      level === '3' && $style.level3,
+    ]"
+    @click="$emit('click')"
+  >
+    <template v-if="level === '3'">
       <td :class="$style.cell">
-        <img :class="$style[$props.stage > 5 ? level1ImgDataStage6[index - 1][0].slice(0, -4) : level1ImgData[index - 1][0].slice(0, -4)]" :src="`/assets/img/lesson5/${$props.stage > 5 ? level1ImgDataStage6[index - 1][0] : level1ImgData[index - 1][0]}`" alt="" />
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? level3ImgDataStage6[index - 1][0].slice(0, -4)
+                : level3ImgData[index - 1][0].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? level3ImgDataStage6[index - 1][0] : level3ImgData[index - 1][0]
+          }`"
+          alt=""
+        />
       </td>
       <td :class="$style.cell">
-        <img :class="$style[$props.stage > 5 ? level1ImgDataStage6[index - 1][1].slice(0, -4) : level1ImgData[index - 1][1].slice(0, -4)]" :src="`/assets/img/lesson5/${$props.stage > 5 ? level1ImgDataStage6[index - 1][1] : level1ImgData[index - 1][1]}`" alt="" />
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? level3ImgDataStage6[index - 1][1].slice(0, -4)
+                : level3ImgData[index - 1][1].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? level3ImgDataStage6[index - 1][1] : level3ImgData[index - 1][1]
+          }`"
+          alt=""
+        />
       </td>
-      <td :class="[$style.cell, $props.stage < 2 && $style.hidden, $props.stage === 6 && $style.scaled]">
-        <img :class="$style[$props.stage > 5 ? level1ImgDataStage6[index - 1][2].slice(0, -4) : level1ImgData[index - 1][2].slice(0, -4)]" :src="`/assets/img/lesson5/${$props.stage > 5 ? level1ImgDataStage6[index - 1][2] : level1ImgData[index - 1][2]}`" alt="" />
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? level3ImgDataStage6[index - 1][2].slice(0, -4)
+                : level3ImgData[index - 1][2].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? level3ImgDataStage6[index - 1][2] : level3ImgData[index - 1][2]
+          }`"
+          alt=""
+        />
+      </td>
+      <td
+        :class="[
+          $style.cell,
+          $props.stage < 2 && $style.hidden,
+          $props.stage === 6 && $style.scaled,
+        ]"
+      >
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? level3ImgDataStage6[index - 1][3].slice(0, -4)
+                : level3ImgData[index - 1][3].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? level3ImgDataStage6[index - 1][3] : level3ImgData[index - 1][3]
+          }`"
+          alt=""
+        />
+      </td>
+    </template>
+    <template v-else>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6[index - 1][0].slice(0, -4)
+                : imgData[index - 1][0].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6[index - 1][0] : imgData[index - 1][0]
+          }`"
+          alt=""
+        />
+      </td>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6[index - 1][1].slice(0, -4)
+                : imgData[index - 1][1].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6[index - 1][1] : imgData[index - 1][1]
+          }`"
+          alt=""
+        />
+      </td>
+      <td
+        :class="[
+          $style.cell,
+          $props.stage < 2 && $style.hidden,
+          $props.stage === 6 && $style.scaled,
+        ]"
+      >
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6[index - 1][2].slice(0, -4)
+                : imgData[index - 1][2].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6[index - 1][2] : imgData[index - 1][2]
+          }`"
+          alt=""
+        />
       </td>
     </template>
   </tr>
@@ -32,28 +152,48 @@ export default {
     const store = useStore();
     const level = computed(() => store.state.level);
 
-    const { index, stage } = props
+    const { index, stage } = props;
 
-    const level1ImgData = [
+    const imgData = [
       ['wind1.png', 'hot.png', 'hot.png'],
       ['wind3.png', 'cold.png', 'hot.png'],
       ['wind1.png', 'cold.png', 'cold.png'],
-      ['wind3.png', 'hot.png', 'hot.png'],
+      ['wind3.png', 'hot.png', 'cold.png'],
     ];
 
-    const level1ImgDataStage6 = [
+    const imgDataStage6 = [
       ['wind3.png', 'cold.png', 'hot.png'],
       ['wind1.png', 'cold.png', ''],
       ['wind3.png', 'hot.png', 'cold.png'],
       ['wind1.png', 'hot.png', ''],
     ];
 
+    const level3ImgData = [
+      ['wind1.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind3.png', 'sun.png', 'cold.png', 'hot.png'],
+      ['wind1.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind3.png', 'rain.png', 'cold.png', 'cold.png'],
+      ['wind1.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind3.png', 'sun.png', 'cold.png', 'hot.png'],
+      ['wind1.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind3.png', 'rain.png', 'hot.png', 'hot.png'],
+    ];
+
+    const level3ImgDataStage6 = [
+      ['wind3.png', 'rain.png', 'cold.png', ''],
+      ['wind1.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind3.png', 'sun.png', 'hot.png', 'cold.png'],
+      ['wind1.png', 'sun.png', 'hot.png', ''],
+    ];
+
     return {
       level,
-      level1ImgData,
-      level1ImgDataStage6,
+      level3ImgData,
+      level3ImgDataStage6,
       index,
       stage,
+      imgData,
+      imgDataStage6,
     };
   },
 };
@@ -63,7 +203,7 @@ export default {
 .row {
   width: 100%;
   height: rem(40);
-  transition: background-color .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: background-color 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   pointer-events: none;
   &.clickable {
     pointer-events: all;
@@ -72,20 +212,36 @@ export default {
     background-color: #f1f1f1;
     cursor: pointer;
   }
-}
-
-.cell {
-  &:nth-child(1) {
-    padding-left: rem(40);
+  &:not(.level3) .cell {
+    &:nth-child(1) {
+      padding-left: rem(40);
+    }
+    &:nth-child(2) {
+      text-align: center;
+    }
+    &:nth-child(3) {
+      text-align: center;
+      transform: scale(1);
+      transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      mix-blend-mode: multiply;
+    }
   }
-  &:nth-child(2) {
-    text-align: center;
-  }
-  &:nth-child(3) {
-    text-align: center;
-    transform: scale(1);
-    transition: opacity .3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    mix-blend-mode: multiply;
+  &.level3 .cell {
+    &:nth-child(1) {
+      padding-left: rem(40);
+    }
+    &:nth-child(2) {
+      text-align: center;
+    }
+    &:nth-child(3) {
+      text-align: center;
+    }
+    &:nth-child(4) {
+      text-align: center;
+      transform: scale(1);
+      transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+      mix-blend-mode: multiply;
+    }
   }
 }
 
@@ -113,19 +269,31 @@ export default {
   mix-blend-mode: multiply;
 }
 
+.rain {
+  width: rem(18);
+  height: rem(18);
+  mix-blend-mode: multiply;
+}
+
+.sun {
+  width: rem(18);
+  height: rem(18);
+  mix-blend-mode: multiply;
+}
+
 .hidden {
   opacity: 0;
 }
 
 .scaled {
-  transition: transform 1s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: transform 2s cubic-bezier(0.25, 0.1, 0.25, 1);
   transform: scale(0) !important;
 }
 
 .row.selected {
-  background-color: #DEF0FA;
+  background-color: #def0fa;
   &:hover {
-    background-color: #DEF0FA;
+    background-color: #def0fa;
   }
 }
 
@@ -137,22 +305,21 @@ export default {
 }
 
 .row.correct {
-  background-color: #FFDEDE;
+  background-color: #ffdede;
   position: relative;
   &::after {
     content: '';
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(100%);
     left: rem(14);
     width: rem(14);
     height: rem(14);
     background-image: url('../assets/cross.svg');
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
   }
   &:hover {
-    background-color: #FFDEDE;
+    background-color: #ffdede;
   }
 }
 </style>

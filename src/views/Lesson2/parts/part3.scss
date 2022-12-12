@@ -3,22 +3,12 @@
   overflow: hidden;
   position: relative;
   background-color: $lesson2bgColor;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: -10%;
-    width: rem(754);
-    height: 100%;
-    background-image: url('../assets/bg.svg');
-    background-size: 146% 146%;
-    background-position: -12% 43%;
-    background-repeat: no-repeat;
-    pointer-events: none;
-  }
+  background-image: url('../assets/bg.png');
+  background-size: cover;
   @media screen and (max-width: 450px) {
     padding-left: rem(15);
     padding-right: rem(15);
+    background-image: unset;
     overflow-y: auto;
   }
 }

@@ -1,25 +1,14 @@
 .wrapper {
   height: 100vh;
-  overflow: hidden;
+  overflow: auto;
   position: relative;
   background-color: $lesson5bgColor;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: -10%;
-    width: rem(754);
-    height: 100%;
-    background-image: url('../assets/bg.svg');
-    background-size: 146% 146%;
-    background-position: -12% 43%;
-    background-repeat: no-repeat;
-    pointer-events: none;
-  }
+  background-image: url('../assets/bg.png');
+  background-size: cover;
   @media screen and (max-width: 450px) {
     padding-left: rem(15);
     padding-right: rem(15);
-    overflow-y: auto;
+    background-image: unset;
   }
 }
 
@@ -66,7 +55,7 @@
 }
 
 .btn {
-  position: absolute;
+  position: fixed;
   bottom: rem(30);
   right: rem(30);
   z-index: 1300;
@@ -117,14 +106,20 @@
   width: rem(467);
   height: auto;
   position: absolute;
-  top: rem(250);
-  transform: translateY(-50%);
+  top: rem(114);
   left: rem(30);
-  margin-top: rem(35);
   z-index: 99;
   background-color: #fff;
   border-radius: rem(20);
   box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.05), 0px 5px 20px rgba(0, 0, 0, 0.15);
+  @media screen and (max-width: 450px) {
+    width: 100%;
+    left: 0;
+    top: 15%;
+    margin-bottom: 50%;
+    position: relative;
+    padding-bottom: rem(0.2);
+  }
 }
 
 .controls {
@@ -147,6 +142,12 @@
   left: 50%;
   top: 0;
   transform: translateX(-50%);
+  @media screen and (max-width: 450px) {
+    position: unset;
+    text-align: center;
+    transform: unset;
+    padding: rem(10);
+  }
 }
 
 .table {
@@ -155,7 +156,7 @@
   text-align: left;
   margin-bottom: rem(20);
   position: relative;
-  &::after {
+  &:not(.level3)::after {
     content: '';
     position: absolute;
     top: 3%;
@@ -165,6 +166,19 @@
     background-color: #f0e1fe;
     z-index: -1;
   }
+  &.level3::after {
+    content: '';
+    position: absolute;
+    top: 3%;
+    left: 70%;
+    width: 1px;
+    height: 97%;
+    background-color: #f0e1fe;
+    z-index: -1;
+  }
+  @media screen and (max-width: 450px) {
+    margin-top: 0;
+  }
 }
 
 .thead {
@@ -172,7 +186,6 @@
   &::after {
     content: '';
     position: absolute;
-    bottom: 0;
     left: 5%;
     width: 90%;
     height: 1px;
@@ -187,6 +200,10 @@
   line-height: rem(22);
   color: #000;
   padding-left: rem(40);
+  @media screen and (max-width: 450px) {
+    font-size: rem(14);
+    line-height: rem(19);
+  }
 }
 
 .fact {
@@ -198,9 +215,13 @@
   text-align: center;
   &.corrected {
     transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    font-size: rem(13);
-    line-height: rem(19);
+    font-size: rem(10);
+    line-height: rem(14);
     width: rem(150);
+  }
+  @media screen and (max-width: 450px) {
+    font-size: rem(14);
+    line-height: rem(19);
   }
 }
 
@@ -217,6 +238,9 @@
     text-align: center;
   }
   &:nth-child(3) {
+    text-align: center;
+  }
+  &:nth-child(4) {
     text-align: center;
   }
 }
@@ -238,6 +262,59 @@
   position: absolute;
   top: rem(109);
   left: rem(537);
+  @media screen and (max-width: 450px) {
+    display: none;
+    &.active {
+      display: block;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12.5px);
+      z-index: 9999;
+      padding: rem(15);
+    }
+  }
+}
+
+.patternsTitle {
+  font-weight: 700;
+  font-size: rem(18);
+  line-height: rem(25);
+  color: #fff;
+  margin-top: rem(71);
+}
+
+.patternsBtnWrapper {
+  position: absolute;
+  top: rem(15);
+  right: rem(15);
+  width: rem(56);
+  height: rem(56);
+  background: #986ce7;
+  border: 3px solid #fff;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.patternsBtn {
+  font-weight: 700;
+  font-size: rem(32);
+  line-height: rem(44);
+  color: #fff;
+}
+
+.patternsBtnClose {
+  font-weight: 700;
+  font-size: rem(32);
+  line-height: rem(44);
+  color: #fff;
 }
 
 @keyframes wrongAnimation {
@@ -264,7 +341,7 @@
 
 .pattern {
   width: rem(260);
-  height: rem(100);
+  min-height: rem(100);
   background-color: #fff;
   font-weight: 700;
   font-size: rem(16);
@@ -274,6 +351,7 @@
   border-radius: rem(20);
   display: flex;
   align-items: center;
+  padding: rem(10);
   padding-left: rem(20);
   padding-right: rem(20);
   margin-bottom: rem(15);
@@ -294,6 +372,9 @@
   &.hidden {
     opacity: 0;
     pointer-events: none;
+  }
+  @media screen and (max-width: 450px) {
+    width: 100%;
   }
 }
 
