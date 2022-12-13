@@ -182,8 +182,8 @@
           svg {
             // width: 90% !important;
             @media (max-width: $mobileWidth) {
-              transform: scale(2);
-              transform-origin: 34% 50%;
+              transform: scale(1.7);
+              transform-origin: 28% 50%;
             }
           }
         }
