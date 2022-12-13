@@ -119,7 +119,7 @@
         >Хорошо</v-btn
       >
       <v-btn
-        v-if="(stage === 2 || (stage === 6 && (!isMobie || !isPatternWindowActive))) && selectedRows.length > 0 && !isCheckingInProgress"
+        v-if="(stage === 2 || (stage === 6 && (!isMobile || !isPatternWindowActive))) && selectedRows.length > 0 && !isCheckingInProgress"
         sm
         :class="$style.btn"
         @click="checkRows"
@@ -128,7 +128,7 @@
       <v-btn v-if="(stage === 3 || (stage === 5 && !isMobile))" sm :class="$style.btn" @click="onNext"
         >Продолжить</v-btn
       >
-      <v-btn v-if="stage === 8 && !isPatternWindowActive" sm :class="$style.btn" @click="$router.push('/lesson6')"
+      <v-btn v-if="stage === 8 && (!isMobile || !isPatternWindowActive)" sm :class="$style.btn" @click="$router.push('/lesson6')"
         >Продолжить</v-btn
       >
     </transition>

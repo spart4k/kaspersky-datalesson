@@ -223,7 +223,6 @@ export default {
       text-align: center;
       transform: scale(1);
       transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-      mix-blend-mode: multiply;
     }
   }
   &.level3 .cell {
@@ -240,7 +239,6 @@ export default {
       text-align: center;
       transform: scale(1);
       transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-      mix-blend-mode: multiply;
     }
   }
 }
@@ -248,37 +246,31 @@ export default {
 .wind1 {
   width: rem(13);
   height: rem(10.4);
-  mix-blend-mode: multiply;
 }
 
 .wind3 {
   width: rem(27);
   height: rem(24);
-  mix-blend-mode: multiply;
 }
 
 .hot {
   width: rem(17);
   height: rem(27);
-  mix-blend-mode: multiply;
 }
 
 .cold {
   width: rem(18);
   height: rem(27);
-  mix-blend-mode: multiply;
 }
 
 .rain {
   width: rem(18);
   height: rem(18);
-  mix-blend-mode: multiply;
 }
 
 .sun {
   width: rem(18);
   height: rem(18);
-  mix-blend-mode: multiply;
 }
 
 .hidden {

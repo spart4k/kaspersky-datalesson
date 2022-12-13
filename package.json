@@ -25,6 +25,7 @@
     "vue": "^2.7.14",
     "vue-mq": "^1.0.1",
     "vue-router": "^3.0.3",
+    "vuedraggable": "^2.24.3",
     "vuelidate": "^0.7.4",
     "vuex": "^3.6.2",
     "ymaps": "^0.2.1"
