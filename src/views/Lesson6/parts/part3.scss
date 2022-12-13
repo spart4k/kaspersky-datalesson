@@ -2,7 +2,7 @@
   height: 100vh;
   overflow: hidden;
   position: relative;
-  background-color: $lesson2bgColor;
+  background-color: $lesson6bgColor;
   background-image: url('../assets/bg.png');
   background-size: cover;
   @media screen and (max-width: 450px) {
@@ -55,47 +55,6 @@
   }
 }
 
-.cod {
-  position: absolute;
-  top: rem(30);
-  right: rem(30);
-  z-index: 4;
-  width: rem(149);
-  height: rem(179);
-  @media screen and (max-width: 450px) {
-    width: rem(58);
-    height: rem(71);
-    top: rem(15);
-    right: rem(15);
-  }
-}
-
-.cardWrapper {
-  width: rem(723);
-  height: rem(472);
-  display: flex;
-  align-items: center;
-  row-gap: rem(30);
-  column-gap: rem(30);
-  flex-wrap: wrap;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  left: rem(80);
-  margin-top: rem(26);
-  z-index: 99;
-  @media screen and (max-width: 450px) {
-    width: 92%;
-    left: 4%;
-    row-gap: 4%;
-    column-gap: 4%;
-    height: 60vh;
-    margin-top: 0;
-    top: rem(100);
-    transform: unset;
-  }
-}
-
 .btn {
   position: absolute;
   bottom: rem(30);
@@ -142,4 +101,101 @@
 .modalTextBottom {
   margin-top: 0;
   margin-bottom: rem(47);
+}
+
+.window {
+  width: rem(816);
+  height: rem(497);
+  position: absolute;
+  top: rem(135);
+  left: rem(30);
+  z-index: 99;
+  background-color: #fff;
+  border-radius: rem(20);
+  box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.05), 0px 5px 20px rgba(0, 0, 0, 0.15);
+  padding: rem(15);
+  @media screen and (max-width: 450px) {
+    width: 100%;
+    left: 0;
+    top: 10%;
+    margin-bottom: 100%;
+    position: relative;
+    padding-bottom: rem(0.2);
+  }
+}
+
+.controls {
+  position: absolute;
+  top: rem(18);
+  left: rem(15);
+  width: rem(62);
+  height: rem(16);
+  @media screen and (max-width: 450px) {
+    display: none;
+  }
+}
+
+.title {
+  font-weight: 700;
+  font-size: rem(16);
+  line-height: rem(22);
+  color: #000;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  @media screen and (max-width: 450px) {
+    position: unset;
+    text-align: center;
+    transform: unset;
+    padding: rem(10);
+  }
+}
+
+.outer {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  height: 92%;
+  margin-top: 5%;
+  scrollbar-width: thin;
+}
+
+.outer::-webkit-scrollbar-track {
+  border-radius: rem(20);
+  background-color: #fff;
+  height: rem(10);
+}
+
+.outer::-webkit-scrollbar {
+  background-color: #fff;
+  height: rem(10);
+}
+
+.outer::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: rem(20);
+  height: rem(10);
+}
+
+.inner {
+  display: flex;
+  gap: rem(15);
+  width: rem(1000);
+}
+
+.column {
+  width: rem(180);
+}
+
+.ghostCard {
+  opacity: 0.5;
+  background: #f7fafc;
+  border: 1px solid #4299e1;
+}
+
+.task {
+  font-weight: 700;
+  font-size: rem(12);
+  line-height: rem(16);
+  color: #000;
 }

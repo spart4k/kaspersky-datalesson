@@ -3,25 +3,12 @@
   overflow: hidden;
   position: relative;
   background-color: $lesson3bgColor;
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: -10%;
-    width: rem(754);
-    height: 100%;
-    background-image: url('../assets/bg.svg');
-    background-size: 146% 146%;
-    background-position: -12% 43%;
-    background-repeat: no-repeat;
-    pointer-events: none;
-  }
+  background-image: url('../assets/bg.png');
+  background-size: cover;
   @media screen and (max-width: 450px) {
     height: unset;
     min-height: 100vh;
-    &::after {
-      display: none;
-    }
+    background-image: unset;
   }
 }
 
@@ -77,8 +64,8 @@
   bottom: rem(30);
   left: rem(30);
   z-index: 100;
-  width: rem(86);
-  height: rem(115);
+  width: rem(83);
+  height: rem(114);
   @media screen and (max-width: 450px) {
     position: fixed;
     width: rem(53);

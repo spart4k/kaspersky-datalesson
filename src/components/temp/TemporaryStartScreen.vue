@@ -14,10 +14,10 @@
         <router-link :class="$style.link" to="/lesson4">Lesson 4</router-link>
       </div>
       <div :class="$style.linkWrapper">
-        <router-link :class="[$style.link, $style.disabled]" to="/lesson5">Lesson 5</router-link>
+        <router-link :class="$style.link" to="/lesson5">Lesson 5</router-link>
       </div>
       <div :class="$style.linkWrapper">
-        <router-link :class="[$style.link, $style.disabled]" to="/lesson6">Lesson 6</router-link>
+        <router-link :class="$style.link" to="/lesson6">Lesson 6</router-link>
       </div>
       <p v-if="session" :class="$style.text">session_id: {{ session }}</p>
       <p v-if="level" :class="$style.text2">level: {{ level }}</p>
