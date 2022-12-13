@@ -9,6 +9,11 @@
     padding-left: rem(15);
     padding-right: rem(15);
     background-image: unset;
+    &.level3 {
+      & .window {
+        top: rem(60);
+      }
+    }
   }
 }
 
@@ -67,6 +72,10 @@
   }
 }
 
+.btnMobile {
+  width: 100%;
+}
+
 .achieveModal {
   padding: rem(40) rem(30);
   display: flex;
@@ -115,8 +124,8 @@
   @media screen and (max-width: 450px) {
     width: 100%;
     left: 0;
-    top: 15%;
-    margin-bottom: 50%;
+    top: 10%;
+    margin-bottom: 100%;
     position: relative;
     padding-bottom: rem(0.2);
   }
@@ -170,11 +179,14 @@
     content: '';
     position: absolute;
     top: 3%;
-    left: 70%;
+    left: 77%;
     width: 1px;
     height: 97%;
     background-color: #f0e1fe;
     z-index: -1;
+    @media screen and (max-width: 450px) {
+      left: 72%;
+    }
   }
   @media screen and (max-width: 450px) {
     margin-top: 0;
@@ -215,9 +227,9 @@
   text-align: center;
   &.corrected {
     transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-    font-size: rem(10);
-    line-height: rem(14);
-    width: rem(150);
+    font-size: rem(8);
+    line-height: rem(12);
+    width: rem(100);
   }
   @media screen and (max-width: 450px) {
     font-size: rem(14);
@@ -273,8 +285,9 @@
       bottom: 0;
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(12.5px);
-      z-index: 9999;
+      z-index: 1000;
       padding: rem(15);
+      overflow-y: scroll;
     }
   }
 }
@@ -310,11 +323,35 @@
   color: #fff;
 }
 
-.patternsBtnClose {
+.patternsBtnCloseWrapper {
+  width: rem(42);
+  height: rem(42);
+  background-color: #986ce7;
+  background-image: url('../assets/cross2.svg');
+  background-repeat: no-repeat;
+  background-size: rem(10.5) rem(10.5);
+  background-position: center center;
+  border: 3px solid #ffffff;
+  box-shadow: 0px 2px 1px rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+  position: absolute;
+  top: rem(15);
+  right: rem(15);
+  cursor: pointer;
+}
+
+.correctPatternMobile {
   font-weight: 700;
-  font-size: rem(32);
-  line-height: rem(44);
-  color: #fff;
+  font-size: rem(16);
+  line-height: rem(22);
+  color: #000;
+  padding: rem(15) rem(25);
+  background-color: #fff;
+  box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
+  border-radius: rem(20);
+  position: absolute;
+  bottom: 0;
+  transform: translateY(110%);
 }
 
 @keyframes wrongAnimation {

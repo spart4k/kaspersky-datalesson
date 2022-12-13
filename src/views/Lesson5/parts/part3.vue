@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.wrapper">
+  <div :class="[$style.wrapper, level === '3' && $style.level3]">
     <div :class="$style.starsWrapper">
       <img :class="$style.stars" src="../assets/stars4.svg" alt="" />
     </div>
@@ -14,49 +14,70 @@
     <div :class="$style.window">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Прогноз погоды</p>
-        <table :class="[$style.table, level === '3' && $style.level3]">
-          <thead :class="$style.thead">
-            <tr>
-              <th :colspan="level === '3' ? '3' : '2'" :class="$style.forecast">Прогноз</th>
-              <th :class="[$style.fact, (stage < 2 || stage === 6) && $style.hidden, stage > 5 && $style.corrected]">{{stage > 5 ? 'Скорректированный прогноз' : 'Факт'}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td :class="$style.columnTitle">Ветер</td>
-              <td v-if="level === '3'" :class="$style.columnTitle">Дождь</td>
-              <td :class="$style.columnTitle">Температура</td>
-              <td :class="[$style.columnTitle, (stage < 2 || stage === 6) && $style.hidden]">Температура</td>
-            </tr>
-            <template v-for="index in level === '3' && stage < 6 ? 8 : 4">
-              <Row
-                :key="index"
-                :index="index"
-                :stage="stage"
-                :isClickable="(stage === 2 || stage === 6) && !isCheckingInProgress"
-                :isSelected="selectedRows.includes(index)"
-                :isWrong="
-                  isCheckingInProgress &&
-                  (selectedRows.length !== correctRows.length || !selectedRows.every((el) => correctRows.includes(el))) &&
-                  selectedRows.includes(index)
-                "
-                :isCorrect="
-                  selectedRows.every((el) => correctRows.includes(el)) &&
-                  selectedRows.includes(index) &&
-                  stage > 2 &&
-                  stage < 6
-                "
-                :class="[$style.row, `row${index}`]"
-                @click="onRowClick(index)"
-              />
-              <div :key="-index" :class="$style.divider"></div>
-            </template>
-          </tbody>
-        </table>
+      <table :class="[$style.table, level === '3' && $style.level3]">
+        <thead :class="$style.thead">
+          <tr>
+            <th :colspan="level === '3' ? '3' : '2'" :class="$style.forecast">Прогноз</th>
+            <th
+              :class="[
+                $style.fact,
+                (stage < 2 || stage === 6) && $style.hidden,
+                stage > 5 && $style.corrected,
+              ]"
+            >
+              {{ stage > 5 ? 'Скорректированный прогноз' : 'Факт' }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td :class="$style.columnTitle">Ветер</td>
+            <td v-if="level === '3'" :class="$style.columnTitle">Дождь</td>
+            <td :class="$style.columnTitle">Температура</td>
+            <td :class="[$style.columnTitle, (stage < 2 || stage === 6) && $style.hidden]">
+              Температура
+            </td>
+          </tr>
+          <template v-for="index in level === '3' && stage < 6 ? 8 : 4">
+            <Row
+              :key="index"
+              :index="index"
+              :stage="stage"
+              :isClickable="(stage === 2 || stage === 6) && !isCheckingInProgress"
+              :isSelected="selectedRows.includes(index)"
+              :isWrong="
+                isCheckingInProgress &&
+                (selectedRows.length !== correctRows.length ||
+                  !selectedRows.every((el) => correctRows.includes(el))) &&
+                selectedRows.includes(index)
+              "
+              :isCorrect="
+                selectedRows.every((el) => correctRows.includes(el)) &&
+                selectedRows.includes(index) &&
+                stage > 2 &&
+                stage < 6
+              "
+              :class="[$style.row, `row${index}`]"
+              @click="onRowClick(index)"
+            />
+            <div :key="-index" :class="$style.divider"></div>
+          </template>
+        </tbody>
+      </table>
+      <div v-if="stage > 5 && isMobile" :class="$style.correctPatternMobile">
+        {{ texts.patterns[`level${level}`][0] }}
+      </div>
     </div>
-    <div v-if="stage > 3" :class="[$style.patternsWrapper, isMobile && isPatternWindowActive && $style.active]">
+    <div
+      v-if="stage > 3"
+      :class="[$style.patternsWrapper, isMobile && isPatternWindowActive && $style.active]"
+    >
       <p v-if="isMobile" :class="$style.patternsTitle">Выбери верное утверждение:</p>
-      <div v-if="isMobile" @click="isPatternWindowActive = false">Close</div>
+      <div
+        v-if="isMobile"
+        @click="isPatternWindowActive = false"
+        :class="$style.patternsBtnCloseWrapper"
+      ></div>
       <template v-for="index in 4">
         <div
           :class="[
@@ -66,7 +87,8 @@
               selectedPattern === index &&
               $style.wrong,
             selectedPattern === 1 && selectedPattern === index && stage < 6 && $style.correct,
-            stage > 4 && selectedPattern !== index && $style.hidden, stage > 4 && selectedPattern === index && $style.disabled
+            stage > 5 && selectedPattern !== index && $style.hidden,
+            stage > 4 && selectedPattern === 1 && $style.disabled,
           ]"
           :key="index"
           @click="checkPattern(index)"
@@ -74,6 +96,9 @@
           {{ texts.patterns[`level${level}`][index - 1] }}
         </div>
       </template>
+      <v-btn v-if="stage >= 5 && isMobile" sm :class="$style.btnMobile" @click="onMobileBtnClick"
+        >Продолжить</v-btn
+      >
     </div>
     <v-popup-msg
       :items="messages"
@@ -94,16 +119,16 @@
         >Хорошо</v-btn
       >
       <v-btn
-        v-if="(stage === 2 || stage === 6) && selectedRows.length > 0 && !isCheckingInProgress"
+        v-if="(stage === 2 || (stage === 6 && (!isMobie || !isPatternWindowActive))) && selectedRows.length > 0 && !isCheckingInProgress"
         sm
         :class="$style.btn"
         @click="checkRows"
         >Проверить</v-btn
       >
-      <v-btn v-if="stage === 3 || stage === 5" sm :class="$style.btn" @click="onNext"
+      <v-btn v-if="(stage === 3 || (stage === 5 && !isMobile))" sm :class="$style.btn" @click="onNext"
         >Продолжить</v-btn
       >
-      <v-btn v-if="stage === 8" sm :class="$style.btn" @click="$router.push('/lesson6')"
+      <v-btn v-if="stage === 8 && !isPatternWindowActive" sm :class="$style.btn" @click="$router.push('/lesson6')"
         >Продолжить</v-btn
       >
     </transition>
@@ -197,6 +222,11 @@ export default {
       pushPopup(texts.start[`level${level.value}`], messages.value);
     };
 
+    const onMobileBtnClick = () => {
+      isPatternWindowActive.value = false;
+      if (stage.value === 5) onNext();
+    };
+
     watch(stage, () => {
       if (stage.value === 2) {
         pushPopup(texts.stage2.start[`level${level.value}`], messages.value);
@@ -229,7 +259,10 @@ export default {
     const checkRows = () => {
       isCheckingInProgress.value = true;
       if (stage.value === 2) {
-        if (selectedRows.value.length === correctRows.length && selectedRows.value.every((el) => correctRows.includes(el))) {
+        if (
+          selectedRows.value.length === correctRows.length &&
+          selectedRows.value.every((el) => correctRows.includes(el))
+        ) {
           isCheckingInProgress.value = false;
           messages.value.push(texts.stage2.final[`level${level.value}`]);
           mobileChatCounter.value += 1;
@@ -253,7 +286,10 @@ export default {
       }
 
       if (stage.value === 6) {
-        if (selectedRows.value.length === correctRows2.length && selectedRows.value.every((el) => correctRows2.includes(el))) {
+        if (
+          selectedRows.value.length === correctRows2.length &&
+          selectedRows.value.every((el) => correctRows2.includes(el))
+        ) {
           isCheckingInProgress.value = false;
           messages.value.push(texts.stage6.final[`level${level.value}`]);
           mobileChatCounter.value += 1;
@@ -343,6 +379,7 @@ export default {
       checkPattern,
       selectedPattern,
       isPatternWindowActive,
+      onMobileBtnClick,
     };
   },
 };
