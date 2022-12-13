@@ -2,7 +2,7 @@
   height: 100%;
   overflow: hidden;
   position: relative;
-  background-color: $lesson1bgColor;
+  background-color: #D2D5F2;
   @media (max-width: $mobileWidth) { 
     overflow: auto;
   }
@@ -11,7 +11,7 @@
     position: absolute;
     top: 0;
     right: 0%;
-    width: rem(360);
+    width: rem(450);
     height: 100%;
     max-height: 100%;
     background-image: url('../assets/bg.svg');
@@ -22,19 +22,6 @@
     @media (max-width: $mobileWidth) { 
       display: none;
     }
-  }
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0%;
-    width: rem(900);
-    height: rem(570);
-    background-image: url('../assets/earth.svg');
-    background-size: cover;
-    background-position: 0% 0%;
-    background-repeat: no-repeat;
-    pointer-events: none;
   }
   &.zoomSingle {
     @media (max-width: $mobileWidth) {
@@ -51,6 +38,14 @@
       }
     }
   }
+  .maplittle {
+    position: absolute;
+    left: rem(600);
+    bottom: rem(440);
+    width: rem(152);
+    height: rem(152);
+    object-fit: cover;
+  }
   .appliances {
     position: absolute;
     left: rem(120);
@@ -61,9 +56,6 @@
       align-items: flex-end;
       > div {
         position: relative;
-        &:hover {
-          cursor: pointer;
-        }
         img {
           position: relative;
           width: 100%;
@@ -182,8 +174,8 @@
           svg {
             // width: 90% !important;
             @media (max-width: $mobileWidth) {
-              transform: scale(2);
-              transform-origin: 34% 50%;
+              transform: scale(1.7);
+              transform-origin: 28% 50%
             }
           }
         }

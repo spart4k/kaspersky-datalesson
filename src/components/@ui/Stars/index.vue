@@ -28,6 +28,10 @@
     background-color: #fff;
     padding: rem(11) rem(20);
     box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.05), 0px 5px 20px rgba(0, 0, 0, 0.15);
-    border-radius: 32px;
+    border-radius: rem(32);
+    svg {
+      width: rem(28);
+      height: rem(28);
+    }
   }
 </style>

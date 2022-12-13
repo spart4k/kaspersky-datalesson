@@ -1,50 +1,14 @@
 <template>
   <div :class="[
-    $style.wrapper,
-    zoom === 'all' ? $style.zoomAll : $style.zoomSingle
+    $style.wrapper
   ]">
-    <!-- <img :class="$style.stars" src="../assets/stars1.svg" alt="" /> -->
     <starts :class="$style.stars"/>
-    <Diary ref="diaryComp" :stage="stage"/>
-    <div v-if="zoom === 'all'" :class="$style.paginations">
-      <div :class="$style.button">
-        <svg :class="[ $style.arrow, $style.left ]" width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 20L2 11L11 2" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>  
-      </div>
-      <div :class="$style.button">
-        <svg :class="[ $style.arrow, $style.right ]" width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 2L11 11L2 20" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>  
-      </div>      
-    </div>
+    <timer ref="timer"></timer>
+    <map-default @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
+    <!-- <img v-if="stage >= 4" :class="$style.maplittle" src="../assets/maplittle.png" alt=""> -->
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
-    <div :class="$style.appliances">
-      <div v-if="zoom === 'all'" :class="$style.wrap">
-        <div :class="[
-          $style.precipitation,
-          isShowPrecipitation['precipitation'] ? $style.lighting : ''
-        ]">
-          <img @click="onNext('precipitation')" src="../assets/precipitation.svg" alt="">
-        </div>
-        <div :class="$style.home">
-          <img @click="onNext('home')" src="../assets/home.svg" alt="">
-        </div>
-        <div :class="$style.mill">
-          <img @click="onNext('mill')" src="../assets/mill.svg" alt="">
-        </div>
-      </div>
-    </div>
-    <div v-if="precipitationChoosed" :class="[
-      $style.wrapSingle,
-      $style[precipitationChoosed]
-    ]">
-      <div :class="$style.wrap">
-        <component @successAnswer="successAnswer" @emitClick="successSingle" :lightingHome="lightingHome" :is="precipitationChoosed"></component>
-      </div>
-    </div>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
     <!-- <transition name="fade">
       <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
@@ -60,7 +24,7 @@
       <div :class="$style.modalInner">
         <img src="../assets/prof.svg" alt="" />
         <p :class="$style.modalText">
-          Погоду изучают метеорологи. Они анализируют погодные явления и прогнозируют их.
+          Прогнозы рассчитываются на мощных суперкомпьютерах. Они делают прогноз гораздо быстрее и точнее обычных компьютеров.
         </p>
         <!-- <p :class="$style.modalText">
           Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
@@ -69,13 +33,14 @@
         <v-btn lg @click="closeModal">Начать</v-btn>
       </div>
     </v-modal>
-    <v-modal v-if="stage === 15" :isActive="isModalActive">
+    <v-modal v-if="stage === 7" :isActive="isModalActive">
       <div :class="$style.modalInner">
         <img :class="$style.achieve" src="../assets/achieve.svg" alt="" />
         <p :class="[$style.modalText, $style.modalTextBottom]">
-          Отличная работа! Ты получаешь золотое достижение «Метеоролог»!<br /> Продолжай в том же духе!
+          Отличная работа! Ты получаешь золотое достижение «Специалист по вычислительной математике»!<br>
+Продолжай в том же духе!
         </p>
-        <v-btn lg @click="$router.push('/lesson2')">Продолжить</v-btn>
+        <v-btn lg @click="$router.push('/lesson5')">Продолжить</v-btn>
       </div>
     </v-modal>
   </div>
@@ -85,22 +50,25 @@
 import { ref, reactive } from 'vue';
 // import gsap from 'gsap';
 // import Card from '../components/Card/Card.vue';
-import Diary from '../components/Diary/index.vue';
+import mapDefault from '../components/map/default';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
 import precipitation from '../components/precipitation/index.vue'
 import starts from '@/components/@ui/Stars'
 import speaker from '@/components/@ui/Speaker/Speaker.vue'
 import useMobile from '@/hooks/useMobile';
+import timer from '../components/timer'
 export default {
   name: 'part3',
   components: {
-    Diary,
+    // Diary,
     home,
     precipitation,
     mill,
     starts,
-    speaker
+    speaker,
+    mapDefault,
+    timer
     // Card,
   },
   setup() {
@@ -109,26 +77,14 @@ export default {
     const isCheckingInProgress = ref(false);
     const isSuccess = ref(false);
     const isAnimated = ref(false);
-    const diaryComp = ref(null)
-    const zoom = ref('all')
     const isMobileChatOpened = ref(true)
     const mobileChatCounter = ref(0);
-    const lightingHome = ref('')
-    const isShowPrecipitation = reactive({
-      precipitation: false,
-      home: false,
-      mill: false
-    })
     const showNextBtn = ref(true)
-    const isShowPrecipitationSigle = reactive({
-      precipitation: false,
-      home: false,
-      mill: false
-    })
     const isMobile = useMobile();
-    const precipitationChoosed = ref('')
+    const squere = ref(4)
+    const timer = ref(null)
     const messages = ref([
-      'Кликай на приборы, чтобы посмотреть на них поближе и зафиксировать их показания.',
+      'Прогнозы рассчитываются на мощных суперкомпьютерах. Они делают прогноз гораздо быстрее и точнее обычных компьютеров.',
     ]);
 
     const closeModal = () => {
@@ -136,37 +92,34 @@ export default {
     };
 
     const onNext = (appliance) => {
-      if (stage.value === 2 & appliance !== 'precipitation') return
-      if (appliance === 'precipitation' && stage.value !== 2) return
-      if (appliance === 'home' && stage.value !== 8 && stage.value !== 11 ) return
-      if (appliance === 'mill' && stage.value !== 5) return
+      // if (stage.value === 2 & appliance !== 'precipitation') return
+      // if (appliance === 'precipitation' && stage.value !== 2) return
+      // if (appliance === 'home' && stage.value !== 8 && stage.value !== 11 ) return
+      // if (appliance === 'mill' && stage.value !== 5) return
       stage.value += 1;
       mobileChatCounter.value += 1
+      console.log(stage.value)  
       if (stage.value == 2) { 
-        showAppliance('precipitation')
-        showNextBtn.value = false
+        showNextBtn.value = false    
         if (isMobile) {
           isMobileChatOpened.value = false
           mobileChatCounter.value = 0
         }
       }
       if (stage.value === 3) {
-        console.log(3)
-        messages.value.push('Прибор для измерения количества выпавших осадков. Осадки измеряются в миллиметрах (мм).')
+        messages.value.push('Отлично, у тебя все быстро получилось. Но давай посмотрим, насколько точным вышел этот прогноз.')
         setTimeout(() => {
-          messages.value.push('Нажми сюда, чтобы снять показания с осадкомера.')
-        }, 1000)
-        hideAppliance('precipitation')
-        showSigleAppliance('precipitation')
-        changeZoom('single')
+          messages.value.push('Граница дождя недостаточно точная.')
+        }, 1500)
+        setTimeout(() => {
+          onNext()
+        }, 2500)
       } 
       if (stage.value === 4) {
         console.log(4)
-        messages.value.push('Да, это верные показания.')
-        let input = diaryComp.value.form.find((el) => el.title === "Кол-во осадков" )
-        input.value = input.answer
-        hideSigleAppliance('precipitation')
-        changeZoom('all')
+        messages.value.push('Давай посмотрим на другую сетку, теперь из 16 клеточек. Снова помоги компьютеру сделать вычисления. Нажми на каждую из клеточек.')
+        squere.value = 16
+        console.log(squere.value)
         showNextBtn.value = true
       }
       if (stage.value === 5) {
@@ -189,24 +142,19 @@ export default {
         // hideAppliance('home')
         // showSigleAppliance('home')
         // changeZoom('single')
-        messages.value.push('Анемометр: помогает измерить скорость ветра в метрах в секунду (м/с).')
-        setTimeout(() => {
-          messages.value.push('Посмотри внимательнее, показания снимаются со счётчика.')
-        }, 1000)
-        setTimeout(() => {
-          messages.value.push('Нажми сюда, чтобы снять показания с анемометра.')
-        }, 2000)
-        hideAppliance('mill')
-        showSigleAppliance('mill')
-        changeZoom('single')
+        messages.value.push('Отличный эксперимент! Теперь ты видишь, что, чем точнее мы хотим получить прогноз, тем дольше его придется считать.')
+        showNextBtn.value = true
       } 
       if (stage.value === 7) {
-        messages.value.push('Да, это верные показания.')
-        hideSigleAppliance('home')
-        changeZoom('all')
-        let input = diaryComp.value.form.find((el) => el.title === "Скорость ветра" )
-        input.value = input.answer
-        showNextBtn.value = true
+        // messages.value.push('Да, это верные показания.')
+        // hideSigleAppliance('home')
+        // changeZoom('all')
+        // let input = diaryComp.value.form.find((el) => el.title === "Температура" )
+        // input.value = input.answer
+        // showNextBtn.value = true
+        isModalActive.value = true
+        console.log(timer.value)
+        timer.value.stopInterval()
       } 
       if (stage.value === 8) {
         showNextBtn.value = false
@@ -222,14 +170,12 @@ export default {
         // hideAppliance('mill')
         // showSigleAppliance('mill')
         // changeZoom('single')
-        
         messages.value.push('Термометр: показывает температуру в градусах Цельсия (°С).')
         setTimeout(() => {
           messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
         }, 1000)
         setTimeout(() => {
           messages.value.push('Нажми сюда, чтобы снять показания с метеорологического термометра.')
-          lightingHome.value = 'termometr'
         }, 2000)
         hideAppliance('home')
         showSigleAppliance('home')
@@ -237,33 +183,28 @@ export default {
       } 
       if (stage.value === 10) {
         messages.value.push('Да, это верные показания.')
-        lightingHome.value = ''
-        // hideSigleAppliance('mill')
-        // changeZoom('all')
-        let input = diaryComp.value.form.find((el) => el.title === "Температура" )
+        hideSigleAppliance('mill')
+        changeZoom('all')
+        let input = diaryComp.value.form.find((el) => el.title === "Скорость ветра" )
         input.value = input.answer
         showNextBtn.value = true
       } 
-      // if (stage.value === 11) {
-      //   showNextBtn.value = false
-      // } 
       if (stage.value === 11) {
-        
+        showNextBtn.value = false
+      } 
+      if (stage.value === 12) {
         messages.value.push('Гигрометр: измеряет влажность воздуха в процентах (%).')
         setTimeout(() => {
           messages.value.push('Посмотри внимательно, куда указывает стрелка.')
         }, 1000)
         setTimeout(() => {
           messages.value.push('Нажми сюда, чтобы снять показания с гигрометра.')
-          lightingHome.value = 'girometr'
         }, 2000)
         hideAppliance('home')
         showSigleAppliance('home')
         changeZoom('single')
-        showNextBtn.value = false
       } 
-      if (stage.value === 12) {
-        lightingHome.value = ''
+      if (stage.value === 13) {
         messages.value.push('Да, это верные показания.')
         // hideSigleAppliance('vlaga')
         // changeZoom('all')
@@ -271,19 +212,17 @@ export default {
         input.value = input.answer
         showNextBtn.value = true
       } 
-      if (stage.value === 13) {
+      if (stage.value === 14) {
         showNextBtn.value = false
-        
         messages.value.push('Барометр: показывает атмосферное давление в миллиметрах ртутного столба (мм рт. ст.) или гектопаскалях (гПа).')
         setTimeout(() => {
           messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
         }, 1000)
         setTimeout(() => {
           messages.value.push('Нажми сюда, чтобы снять показания с барометра.')
-          lightingHome.value = 'barometr'
         }, 2000)
       } 
-      if (stage.value === 14) {
+      if (stage.value === 15) {
         messages.value.push('Да, это верные показания.')
         hideSigleAppliance('home')
         changeZoom('all')
@@ -293,31 +232,6 @@ export default {
         isModalActive.value = true
       }
     };
-    const changeZoom = (state) => {
-      zoom.value = state
-    }
-    const showSigleAppliance = (appliance) => {
-      isShowPrecipitationSigle[appliance] = true
-      precipitationChoosed.value = appliance
-    }
-    const hideSigleAppliance = (appliance) => {
-      isShowPrecipitationSigle[appliance] = false
-      precipitationChoosed.value = ''
-    }
-    const showAppliance = (appliance) => {
-      console.log(isShowPrecipitation)
-      isShowPrecipitation[appliance] = true
-      console.log(appliance)
-    }
-    const hideAppliance = (appliance) => {
-      isShowPrecipitation[appliance] = false
-    }
-    const clickAnswer = () => {
-      onNext()
-    }
-    const successSingle = () => {
-      console.log('log')
-    }
     const toggleMobileChat = () => {
       isMobileChatOpened.value = !isMobileChatOpened.value
       mobileChatCounter.value = 0
@@ -334,12 +248,20 @@ export default {
       if (appliance === 'veter' && stage.value === 6) {
         onNext()
       }
-      if (appliance === 'vlaga' && stage.value === 11) {
+      if (appliance === 'vlaga' && stage.value === 12) {
         onNext()
       }
-      if (appliance === 'davl' && stage.value === 13) {
+      if (appliance === 'davl' && stage.value === 14) {
         onNext()
       }
+    }
+    const allChecked = () => {
+      console.log('every')
+      onNext()
+    }
+    const firstClicked = () => {
+      timer.value.startTimer()
+      console.log('clicked')
     }
     return {
       isModalActive,
@@ -353,25 +275,15 @@ export default {
       isCheckingInProgress,
       isSuccess,
       isAnimated,
-      isShowPrecipitation,
-      precipitationChoosed,
-      isShowPrecipitationSigle,
-      hideSigleAppliance,
-      showSigleAppliance,
-      showAppliance,
-      hideAppliance,
-      zoom,
-      changeZoom,
-      clickAnswer,
-      diaryComp,
       showNextBtn,
-      successSingle,
-      successAnswer,
       toggleMobileChat,
       isMobileChatOpened,
       mobileChatCounter,
       isMobile,
-      lightingHome
+      allChecked,
+      squere,
+      timer,
+      firstClicked
     };
   },
 };

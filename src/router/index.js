@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Lesson1 from '@/views/Lesson1/Lesson1'
 import Lesson2 from '@/views/Lesson2/Lesson2'
 import Lesson3 from '@/views/Lesson3/Lesson3'
+import Lesson4 from '@/views/Lesson4/Lesson1'
 import TemporaryStartScreen from '@/components/temp/TemporaryStartScreen'
 
 Vue.use(VueRouter)
@@ -32,8 +33,7 @@ const routes = [
   {
     path: '/lesson4',
     name: 'lesson4',
-    // component: Lesson4,
-    redirect: '/',
+    component: Lesson4,
   },
 ]
 

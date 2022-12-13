@@ -16,7 +16,7 @@ export default {
       {
         title: 'Кол-во осадков',
         postfix: 'мм',
-        answer: 14,
+        answer: 7,
         class: 'osadki',
         state: 'writing',
         value: ''
@@ -24,7 +24,7 @@ export default {
       {
         title: 'Температура',
         postfix: '°С',
-        answer: 15,
+        answer: 7,
         class: 'temp',
         state: 'writing',
         value: ''
@@ -32,7 +32,7 @@ export default {
       {
         title: 'Скорость ветра',
         postfix: 'м/с',
-        answer: 1.5,
+        answer: 7,
         class: 'veter',
         state: 'writing',
         value: ''
@@ -40,7 +40,7 @@ export default {
       {
         title: 'Влажность',
         postfix: '%',
-        answer: 92,
+        answer: 7,
         class: 'vlaga',
         state: 'writing',
         value: ''
@@ -48,7 +48,7 @@ export default {
       {
         title: 'Атм. давление',
         postfix: 'мм рт. cт.',
-        answer: 35,
+        answer: 7,
         class: 'davl',
         state: 'writing',
         value: ''
