@@ -81,9 +81,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%),
-    #ffffff;
   border-radius: rem(20);
+  &.gold {
+    background: linear-gradient(
+        180deg,
+        rgba(255, 204, 0, 0.15) 0%,
+        rgba(255, 255, 255, 0.15) 25.47%
+      ),
+      #fff;
+  }
+  &.silver {
+    background: linear-gradient(180deg, rgba(100, 120, 143, 0.15) 0%, rgba(255, 255, 255, 0) 26.27%),
+      #fff;
+  }
   @media screen and (max-width: 450px) {
     padding: rem(30) rem(15);
   }
