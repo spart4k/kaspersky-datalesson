@@ -1,7 +1,10 @@
 <template>
   <div :class="$style.mainWrap">
     <div :class="$style.wrap">
-      <div :class="$style.map">
+      <div :class="[
+        $style.map,
+        $props.stage !== 2 && $props.stage !== 3 && $props.stage !== 5 ? $style.disabled : ''
+      ]">
         <div :class="$style.separator">
           <div :class="$style.grid">
             <div 
@@ -24,6 +27,8 @@
         </div>
       </div>
     </div>
+    <map-range></map-range>
+    <!-- <vue-range-slider :class="$style.rangeSlider" ref="slider" v-model="rangeValue"></vue-range-slider> -->
     <img v-if="stage >= 4" :class="$style.maplittle" src="../../../assets/maplittle.png" alt="">
   </div>
 </template>

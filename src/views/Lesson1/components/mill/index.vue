@@ -55,6 +55,7 @@
 
 <style scoped lang="scss"  module>
   .answer {
+    stroke: red;
     &:hover {
       cursor: pointer;
     }

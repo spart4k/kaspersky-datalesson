@@ -29,10 +29,16 @@
         ]">
           <img @click="onNext('precipitation')" src="../assets/precipitation.svg" alt="">
         </div>
-        <div :class="$style.home">
+        <div :class="[
+          $style.home,
+          isShowPrecipitation['home'] ? $style.lighting : ''
+        ]">
           <img @click="onNext('home')" src="../assets/home.svg" alt="">
         </div>
-        <div :class="$style.mill">
+        <div :class="[
+          $style.mill,
+          isShowPrecipitation['mill'] ? $style.lighting : ''
+        ]">
           <img @click="onNext('mill')" src="../assets/mill.svg" alt="">
         </div>
       </div>
@@ -176,6 +182,7 @@ export default {
         // input.value = input.answer
         // hideSigleAppliance('precipitation')
         // changeZoom('all')
+        showAppliance('mill')
         showNextBtn.value = false
       } 
       if (stage.value === 6) {
@@ -210,6 +217,7 @@ export default {
       } 
       if (stage.value === 8) {
         showNextBtn.value = false
+        showAppliance('home')
       } 
       if (stage.value === 9) {
         // messages.value.push('Анемометр: помогает измерить скорость ветра в метрах в секунду (м/с).')
@@ -276,7 +284,7 @@ export default {
         
         messages.value.push('Барометр: показывает атмосферное давление в миллиметрах ртутного столба (мм рт. ст.) или гектопаскалях (гПа).')
         setTimeout(() => {
-          messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
+          messages.value.push('Посмотри внимательно, куда указывает стрелка.')
         }, 1000)
         setTimeout(() => {
           messages.value.push('Нажми сюда, чтобы снять показания с барометра.')

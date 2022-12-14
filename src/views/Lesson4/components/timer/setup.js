@@ -22,6 +22,7 @@ export default {
   
     })
     const startTimer = () => {
+      console.log('start timer')
       let seconds = timerValue.value.seconds
       let minutes = timerValue.value.minutes
       let hour = timerValue.value.hour
@@ -30,7 +31,6 @@ export default {
         allSeconds.value++
         if (seconds <= 9) {
           seconds = '0' + seconds
-          console.log('0')
         }
         if (seconds === 60) {
           seconds = '00'
@@ -55,14 +55,17 @@ export default {
         timerValue.value.minutes = minutes
         if (hour === 24) {
           hour = '00'
-          timerValue.value.hour = '00'
-          timerValue.value.seconds = '00'
-          timerValue.value.minutes = '00'
+          clearTimerValue()
         }
       }, 1000)
-      console.log(timerInterval.value)
+    }
+    const clearTimerValue = () => {
+      timerValue.value.hour = '00'
+      timerValue.value.seconds = '00'
+      timerValue.value.minutes = '00'
     }
     const stopInterval = () => {
+      console.log('stop timer')
       console.log(timerInterval.value)
       clearInterval(timerInterval.value)
     }
@@ -76,7 +79,8 @@ export default {
       timerValue,
       allSeconds,
       startTimer,
-      stopInterval
+      stopInterval,
+      clearTimerValue
     }
   },
 }

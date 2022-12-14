@@ -4,7 +4,7 @@
   ]">
     <starts :class="$style.stars"/>
     <timer ref="timer"></timer>
-    <map-default @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
+    <map-default ref="mapDefault" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
     <!-- <img v-if="stage >= 4" :class="$style.maplittle" src="../assets/maplittle.png" alt=""> -->
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
@@ -83,6 +83,7 @@ export default {
     const isMobile = useMobile();
     const squere = ref(4)
     const timer = ref(null)
+    const mapDefault = ref(null)
     const messages = ref([
       'Прогнозы рассчитываются на мощных суперкомпьютерах. Они делают прогноз гораздо быстрее и точнее обычных компьютеров.',
     ]);
@@ -98,7 +99,6 @@ export default {
       // if (appliance === 'mill' && stage.value !== 5) return
       stage.value += 1;
       mobileChatCounter.value += 1
-      console.log(stage.value)  
       if (stage.value == 2) { 
         showNextBtn.value = false    
         if (isMobile) {
@@ -107,6 +107,7 @@ export default {
         }
       }
       if (stage.value === 3) {
+        timer.value.stopInterval()
         messages.value.push('Отлично, у тебя все быстро получилось. Но давай посмотрим, насколько точным вышел этот прогноз.')
         setTimeout(() => {
           messages.value.push('Граница дождя недостаточно точная.')
@@ -116,11 +117,11 @@ export default {
         }, 2500)
       } 
       if (stage.value === 4) {
-        console.log(4)
         messages.value.push('Давай посмотрим на другую сетку, теперь из 16 клеточек. Снова помоги компьютеру сделать вычисления. Нажми на каждую из клеточек.')
         squere.value = 16
-        console.log(squere.value)
         showNextBtn.value = true
+        timer.value.clearTimerValue()
+        mapDefault.value.clearFirstClicked()
       }
       if (stage.value === 5) {
         // console.log(5)
@@ -132,17 +133,8 @@ export default {
         showNextBtn.value = false
       } 
       if (stage.value === 6) {
-        // messages.value.push('Термометр: показывает температуру в градусах Цельсия (°С).')
-        // setTimeout(() => {
-        //   messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
-        // }, 1000)
-        // setTimeout(() => {
-        //   messages.value.push('Нажми сюда, чтобы снять показания с метеорологического термометра.')
-        // }, 2000)
-        // hideAppliance('home')
-        // showSigleAppliance('home')
-        // changeZoom('single')
         messages.value.push('Отличный эксперимент! Теперь ты видишь, что, чем точнее мы хотим получить прогноз, тем дольше его придется считать.')
+        timer.value.stopInterval()
         showNextBtn.value = true
       } 
       if (stage.value === 7) {
@@ -153,8 +145,6 @@ export default {
         // input.value = input.answer
         // showNextBtn.value = true
         isModalActive.value = true
-        console.log(timer.value)
-        timer.value.stopInterval()
       } 
       if (stage.value === 8) {
         showNextBtn.value = false
@@ -237,8 +227,6 @@ export default {
       mobileChatCounter.value = 0
     }
     const successAnswer = (appliance) => {
-      console.log('prop')
-      console.log(appliance)
       if (appliance === 'precipitation' && stage.value === 3) {
         onNext()
       }
@@ -256,12 +244,10 @@ export default {
       }
     }
     const allChecked = () => {
-      console.log('every')
       onNext()
     }
     const firstClicked = () => {
       timer.value.startTimer()
-      console.log('clicked')
     }
     return {
       isModalActive,
@@ -283,7 +269,8 @@ export default {
       allChecked,
       squere,
       timer,
-      firstClicked
+      firstClicked,
+      mapDefault
     };
   },
 };

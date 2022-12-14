@@ -1,8 +1,16 @@
 import { ref, onMounted, watch, toRefs, computed } from 'vue';
-
+import mapRange from '../range'
+// import 'vue-range-component/dist/vue-range-slider.css'
+// import VueRangeSlider from 'vue-range-component'
+import VueSlider from 'vue-slider-component'
+import '@/styles/_range.scss'
+// import 'vue-slider-component/theme/antd.css'
 export default {
   name: 'map-default',
   components: {
+    mapRange,
+    VueSlider,
+    // VueRangeSlider
   },
   props: {
     stage: {
@@ -18,8 +26,8 @@ export default {
     const { emit } = ctx
     const isShowRain = ref(false)
     const firstClicked = ref(false)
+    const rangeValue = ref(20)
     const checking = (box) => {
-      console.log(props.stage)
       if (props.stage !== 2 && props.stage !== 5) return
       if (!firstClicked.value) firstClick()
       if (box.checked) {
@@ -30,13 +38,9 @@ export default {
       function isBigEnough(element, index, array) {
         return element >= 10;
       }
-      console.log(grid.value)
-      console.log(grid.value.every(el => el.checked === true))
       if (grid.value.every(el => el.checked)) {
-        console.log('every true')
         emit('allChecked')
         if (props.stage === 2) {
-          console.log()
           grid.value[1].lighting = true
           grid.value[3].lighting = true
           showRain()
@@ -62,7 +66,6 @@ export default {
     const boxSize = ref(null)
     const showRain = () => {
       isShowRain.value = true
-      console.log('show rain')
     }
     const grid = ref([])
     const drawBoxes = () => {
@@ -76,19 +79,20 @@ export default {
         }
       grid.value.push(box)
       boxSize.value = 100/Math.sqrt(squere) + '%'
-      console.log(grid.value)
      }
     }
     const firstClick = () => {
+      firstClicked.value = true
       emit('firstClicked')
+    }
+    const clearFirstClicked = () => {
+      firstClicked.value = false
     }
     onMounted(() => {
       drawBoxes()
     })
-    console.log(squereNum.value)
     watch(squereNum, () => {
       isShowRain.value = false
-      console.log('change box')
       drawBoxes()
     })
     return {
@@ -100,7 +104,9 @@ export default {
       drawBoxes,
       squereNum,
       firstClick,
-      firstClicked
+      firstClicked,
+      clearFirstClicked,
+      rangeValue
     }
   },
 }

@@ -11,7 +11,7 @@ export default {
     }
   },
   setup(props) {
-    const isOpen = ref(false)
+    const isOpen = ref(true)
     const form = ref([
       {
         title: 'Кол-во осадков',
@@ -47,7 +47,7 @@ export default {
       },
       {
         title: 'Атм. давление',
-        postfix: 'мм рт. cт.',
+        postfix: 'гПа',
         answer: 35,
         class: 'davl',
         state: 'writing',
