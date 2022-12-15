@@ -6,7 +6,7 @@
     ]">
       <div :class="[
         $style.map,
-        $props.stage !== 2 && $props.stage !== 3 && $props.stage !== 5 ? $style.disabled : ''
+        $props.stage !== 2 && $props.stage !== 3 && $props.stage !== 5 && $props.level === '1' ? $style.disabled : ''
       ]">
         <div :class="$style.separator">
           <div :class="$style.grid">
@@ -31,8 +31,8 @@
       </div>
     </div>
     <div :class="$style.col">
-      <map-range v-if="$props.level !== '1'" :class="$style.rangeSlider" @changeSquere="changeSquere"></map-range>
-      <map-panel v-if="$props.stage >= 4 && $props.level !== '1'" @changeCount="changeCount"></map-panel>
+      <map-range v-if="$props.level !== '1'" :class="[$style.rangeSlider, $props.stage < 2 ? $style.disable : '']" @changeSquere="changeSquere"></map-range>
+      <map-panel v-show="$props.stage >= 4 && $props.level !== '1'" @changeCount="changeCount"></map-panel>
     </div>
     <div :class="[$style.col, $style.grade]">
       <map-grade :level="$props.level" @check="check" v-if="$props.stage >= 5 && $props.level !== '1'"></map-grade>

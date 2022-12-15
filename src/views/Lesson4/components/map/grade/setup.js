@@ -10,6 +10,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const selectedPattern = ref(null);
+    const selectedPatternArray = ref([])
     const cards = ref([])
     console.log()
     
@@ -17,25 +18,37 @@ export default {
       console.log(num)
       // if (isCheckingInProgress.value) return;
       // isCheckingInProgress.value = true;
-      selectedPattern.value = num;
-      emit('check', selectedPattern.value)
-      if (num === 1) {
-        // isCheckingInProgress.value = false;
-        // messages.value.push(texts.stage4.final[`level${level.value}`]);
-        // mobileChatCounter.value += 1;
-        // onNext();
+      if (props.level === '3') {
+        if (!selectedPatternArray.value.includes(num) && (num === 0 || num === 3) ) {
+          selectedPatternArray.value.push(num)
+          selectedPattern.value = null
+        } else {
+          selectedPattern.value = num;
+        }
+        emit('check', selectedPatternArray.value)
       } else {
-        // errorCount.value += 1;
-        // task2ErrorsCount.value += 1;
-        // if (task2ErrorsCount.value === 1) {
-        //   messages.value.push(texts.stage4.error1[`level${level.value}`]);
-        //   mobileChatCounter.value += 1;
-        // }
-        // if (task2ErrorsCount.value === 2) {
-        //   messages.value.push(texts.stage4.error2[`level${level.value}`]);
-        //   mobileChatCounter.value += 1;
-        // }
+        selectedPattern.value = num;
+        emit('check', selectedPattern.value)
       }
+      
+      
+      // if (num === 1) {
+      //   // isCheckingInProgress.value = false;
+      //   // messages.value.push(texts.stage4.final[`level${level.value}`]);
+      //   // mobileChatCounter.value += 1;
+      //   // onNext();
+      // } else {
+      //   // errorCount.value += 1;
+      //   // task2ErrorsCount.value += 1;
+      //   // if (task2ErrorsCount.value === 1) {
+      //   //   messages.value.push(texts.stage4.error1[`level${level.value}`]);
+      //   //   mobileChatCounter.value += 1;
+      //   // }
+      //   // if (task2ErrorsCount.value === 2) {
+      //   //   messages.value.push(texts.stage4.error2[`level${level.value}`]);
+      //   //   mobileChatCounter.value += 1;
+      //   // }
+      // }
     };
     onMounted(() => {
       console.log(props.level)
@@ -81,7 +94,8 @@ export default {
     return {
       cards,
       selectedPattern,
-      checkPattern
+      checkPattern,
+      selectedPatternArray
     }
   },
 }

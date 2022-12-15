@@ -1,7 +1,7 @@
 <template>
   <div :class="$style.timer">
     <div :class="$style.title">
-      Время расчета {{ startTimer }}
+      Время расчета
     </div>
     <div :class="$style.time">
       {{ startTimer }}

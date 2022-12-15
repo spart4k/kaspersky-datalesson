@@ -28,6 +28,7 @@
     &.small {
       width: rem(270);
       height: rem(270);
+      border: rem(5) solid #FFFFFF;
     }
     .map {
       width: 100%;
@@ -138,6 +139,9 @@
 }
 .rangeSlider {
   margin-bottom: rem(20);
+  &.disable {
+    pointer-events: none;
+  }
 }
 .col {
   display: flex;
