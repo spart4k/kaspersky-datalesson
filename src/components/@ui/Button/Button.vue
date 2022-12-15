@@ -20,9 +20,12 @@ export default {
   border-radius: rem(12);
   cursor: pointer;
   border: none;
-  transition: all .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: all .15s cubic-bezier(0.25, 0.1, 0.25, 1);
   &:hover {
     transform: scale(0.98);
+  }
+  &:active {
+    transform: scale(0.96);
   }
 }
 

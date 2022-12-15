@@ -405,7 +405,7 @@ export default {
 }
 
 .wrong {
-  border: 2px solid red !important;
+  border: 3px solid red !important;
   color: red !important;
   animation-name: wrongAnimation;
   animation-duration: 0.3s;
@@ -414,6 +414,6 @@ export default {
 }
 
 .snapped {
-  border: 1px solid #91c0f8;
+  border: 3px solid #91c0f8;
 }
 </style>
