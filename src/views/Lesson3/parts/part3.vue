@@ -169,6 +169,7 @@ export default {
     };
 
     const toggleMobileChat = () => {
+      if (stage.value === 1) return;
       isMobileChatOpened.value = !isMobileChatOpened.value
       mobileChatCounter.value = 0
     }
@@ -415,5 +416,6 @@ export default {
 
 .snapped {
   border: 3px solid #91c0f8;
+  z-index: 10 !important;
 }
 </style>

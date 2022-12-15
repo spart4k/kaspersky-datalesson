@@ -213,6 +213,7 @@ export default {
     });
 
     const toggleMobileChat = () => {
+      if (stage.value === 1) return;
       isMobileChatOpened.value = !isMobileChatOpened.value;
       mobileChatCounter.value = 0;
     };
