@@ -51,6 +51,7 @@
 import { ref, reactive, computed, watch } from 'vue';
 // import gsap from 'gsap';
 // import Card from '../components/Card/Card.vue';
+import { useStore } from '@/store';
 import mapDefault from '../components/map/default';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
@@ -77,6 +78,7 @@ export default {
     // Card,
   },
   setup() {
+    const store = useStore();
     const isModalActive = ref(true);
     const stage = ref(1);
     const isCheckingInProgress = ref(false);
@@ -89,9 +91,7 @@ export default {
     const squere = ref(4)
     const timer = ref(null)
     const mapDefault = ref(null)
-    const level = computed(() => {
-      return '3'
-    })
+    const level = computed(() => store.state.level);
     const calculationMap = ref(1800)
     const calculationOptions = ref(4500)
     const procentMap = ref(8)
