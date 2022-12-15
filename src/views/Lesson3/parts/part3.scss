@@ -272,7 +272,7 @@
   bottom: rem(92);
   overflow: scroll;
   right: rem(30);
-  z-index: 0;
+  z-index: 0 !important;
   overflow: auto;
   max-height: calc(100vh - 25rem);
   -webkit-mask-image: -webkit-linear-gradient(
@@ -286,7 +286,7 @@
     max-height: calc(100vh - 7rem);
   }
   @media screen and (max-width: 450px) {
-    z-index: 999;
+    z-index: 999 !important;
   }
 }
 
