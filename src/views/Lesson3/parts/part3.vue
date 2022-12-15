@@ -153,6 +153,7 @@ export default {
     const isMobileChatOpened = ref(true);
     const mobileChatCounter = ref(0);
     const cardWrapper = ref(null);
+    const currentCard = ref(null);
 
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -279,6 +280,7 @@ export default {
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
           if (target.classList.contains('wrong')) target.classList.remove('wrong');
           if (target.classList.contains('snapped')) target.classList.remove('snapped');
+          currentCard.value = target;
           if (!isMobile)
             window.addEventListener('mousemove', moveCenter(e, target), { once: true });
           activeCard.value = target.dataset.num;
@@ -305,6 +307,15 @@ export default {
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
           const basket = document.querySelector('.basket');
           if (this.hitTest(basket)) {
+            if (e.clientX < 0 || e.clientY > clientHeight.value) {
+              gsap.to(currentCard.value, {
+                left: 0,
+                top: 0,
+                rotate: -9,
+                duration: 0.3,
+              });
+              return;
+            }
             if (!wrongCards.includes(activeCard.value)) {
               target.classList.add('wrong');
               messages.value.push(texts.wrong[`level${level.value}`][`card${activeCard.value}`]);
