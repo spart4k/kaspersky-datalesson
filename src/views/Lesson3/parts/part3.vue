@@ -306,8 +306,7 @@ export default {
           let { target } = e;
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
           const basket = document.querySelector('.basket');
-          if (e.clientX < 0 || e.clientY < 0 || e.clientY > clientHeight.value || e.clientX > clientWidth.value) {
-              console.log(e);
+          if (e.clientX < 0 || e.clientY < 0 || e.clientY > clientHeight.value || e.clientX > clientWidth.value || !target) {
               gsap.to(currentCard.value, {
                 left: 0,
                 top: 0,
