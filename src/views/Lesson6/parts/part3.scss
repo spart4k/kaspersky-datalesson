@@ -97,10 +97,24 @@
   }
 }
 
+@keyframes scale {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .achieve {
   width: rem(151);
   height: rem(151);
   margin-bottom: rem(20);
+  animation-name: scale;
+  animation-duration: 1s;
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 .modalTextAchieve {
@@ -256,6 +270,7 @@
   border-radius: rem(10);
   margin-bottom: rem(10);
   width: rem(180);
+  user-select: none;
 }
 
 .ghostCard {
@@ -291,4 +306,5 @@
   width: 100%;
   height: rem(65);
   margin: 0;
+  user-select: none;
 }
