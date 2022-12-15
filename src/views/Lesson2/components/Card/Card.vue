@@ -144,7 +144,7 @@ export default {
 
 .active {
   transform: scale(0.9);
-  border: 2.70136px solid #bf54f2;
+  border: 3px solid #bf54f2;
 }
 
 .cardImgWrapper {
