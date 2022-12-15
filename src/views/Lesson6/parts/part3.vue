@@ -156,14 +156,16 @@ export default {
             id: 3,
             title: texts.cards[2],
           },
-          {
-            id: 4,
-            title: texts.cards[3],
-          },
-          {
-            id: 5,
-            title: texts.cards[4],
-          },
+          ...level.value !== '1' ? [
+            {
+              id: 4,
+              title: texts.cards[3],
+            },
+            {
+              id: 5,
+              title: texts.cards[4],
+            }
+          ] : [],
         ],
       },
       {
@@ -172,7 +174,10 @@ export default {
       },
       {
         title: 'Этап №2',
-        tasks: [],
+        tasks: level.value === '1' ? [{
+          id: 4,
+          title: texts.cards[3],
+        }] : [],
       },
       {
         title: 'Этап №3',
@@ -180,7 +185,10 @@ export default {
       },
       {
         title: 'Этап №4',
-        tasks: [],
+        tasks: level.value === '1' ? [{
+          id: 5,
+          title: texts.cards[4],
+        }] : [],
       },
       {
         title: 'Этап №5',
