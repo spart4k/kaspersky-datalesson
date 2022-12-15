@@ -1,6 +1,7 @@
 import { ref, onMounted, watch, toRefs, computed } from 'vue';
 import VueSlider from 'vue-slider-component'
 import '@/styles/_range.scss'
+import useMobile from '@/hooks/useMobile';
 export default {
   name: 'map-default',
   components: {
@@ -13,6 +14,7 @@ export default {
     const { emit } = ctx
     const rangeValue = ref('2x2')
     const rangeData = ref(['2x2', '3x3', '9x9', '18x18'])
+    const isMobile = useMobile();
     const rangeKm = computed(() => {
       let text = ''
       switch (rangeValue.value) {
@@ -58,7 +60,8 @@ export default {
     return {
       rangeValue,
       rangeData,
-      rangeKm
+      rangeKm,
+      isMobile
     }
   },
 }

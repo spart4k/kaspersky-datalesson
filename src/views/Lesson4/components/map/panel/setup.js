@@ -112,7 +112,8 @@ export default {
         if (item.value) count++
       })
       console.log(count)
-      if (!isMobile) emit('changeCount', count)
+      console.log(isMobile.value)
+      if (!isMobile.value) emit('changeCount', count)
       return count
     })
     const applyOptions = () => {
@@ -121,7 +122,7 @@ export default {
         if (item.value) count++
       })
       console.log(count)
-      if (isMobile) emit('changeCount', count)
+      if (isMobile.value) emit('changeCount', count)
       emit('closePanel')
     }
     const closePanel = () => {

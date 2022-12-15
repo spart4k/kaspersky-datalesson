@@ -59,6 +59,9 @@
       display: flex;
       justify-content: center;
       // padding: 0 rem(10);
+      @media (min-width: $mobileWidth) {
+        display: none;
+      }
       .btn {
         width: 100%;
         display: block;
@@ -67,9 +70,7 @@
         color: #fff;
         font-size: rem(16);
       }
-      @media (min-width: $mobileWidth) {
-        display: none;
-      }
+      
 
     }
     .close {
@@ -100,5 +101,15 @@
     //   }
     // }
     // display: none;
+  }
+}
+.btnWrapper {
+  @media (min-width: $mobileWidth) {
+    display: none;
+  }
+}
+.close {
+  @media (min-width: $mobileWidth) {
+    display: none;
   }
 }

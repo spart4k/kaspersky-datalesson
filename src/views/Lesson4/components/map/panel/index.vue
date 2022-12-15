@@ -12,10 +12,10 @@
         <span>{{item.label}}</span>
       </label>
     </div>
-    <div :class="$style.btnWrapper">
+    <div  v-if="isMobile" :class="$style.btnWrapper">
       <v-btn md :class="$style.btn" @click="applyOptions">Применить</v-btn>
     </div>
-    <svg @click="closePanel" :class="$style.close" width="44" height="45" viewBox="0 0 44 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg v-if="isMobile" @click="closePanel" :class="$style.close" width="44" height="45" viewBox="0 0 44 45" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_d_458_15149)">
       <circle cx="22" cy="21" r="21" fill="#986CE7"/>
       <circle cx="22" cy="21" r="19.5" stroke="white" stroke-width="3"/>
