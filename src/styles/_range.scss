@@ -19,6 +19,9 @@
 .vue-slider-rail {
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 15px;
+  @media (max-width: $mobileWidth) {
+    background-color: rgba(0, 0, 0, 0.3);;
+  }
 }
 
 /* process style */

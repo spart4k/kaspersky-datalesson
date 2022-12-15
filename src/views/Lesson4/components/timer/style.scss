@@ -15,4 +15,7 @@
   @media (min-width: $mobileWidth) {
     z-index: 9999;
   }
+  @media (max-width: $mobileWidth) {
+    display: none;
+  }
 }
