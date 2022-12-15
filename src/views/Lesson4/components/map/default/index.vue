@@ -1,6 +1,9 @@
 <template>
   <div :class="$style.mainWrap">
-    <div :class="$style.wrap">
+    <div :class="[
+      $style.wrap,
+      $props.stage >= 5 && $props.level !== '1' ? $style.small : ''
+    ]">
       <div :class="[
         $style.map,
         $props.stage !== 2 && $props.stage !== 3 && $props.stage !== 5 ? $style.disabled : ''
@@ -27,9 +30,15 @@
         </div>
       </div>
     </div>
-    <map-range></map-range>
+    <div :class="$style.col">
+      <map-range v-if="$props.level !== '1'" :class="$style.rangeSlider" @changeSquere="changeSquere"></map-range>
+      <map-panel v-if="$props.stage >= 4 && $props.level !== '1'" @changeCount="changeCount"></map-panel>
+    </div>
+    <div :class="[$style.col, $style.grade]">
+      <map-grade :level="$props.level" @check="check" v-if="$props.stage >= 5 && $props.level !== '1'"></map-grade>
+    </div>
     <!-- <vue-range-slider :class="$style.rangeSlider" ref="slider" v-model="rangeValue"></vue-range-slider> -->
-    <img v-if="stage >= 4" :class="$style.maplittle" src="../../../assets/maplittle.png" alt="">
+    <img v-if="stage >= 4 && $props.level === '1'" :class="$style.maplittle" src="../../../assets/maplittle.png" alt="">
   </div>
 </template>
 <style lang="scss" module src="./style.scss"></style>

@@ -3,8 +3,10 @@
     $style.wrapper
   ]">
     <starts :class="$style.stars"/>
-    <timer ref="timer"></timer>
-    <map-default ref="mapDefault" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
+    <timer v-show="level === '1'" ref="timer"></timer>
+    <map-default :level="level" ref="mapDefault" @checkPattern="checkPattern" @changeCountValue="changeCountValue" @changeSquereValue="changeSquereValue" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
+    <calculation :seconds="calculationTimer" v-show="level === '2' || level === '3'"></calculation>
+    <accuracy :procents="procentAll" v-show="level === '2' || level === '3'"></accuracy>
     <!-- <img v-if="stage >= 4" :class="$style.maplittle" src="../assets/maplittle.png" alt=""> -->
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
@@ -24,16 +26,15 @@
       <div :class="$style.modalInner">
         <img src="../assets/prof.svg" alt="" />
         <p :class="$style.modalText">
-          Прогнозы рассчитываются на мощных суперкомпьютерах. Они делают прогноз гораздо быстрее и точнее обычных компьютеров.
+          Для расчётов прогноза используются суперкомпьютеры – они гораздо мощнее обычных компьютеров и позволяют делать точный прогноз за считаные часы. Обычный компьютер справился бы с такими расчётами за неделю и не дал бы прогноз вовремя.
         </p>
-        <!-- <p :class="$style.modalText">
-          Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
-          требуются.
+        <!-- <p v-if="level === '2'" :class="$style.modalText">
+          Модель делит земной шар на много клеточек, образуя сетку. Чем меньше клеточка сетки, тем больше их понадобится. От этого прогноз будет точнее, но и считать его придётся дольше. Это очень похоже на разрешение экрана монитора – чем больше пикселей на экране, тем более чёткое изображение, но требуется больше ресурсов для его отображения.
         </p> -->
         <v-btn lg @click="closeModal">Начать</v-btn>
       </div>
     </v-modal>
-    <v-modal v-if="stage === 7" :isActive="isModalActive">
+    <v-modal v-if="(stage === 7 && level === '1') || (stage === 6 && level === '2') || (stage === 6 && level === '3')" :isActive="isModalActive">
       <div :class="$style.modalInner">
         <img :class="$style.achieve" src="../assets/achieve.svg" alt="" />
         <p :class="[$style.modalText, $style.modalTextBottom]">
@@ -47,7 +48,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 // import gsap from 'gsap';
 // import Card from '../components/Card/Card.vue';
 import mapDefault from '../components/map/default';
@@ -58,6 +59,8 @@ import starts from '@/components/@ui/Stars'
 import speaker from '@/components/@ui/Speaker/Speaker.vue'
 import useMobile from '@/hooks/useMobile';
 import timer from '../components/timer'
+import calculation from '../components/calculation'
+import accuracy from '../components/accuracy'
 export default {
   name: 'part3',
   components: {
@@ -68,7 +71,9 @@ export default {
     starts,
     speaker,
     mapDefault,
-    timer
+    timer,
+    calculation,
+    accuracy
     // Card,
   },
   setup() {
@@ -84,14 +89,28 @@ export default {
     const squere = ref(4)
     const timer = ref(null)
     const mapDefault = ref(null)
-    const messages = ref([
-      'Прогнозы рассчитываются на мощных суперкомпьютерах. Они делают прогноз гораздо быстрее и точнее обычных компьютеров.',
-    ]);
-
+    const level = computed(() => {
+      return '3'
+    })
+    const calculationMap = ref(1800)
+    const calculationOptions = ref(4500)
+    const procentMap = ref(8)
+    const procentOptions = ref(30)
+    console.log(level.value)
+    const messages = ref([]);
     const closeModal = () => {
       isModalActive.value = false;
     };
-
+    if (level.value === '1') {
+      messages.value.push(
+        'Прогнозы рассчитываются на мощных суперкомпьютерах. Они делают прогноз гораздо быстрее и точнее обычных компьютеров.',
+      )
+    }
+    if (level.value === '2' || level.value === '3') {
+      messages.value.push(
+      'Попробуй перемещать ползунок, наблюдай, как меняется сетка на карте, точность и время расчета прогноза.',
+      )
+    }
     const onNext = (appliance) => {
       // if (stage.value === 2 & appliance !== 'precipitation') return
       // if (appliance === 'precipitation' && stage.value !== 2) return
@@ -107,37 +126,55 @@ export default {
         }
       }
       if (stage.value === 3) {
-        timer.value.stopInterval()
-        messages.value.push('Отлично, у тебя все быстро получилось. Но давай посмотрим, насколько точным вышел этот прогноз.')
-        setTimeout(() => {
-          messages.value.push('Граница дождя недостаточно точная.')
-        }, 1500)
-        setTimeout(() => {
+        console.log('3 step')
+        if (level.value === '1') {
+          timer.value.stopInterval()
+          messages.value.push('Отлично, у тебя все быстро получилось. Но давай посмотрим, насколько точным вышел этот прогноз.')
+          setTimeout(() => {
+            messages.value.push('Граница дождя недостаточно точная.')
+          }, 1500)
+          setTimeout(() => {
+            onNext()
+          }, 2500)
+        } else if (level.value === '2' || level.value === '3') {
+          if (squere.value === 324) {
+            messages.value.push('А теперь давай в нашей модели учитывать дополнительные параметры. Обрати внимание на то, как меняются время и точность прогноза.')
+          }
           onNext()
-        }, 2500)
+        }
+        
       } 
       if (stage.value === 4) {
-        messages.value.push('Давай посмотрим на другую сетку, теперь из 16 клеточек. Снова помоги компьютеру сделать вычисления. Нажми на каждую из клеточек.')
-        squere.value = 16
-        showNextBtn.value = true
-        timer.value.clearTimerValue()
-        mapDefault.value.clearFirstClicked()
+        if (level.value === '1') {
+          messages.value.push('Давай посмотрим на другую сетку, теперь из 16 клеточек. Снова помоги компьютеру сделать вычисления. Нажми на каждую из клеточек.')
+          squere.value = 16
+          showNextBtn.value = true
+          timer.value.clearTimerValue()
+          mapDefault.value.clearFirstClicked()
+        }
+        // if ()
       }
       if (stage.value === 5) {
-        // console.log(5)
-        // messages.value.push('Да, это верные показания.')
-        // let input = diaryComp.value.form.find((el) => el.title === "Температура" )
-        // input.value = input.answer
-        // hideSigleAppliance('precipitation')
-        // changeZoom('all')
-        showNextBtn.value = false
+        if (level.value === '1') {
+          showNextBtn.value = false
+        } else if (level.value === '2' || level.value === '3') {
+          console.log('NEXT STEP 5+')
+          messages.value.push('На основании своих наблюдений выбери из списка корректное утверждение.')
+          showNextBtn.value = false
+        }
       } 
       if (stage.value === 6) {
-        messages.value.push('Отличный эксперимент! Теперь ты видишь, что, чем точнее мы хотим получить прогноз, тем дольше его придется считать.')
-        timer.value.stopInterval()
-        showNextBtn.value = true
+        if (level.value === '1') {
+          messages.value.push('Отличный эксперимент! Теперь ты видишь, что, чем точнее мы хотим получить прогноз, тем дольше его придется считать.')
+          timer.value.stopInterval()
+          showNextBtn.value = true
+        } else if (level.value === '2' || level.value === '3') {
+          messages.value.push('У тебя получилось! Теперь ты видишь, как связаны точность прогноза и время на его расчёт.')
+          isModalActive.value = true
+        }
       } 
       if (stage.value === 7) {
+        console.log('STEP 7')
         // messages.value.push('Да, это верные показания.')
         // hideSigleAppliance('home')
         // changeZoom('all')
@@ -249,7 +286,85 @@ export default {
     const firstClicked = () => {
       timer.value.startTimer()
     }
-    return {
+    const changeSquereValue = (param) => {
+      console.log(param)
+      squere.value = param
+    }
+    const changeCountValue = (val) => {
+      console.log('main', val)
+      calculationOptions.value = val * 900
+      console.log(val * 900)
+      console.log(calculationOptions.value )
+      procentOptions.value = val * 5
+      console.log(calculationOptions.value, stage.value)
+      if (calculationOptions.value === 9000 && stage.value === 4) {
+        console.log('ON NEXT')
+        onNext()
+      }
+    }
+    const calculationTimer = computed(() => {
+      return calculationMap.value + calculationOptions.value
+    })
+    const procentAll = computed(() => {
+      return procentMap.value + procentOptions.value
+    })
+    watch(squere, () => {
+      let second = null
+      let procent = null
+      if (squere.value === 324 && stage.value === 2) {
+        console.log('NEXT STEP')
+        onNext()
+      }
+      switch (squere.value) {
+        case 4:
+          second = 1800 * 1
+          break;
+        case 9:
+          second = 1800 * 2
+          break;
+        case 81:
+          second = 1800 * 3
+          break;
+        case 324:
+          second = 1800 * 4
+          break;
+        default:
+          break;
+      }
+      switch (squere.value) {
+        case 4:
+          procent = 8 * 2
+          break;
+        case 9:
+          procent = 8 * 3
+          break;
+        case 81:
+          procent = 8 * 4
+          break;
+        case 324:
+          procent = 8 * 5
+          break;
+        default:
+          break;
+      }
+      procentMap.value = procent
+      console.log(procentMap.value)
+      calculationMap.value = second
+      console.log(calculationMap.value)
+      console.log(calculationTimer.value)
+    })
+    const checkPattern = (item) => {
+      console.log(item)
+      if (item !== 1) {
+        messages.value.push('Нет, это не так. Вспомни, как менялось время расчёта прогноза при добавлении параметров и уменьшении сетки.')
+        setTimeout(() => {
+          messages.value.push('Чем больше параметров и мельче сетка, тем точнее будет прогноз, но времени на его расчёт требуется больше. Найди утверждение, обратное этому.')
+        }, 1500)
+      } else {
+        onNext()
+      }
+    }
+     return {
       isModalActive,
       closeModal,
       stage,
@@ -270,7 +385,16 @@ export default {
       squere,
       timer,
       firstClicked,
-      mapDefault
+      mapDefault,
+      changeSquereValue,
+      level,
+      calculationTimer,
+      calculationMap,
+      changeCountValue,
+      procentMap,
+      procentAll,
+      procentOptions,
+      checkPattern
     };
   },
 };

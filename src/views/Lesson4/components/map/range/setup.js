@@ -35,7 +35,25 @@ export default {
     })
     watch(rangeValue, () => {
       console.log(rangeValue.value)
-      emit('changeSquere')
+      let square = null
+      switch (rangeValue.value) {
+        case '2x2':
+          square = 2*2
+          break;
+        case '3x3':
+          square = 3*3
+          break;
+        case '9x9':
+          square = 9*9
+          break;
+        case '18x18':
+          square = 18*18
+          break;
+        default:
+          break;
+      }
+      console.log(square)
+      emit('changeSquere', square)
     })
     return {
       rangeValue,
