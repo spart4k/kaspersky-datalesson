@@ -89,6 +89,13 @@
   left: rem(80);
   margin-top: rem(26);
   z-index: 99;
+  pointer-events: all;
+  opacity: 1;
+  transition: opacity .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  &.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
   @media screen and (max-width: 450px) {
     width: 92%;
     left: 4%;
