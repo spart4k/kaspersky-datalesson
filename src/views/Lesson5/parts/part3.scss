@@ -117,9 +117,10 @@
   width: rem(151);
   height: rem(151);
   margin-bottom: rem(20);
+  transform: scale(0);
   animation-name: scale;
   animation-duration: 1s;
-  animation-delay: .3s;
+  animation-delay: 0.3s;
   animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
@@ -204,6 +205,11 @@
     height: 97%;
     background-color: #f0e1fe;
     z-index: -1;
+  }
+  &:not(.level3) .corrected {
+    @media screen and (min-width: 451px) {
+      width: rem(160);
+    }
   }
   &.level3::after {
     content: '';
@@ -290,7 +296,7 @@
 .row {
   width: 100%;
   z-index: 9;
-  transition: transform .15s, background-color .3s;
+  transition: transform 0.15s, background-color 0.3s;
   &:active {
     transform: scale(0.98);
   }
