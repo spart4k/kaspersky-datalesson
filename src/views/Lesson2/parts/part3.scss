@@ -159,6 +159,7 @@
   margin-bottom: rem(20);
   animation-name: scale;
   animation-duration: 1s;
+  animation-delay: .3s;
   animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   animation-iteration-count: 1;
   animation-fill-mode: forwards;

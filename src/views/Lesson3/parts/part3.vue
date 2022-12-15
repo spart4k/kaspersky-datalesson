@@ -124,6 +124,7 @@ import Draggable from 'gsap/Draggable';
 // import debounce from 'debounce'
 import { isMobile } from 'mobile-device-detect';
 import { pushPopup } from '@/utils/pushPopup';
+import { loadImage } from '@/utils/loadImage';
 import Card from '../components/Card/Card.vue';
 import texts from './texts';
 import { useStore } from '@/store';
@@ -177,11 +178,16 @@ export default {
       stage.value += 1;
     };
 
-    const endGame = () => {
+    const endGame = async () => {
       if (isMobile.value) isMobileChatOpened.value = true;
       messages.value.push(texts.stage3[`level${level.value}`]);
       onNext();
       if (errorCount.value <= 1) {
+        await loadImage(
+          errorCount.value === 0
+            ? '/assets/img/lesson3/achieveGold.png'
+            : '/assets/img/lesson3/achieveSilver.png'
+        );
         setTimeout(() => {
           isModalActive.value = true;
         }, 1000);

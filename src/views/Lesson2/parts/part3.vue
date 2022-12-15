@@ -81,6 +81,7 @@ import gsap from 'gsap';
 import Card from '../components/Card/Card.vue';
 import { useStore } from '@/store';
 import { pushPopup } from '@/utils/pushPopup';
+import { loadImage } from '@/utils/loadImage';
 import useMobile from '@/hooks/useMobile';
 import texts from './texts';
 
@@ -189,9 +190,14 @@ export default {
           setTimeout(() => {
             resolve();
           }, 2500);
-        }).then(() => {
+        }).then(async () => {
           onNext();
           if (errorCount.value < 2) {
+            await loadImage(
+              errorCount.value === 0
+                ? '/assets/img/lesson2/achieveGold.png'
+                : '/assets/img/lesson2/achieveSilver.png'
+            );
             isModalActive.value = true;
           } else {
             onNext();

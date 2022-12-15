@@ -89,6 +89,7 @@
 import { ref, reactive, computed, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { useStore } from '@/store';
+import { loadImage } from '@/utils/loadImage';
 import useMobile from '@/hooks/useMobile';
 import texts from './texts';
 
@@ -200,7 +201,7 @@ export default {
       isCheckAvailable.value = true;
     });
 
-    const checkCards = () => {
+    const checkCards = async () => {
       isCheckAvailable.value = false;
       if (
         columnsData[1].tasks[0] &&
@@ -217,6 +218,11 @@ export default {
         messages.value.push(texts.final[`level${level.value}`]);
         mobileChatCounter.value += 1;
         if (errorCount.value <= 1) {
+          await loadImage(
+          errorCount.value === 0
+            ? '/assets/img/lesson3/achieveGold.png'
+            : '/assets/img/lesson3/achieveSilver.png'
+        );
           isModalActive.value = true;
         } else {
           onNext();
