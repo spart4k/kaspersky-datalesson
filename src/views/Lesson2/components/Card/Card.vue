@@ -154,7 +154,7 @@ export default {
   align-items: center;
   justify-content: center;
   @media screen and (max-width: 450px) {
-    height: 65%;
+    height: 60%;
   }
 }
 
@@ -167,12 +167,13 @@ export default {
   color: inherit;
   @media screen and (max-width: 450px) {
     font-size: rem(14);
-    line-height: rem(19);
+    line-height: 100%;
     position: absolute;
     bottom: rem(15);
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
+    max-height: 25%;
   }
 }
 </style>

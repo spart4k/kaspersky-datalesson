@@ -71,7 +71,7 @@
   z-index: 1300;
   @media screen and (max-width: 450px) {
     left: rem(15);
-    bottom: rem(30);
+    bottom: rem(20);
     right: unset;
     position: fixed;
   }
@@ -104,10 +104,26 @@
   }
 }
 
+@keyframes scale {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .achieve {
   width: rem(151);
   height: rem(151);
   margin-bottom: rem(20);
+  transform: scale(0);
+  animation-name: scale;
+  animation-duration: 1s;
+  animation-delay: 0.3s;
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 .modalTextAchieve {
@@ -190,11 +206,16 @@
     background-color: #f0e1fe;
     z-index: -1;
   }
+  &:not(.level3) .corrected {
+    @media screen and (min-width: 451px) {
+      width: rem(160);
+    }
+  }
   &.level3::after {
     content: '';
     position: absolute;
     top: 3%;
-    left: 76%;
+    left: 75%;
     width: 1px;
     height: 97%;
     background-color: #f0e1fe;
@@ -244,7 +265,7 @@
     transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
     font-size: rem(8);
     line-height: rem(12);
-    width: rem(100);
+    width: rem(116);
   }
   @media screen and (max-width: 450px) {
     font-size: rem(14);
@@ -275,7 +296,7 @@
 .row {
   width: 100%;
   z-index: 9;
-  transition: transform .15s, background-color .3s;
+  transition: transform 0.15s, background-color 0.3s;
   &:active {
     transform: scale(0.98);
   }

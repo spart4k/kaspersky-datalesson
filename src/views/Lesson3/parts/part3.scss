@@ -63,7 +63,7 @@
   position: absolute;
   bottom: rem(30);
   left: rem(30);
-  z-index: 100;
+  z-index: 0;
   width: rem(83);
   height: rem(114);
   @media screen and (max-width: 450px) {
@@ -180,7 +180,7 @@
     background-repeat: no-repeat;
     background-size: 50% 50%;
     background-position: center center;
-    border: 1px dashed #fba559;
+    border: 1px dashed #fff;
     width: 44vw;
     height: 18vh;
     margin-bottom: rem(15);
@@ -212,12 +212,33 @@
   }
 }
 
-.card {
+.cardWrapper {
   position: absolute;
   top: rem(25);
   right: rem(50);
   z-index: 99;
-  box-shadow: 0px rem(2.25) rem(3.38) rgba(0, 0, 0, 0.03), 0px rem(5.63) rem(12) rgba(0, 0, 0, 0.05);
+  width: rem(188);
+  height: rem(188);
+  &.level3 {
+    width: rem(150);
+    height: rem(150);
+    right: rem(70);
+    top: rem(35);
+  }
+  
+  @media screen and (max-width: 450px) {
+    position: fixed;
+    left: 30%;
+    bottom: -8%;
+    right: unset !important;
+    top: unset !important;
+  }
+}
+
+.card {
+  position: absolute;
+  top: 0;
+  left: 0;
   opacity: 0;
   transition: opacity 0.3s;
   pointer-events: none;
@@ -225,21 +246,21 @@
     opacity: 1;
     pointer-events: all;
   }
+  &:nth-child(1) {
+    box-shadow: 0px rem(2.25) rem(3.38) rgba(0, 0, 0, 0.05), 0px rem(5.63) rem(15) rgba(0, 0, 0, 0.12);
+  }
+  &:nth-child(2) {
+    box-shadow: 0px rem(2.25) rem(3.38) rgba(0, 0, 0, 0.05), 0px rem(5.63) rem(15) rgba(0, 0, 0, 0.12);
+  }
   @media screen and (min-width: 451px) {
     &.level3 {
       width: rem(150);
       height: rem(150);
-      right: rem(70);
-      top: rem(35);
     }
   }
   @media screen and (max-width: 450px) {
     width: 44vw;
     height: 18vh;
-    position: fixed;
-    top: unset;
-    bottom: 0;
-    left: 28%;
     &.level3 {
       height: 16vh;
     }
@@ -251,7 +272,7 @@
   bottom: rem(92);
   overflow: scroll;
   right: rem(30);
-  z-index: 999;
+  z-index: 0 !important;
   overflow: auto;
   max-height: calc(100vh - 25rem);
   -webkit-mask-image: -webkit-linear-gradient(
@@ -264,6 +285,9 @@
     -webkit-mask-image: unset;
     max-height: calc(100vh - 7rem);
   }
+  @media screen and (max-width: 450px) {
+    z-index: 999 !important;
+  }
 }
 
 .btn {
@@ -273,7 +297,7 @@
   z-index: 1300;
   @media screen and (max-width: 450px) {
     left: rem(15);
-    bottom: rem(30);
+    bottom: rem(20);
     right: unset;
     position: fixed;
   }
@@ -302,10 +326,26 @@
   }
 }
 
+@keyframes scale {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 .achieve {
   width: rem(151);
   height: rem(151);
   margin-bottom: rem(20);
+  transform: scale(0);
+  animation-name: scale;
+  animation-duration: 1s;
+  animation-delay: .3s;
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
 .modalTextAchieve {

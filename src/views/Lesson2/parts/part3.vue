@@ -10,7 +10,7 @@
       alt=""
     />
     <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
-    <div :class="$style.cardWrapper">
+    <div :class="[$style.cardWrapper, stage === 1 && $style.disabled]">
       <template v-for="index in 6">
         <Card
           :index="index"
@@ -81,6 +81,7 @@ import gsap from 'gsap';
 import Card from '../components/Card/Card.vue';
 import { useStore } from '@/store';
 import { pushPopup } from '@/utils/pushPopup';
+import { loadImage } from '@/utils/loadImage';
 import useMobile from '@/hooks/useMobile';
 import texts from './texts';
 
@@ -118,6 +119,7 @@ export default {
     })
 
     const toggleMobileChat = () => {
+      if (stage.value === 1) return;
       isMobileChatOpened.value = !isMobileChatOpened.value
       mobileChatCounter.value = 0
     }
@@ -151,46 +153,51 @@ export default {
           gsap.to('.card1', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 4,
+            duration: 2,
             scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card1', { opacity: 0, duration: 1 });
-          }, 3000);
+            isAnimated.value = true;
+          }, 1000);
           gsap.to('.card3', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 3,
+            duration: 1,
             scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card3', { opacity: 0, duration: 1 });
-            isAnimated.value = true;
-          }, 2000);
+          }, 0);
           gsap.to('.card4', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 5,
+            duration: 2,
             scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card4', { opacity: 0, duration: 1 });
-          }, 4000);
+          }, 1000);
           gsap.to('.card6', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 4,
+            duration: 1,
             scale: 0.5,
           });
           setTimeout(() => {
             gsap.to('.card6', { opacity: 0, duration: 1 });
-          }, 3000);
+          }, 0);
           setTimeout(() => {
             resolve();
-          }, 4500);
-        }).then(() => {
+          }, 2500);
+        }).then(async () => {
           onNext();
           if (errorCount.value < 2) {
+            await loadImage(
+              errorCount.value === 0
+                ? '/assets/img/lesson2/achieveGold.png'
+                : '/assets/img/lesson2/achieveSilver.png'
+            );
             isModalActive.value = true;
           } else {
             onNext();

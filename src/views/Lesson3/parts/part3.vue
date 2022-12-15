@@ -3,7 +3,11 @@
     <div :class="$style.starsWrapper">
       <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
     </div>
-    <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
+    <v-speaker
+      v-if="stage > 1 || (stage === 1 && !isModalActive)"
+      @toggle="toggleMobileChat"
+      :counter="mobileChatCounter"
+    />
     <img
       :class="[$style.basket, 'basket']"
       :src="
@@ -41,22 +45,42 @@
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
       <div :class="$style.inner">
         <template v-for="index in 7">
-          <div :key="index" :class="[$style.droparea, $style.level3, 'droppable', `drop${index}`]"></div>
+          <div
+            :key="index"
+            :class="[$style.droparea, $style.level3, 'droppable', `drop${index}`]"
+          ></div>
         </template>
       </div>
     </div>
-    <template v-for="index in level === '1' ? 6 : level === '2' ? 12 : 16">
-      <Card
-        :key="index"
-        :data-num="index"
-        :index="index"
-        :class="[$style.card, level === '3' && $style.level3, stage > 1 && $style.visible, 'draggable', `card${index}`]"
-      />
-    </template>
-    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="[$style.popupMsg, isChatFullLength && $style.full]" />
+    <div :class="[$style.cardWrapper, level === '3' && $style.level3]" ref="cardWrapper">
+      <template v-for="index in level === '1' ? 6 : level === '2' ? 12 : 16">
+        <Card
+          :key="index"
+          :data-num="index"
+          :index="index"
+          :class="[
+            $style.card,
+            level === '3' && $style.level3,
+            stage > 1 && $style.visible,
+            'draggable',
+            `card${index}`,
+          ]"
+        />
+      </template>
+    </div>
+    <v-popup-msg
+      :items="messages"
+      :isOpened="isMobileChatOpened"
+      @toggle="toggleMobileChat"
+      :class="[$style.popupMsg, isChatFullLength && $style.full]"
+    />
     <transition name="fade">
       <v-btn
-        v-if="stage === 1 && messages.length >= texts.stage1[`level${level}`].length && (!isMobile || isMobile && isMobileChatOpened)"
+        v-if="
+          stage === 1 &&
+          messages.length >= texts.stage1[`level${level}`].length &&
+          (!isMobile || (isMobile && isMobileChatOpened))
+        "
         sm
         :class="$style.btn"
         @click="enableGame"
@@ -100,6 +124,7 @@ import Draggable from 'gsap/Draggable';
 // import debounce from 'debounce'
 import { isMobile } from 'mobile-device-detect';
 import { pushPopup } from '@/utils/pushPopup';
+import { loadImage } from '@/utils/loadImage';
 import Card from '../components/Card/Card.vue';
 import texts from './texts';
 import { useStore } from '@/store';
@@ -127,6 +152,8 @@ export default {
     const isChatFullLength = ref(true);
     const isMobileChatOpened = ref(true);
     const mobileChatCounter = ref(0);
+    const cardWrapper = ref(null);
+    const currentCard = ref(null);
 
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -152,11 +179,16 @@ export default {
       stage.value += 1;
     };
 
-    const endGame = () => {
+    const endGame = async () => {
       if (isMobile.value) isMobileChatOpened.value = true;
       messages.value.push(texts.stage3[`level${level.value}`]);
       onNext();
       if (errorCount.value <= 1) {
+        await loadImage(
+          errorCount.value === 0
+            ? '/assets/img/lesson3/achieveGold.png'
+            : '/assets/img/lesson3/achieveSilver.png'
+        );
         setTimeout(() => {
           isModalActive.value = true;
         }, 1000);
@@ -169,13 +201,18 @@ export default {
     };
 
     const toggleMobileChat = () => {
-      isMobileChatOpened.value = !isMobileChatOpened.value
-      mobileChatCounter.value = 0
-    }
+      if (stage.value === 1) return;
+      isMobileChatOpened.value = !isMobileChatOpened.value;
+      mobileChatCounter.value = 0;
+    };
 
     watch(rightAnswersCount, () => {
       const rightElements = document.querySelectorAll('.snapped:not(.wrong)');
-      if ((level.value === '1' && rightElements.length === 4) || (level.value === '2' && rightElements.length === 6) || (level.value === '3' && rightElements.length === 7)) {
+      if (
+        (level.value === '1' && rightElements.length === 4) ||
+        (level.value === '2' && rightElements.length === 6) ||
+        (level.value === '3' && rightElements.length === 7)
+      ) {
         isStackVisible.value = false;
         isChatFullLength.value = true;
         endGame();
@@ -189,7 +226,7 @@ export default {
       } else {
         isChatFullLength.value = true;
       }
-    })
+    });
 
     const closeAchieveModal = () => {
       isModalActive.value = false;
@@ -227,35 +264,11 @@ export default {
       clientWidth.value = document.body.clientWidth;
       clientHeight.value = document.body.clientHeight;
       factor.value = (16 * clientWidth.value) / 1280;
-      document.body.classList.add('fixed')
-    };
-
-    const onResize = () => {
-      if (clientWidth.value === document.body.clientWidth) return
-      const elements = document.querySelectorAll('.draggable');
-      if (stage.value === 4 || (stage.value === 3 && isModalActive.value)) {
-        elements.forEach((el) => el.remove());
-      } else {
-        elements.forEach((el) => {
-          el.style.left = isMobile.value ? `${clientWidth.value / 3.5}px` : level.value !== '3' ? `${clientWidth.value / 1.23}px` : `${clientWidth.value / 1.21}px`;
-          el.style.top = isMobile.value ? `${clientHeight.value - 150}px` : level.value !== '3' ? `${1.5625 * factor.value}px` : `${2.1875 * factor.value}px`;
-          el.style.transform = 'rotate(-9deg) ';
-          return el;
-        });
-      }
-      onInit();
-      document.querySelectorAll('.occupied').forEach((el) => el.classList.remove('occupied'));
-      document.querySelectorAll('.wrong').forEach((el) => el.classList.remove('wrong'));
-      document.querySelectorAll('.snapped').forEach((el) => el.classList.remove('snapped'));
+      document.body.classList.add('fixed');
     };
 
     onMounted(() => {
-      //temp
-      // startGame()
-      // enableGame()
-
       onInit();
-      window.addEventListener('resize', onResize);
       const targets = document.querySelectorAll('.droppable');
       const overlapThreshold = '80%';
 
@@ -267,6 +280,7 @@ export default {
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
           if (target.classList.contains('wrong')) target.classList.remove('wrong');
           if (target.classList.contains('snapped')) target.classList.remove('snapped');
+          currentCard.value = target;
           if (!isMobile)
             window.addEventListener('mousemove', moveCenter(e, target), { once: true });
           activeCard.value = target.dataset.num;
@@ -292,11 +306,20 @@ export default {
           let { target } = e;
           if (!target.classList.contains('draggable')) target = target.closest('.draggable');
           const basket = document.querySelector('.basket');
+          if (e.clientX < 0 || e.clientY < 0 || e.clientY > clientHeight.value || e.clientX > clientWidth.value || !target) {
+              gsap.to(currentCard.value, {
+                left: 0,
+                top: 0,
+                rotate: -9,
+                duration: 0.3,
+              });
+              return;
+            }
           if (this.hitTest(basket)) {
             if (!wrongCards.includes(activeCard.value)) {
               target.classList.add('wrong');
               messages.value.push(texts.wrong[`level${level.value}`][`card${activeCard.value}`]);
-              mobileChatCounter.value += 1
+              mobileChatCounter.value += 1;
               errorCount.value += 1;
             } else {
               gsap.to(target, {
@@ -304,7 +327,7 @@ export default {
                 duration: 0.1,
               });
               messages.value.push(texts.right[`level${level.value}`]);
-              mobileChatCounter.value += 1
+              mobileChatCounter.value += 1;
               setTimeout(() => {
                 target.remove();
               }, 500);
@@ -314,16 +337,18 @@ export default {
           }
           for (let i = 0; i < targets.length; i += 1) {
             if (this.hitTest(targets[i], overlapThreshold)) {
+              const cardHtml = target.outerHTML;
               if (!targets[i].classList.contains('occupied')) {
                 const box = targets[i].getBoundingClientRect();
                 targets[i].classList.add('occupied');
 
+                // const newCard = document.createElement('div');
+                // newCard.innerHTML = cardHtml;
+                targets[i].appendChild(target);
                 gsap.to(target, {
-                  x: 0,
-                  y: 0,
-                  left: box.left,
-                  top: box.top,
-                  duration: 0.1,
+                  left: 0,
+                  top: 0,
+                  duration: 0,
                 });
 
                 if (
@@ -343,12 +368,12 @@ export default {
                   messages.value.push(
                     texts.wrong[`level${level.value}`][`card${activeCard.value}`]
                   );
-                  mobileChatCounter.value += 1
+                  mobileChatCounter.value += 1;
                   target.targetAttachedTo.classList.remove('occupied');
                   errorCount.value += 1;
                 } else {
                   messages.value.push(texts.right[`level${level.value}`]);
-                  mobileChatCounter.value += 1
+                  mobileChatCounter.value += 1;
                   rightAnswersCount.value += 1;
                 }
               }
@@ -363,8 +388,8 @@ export default {
             gsap.to(target, {
               x: 0,
               y: 0,
-              left: isMobile.value ? clientWidth.value / 3.5 : level.value !== '3' ? clientWidth.value / 1.23 : clientWidth.value / 1.21,
-              top: isMobile.value ? clientHeight.value - 150 : level.value !== '3' ? 1.5625 * factor.value : 2.1875 * factor.value,
+              left: 0,
+              top: 0,
               rotate: -9,
               duration: 0.3,
             });
@@ -415,5 +440,18 @@ export default {
 
 .snapped {
   border: 3px solid #91c0f8;
+  z-index: 100 !important;
+}
+
+.occupied {
+  position: relative;
+  & div {
+    pointer-events: none !important;
+    cursor: default;
+  }
+}
+
+.droppable {
+  position: relative;
 }
 </style>

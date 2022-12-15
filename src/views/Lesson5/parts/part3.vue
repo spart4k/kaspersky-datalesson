@@ -171,6 +171,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import Row from '../components/Row.vue';
 import { useStore } from '@/store';
 import { pushPopup } from '@/utils/pushPopup';
+import { loadImage } from '@/utils/loadImage';
 import useMobile from '@/hooks/useMobile';
 import texts from './texts';
 
@@ -213,6 +214,7 @@ export default {
     });
 
     const toggleMobileChat = () => {
+      if (stage.value === 1) return;
       isMobileChatOpened.value = !isMobileChatOpened.value;
       mobileChatCounter.value = 0;
     };
@@ -314,7 +316,12 @@ export default {
 
       if (stage.value === 7) {
         if (errorCount.value <= 1) {
-          setTimeout(() => {
+          setTimeout(async () => {
+            await loadImage(
+              errorCount.value === 0
+                ? '/assets/img/lesson5/achieveGold.png'
+                : '/assets/img/lesson5/achieveSilver.png'
+            );
             isModalActive.value = true;
           }, 1000);
         } else {
