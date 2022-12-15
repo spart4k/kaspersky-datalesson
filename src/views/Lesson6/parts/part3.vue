@@ -14,20 +14,23 @@
       @toggle="toggleMobileChat"
       :class="$style.popupMsg"
     />
-    <div :class="$style.window">
+    <div :class="[$style.window, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Расчёт прогноза погоды</p>
       <div :class="$style.outer">
         <div :class="$style.inner">
           <div v-for="column in columnsData" :key="column.title" :class="$style.column">
-            <p>{{ column.title }}</p>
+            <div :class="$style.columnTitle">{{ column.title }}</div>
             <draggable
               :list="column.tasks"
               :animation="200"
               :ghost-class="$style.ghostCard"
               group="tasks"
+              :class="$style.draggable"
+              :scroll-sensitivity="200"
+              :force-fallback="true"
             >
-              <div v-for="task in column.tasks" :key="task.id" >
+              <div v-for="task in column.tasks" :key="task.id" :class="$style.draggableInner">
                 <p :class="$style.task">{{ task.title }}</p>
               </div>
             </draggable>
@@ -37,22 +40,16 @@
     </div>
     <transition name="fade">
       <v-btn
-        v-if="stage === 1 && (!isMobile || (isMobile && isMobileChatOpened))"
+        v-if="stage === 1 && !isModalActive && (!isMobile || (isMobile && isMobileChatOpened))"
         sm
         :class="$style.btn"
         @click="onGameInit"
         >Хорошо</v-btn
       >
-      <!-- <v-btn
-        v-if="stage === 2"
-        sm
-        :class="$style.btn"
-        @click="checkCards"
-        >Проверить</v-btn
-      > -->
-      <!-- <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson3')"
+      <v-btn v-if="isCheckAvailable" sm :class="$style.btn" @click="checkCards">Проверить</v-btn>
+      <v-btn v-if="stage === 3" sm :class="$style.btn" @click="$router.push('/')"
         >Продолжить</v-btn
-      > -->
+      >
     </transition>
     <v-modal v-if="stage === 1" :isActive="isModalActive">
       <div :class="$style.modalInner">
@@ -68,14 +65,14 @@
         <v-btn lg @click="onGameStart">Начать</v-btn>
       </div>
     </v-modal>
-    <!-- <v-modal v-if="stage === 3" :isActive="isModalActive">
-      <div :class="$style.achieveModal">
+    <v-modal v-if="stage === 2" :isActive="isModalActive">
+      <div :class="[$style.achieveModal, errorCount === 0 ? $style.gold : $style.silver]">
         <img
           :class="$style.achieve"
           :src="
             errorCount === 0
-              ? '/assets/img/lesson2/achieveGold.png'
-              : '/assets/img/lesson2/achieveSilver.png'
+              ? '/assets/img/lesson6/achieveGold.png'
+              : '/assets/img/lesson6/achieveSilver.png'
           "
           alt=""
         />
@@ -84,12 +81,12 @@
         </p>
         <v-btn lg @click="closeAchieveModal">Продолжить</v-btn>
       </div>
-    </v-modal> -->
+    </v-modal>
   </div>
 </template>
 
 <script>
-import { ref, computed, watch } from 'vue';
+import { ref, reactive, computed, watch } from 'vue';
 import draggable from 'vuedraggable';
 import { useStore } from '@/store';
 import useMobile from '@/hooks/useMobile';
@@ -105,6 +102,7 @@ export default {
     const messages = ref([]);
     const isMobileChatOpened = ref(true);
     const mobileChatCounter = ref(0);
+    const isCheckAvailable = ref(false);
 
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -122,6 +120,7 @@ export default {
     });
 
     const toggleMobileChat = () => {
+      if (stage.value === 1) return;
       isMobileChatOpened.value = !isMobileChatOpened.value;
       mobileChatCounter.value = 0;
     };
@@ -141,7 +140,7 @@ export default {
       onNext();
     };
 
-    const columnsData = ref([
+    const columnsData = reactive([
       {
         title: 'Backlog',
         tasks: [
@@ -189,6 +188,38 @@ export default {
       },
     ]);
 
+    watch(columnsData, () => {
+      isCheckAvailable.value = true;
+    });
+
+    const checkCards = () => {
+      isCheckAvailable.value = false;
+      if (
+        columnsData[1].tasks[0] &&
+        columnsData[1].tasks[0].id === 3 &&
+        columnsData[2].tasks[0] &&
+        columnsData[2].tasks[0].id === 4 &&
+        columnsData[3].tasks[0] &&
+        columnsData[3].tasks[0].id === 2 &&
+        columnsData[4].tasks[0] &&
+        columnsData[4].tasks[0].id === 5 &&
+        columnsData[5].tasks[0] &&
+        columnsData[5].tasks[0].id === 1
+      ) {
+        messages.value.push(texts.final[`level${level.value}`]);
+        mobileChatCounter.value += 1;
+        if (errorCount.value <= 1) {
+          isModalActive.value = true;
+        } else {
+          onNext();
+        }
+      } else {
+        messages.value.push(texts.wrong[`level${level.value}`]);
+        mobileChatCounter.value += 1;
+        errorCount.value += 1;
+      }
+    };
+
     return {
       isModalActive,
       onGameStart,
@@ -205,6 +236,8 @@ export default {
       isMobile,
       mobileChatCounter,
       columnsData,
+      isCheckAvailable,
+      checkCards,
     };
   },
 };

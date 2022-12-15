@@ -56,7 +56,7 @@
       </div>
     </v-modal>
     <v-modal v-if="stage === 3" :isActive="isModalActive">
-      <div :class="$style.achieveModal">
+      <div :class="[$style.achieveModal, errorCount === 0 ? $style.gold : $style.silver]">
         <img
           :class="$style.achieve"
           :src="
