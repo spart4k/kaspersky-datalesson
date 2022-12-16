@@ -3,6 +3,7 @@
     <div :class="$style.starsWrapper">
       <img :class="$style.stars" src="../assets/stars1.svg" alt="" />
     </div>
+    <!-- <v-progress :class="$style.progress"></v-progress> -->
     <img
       :class="$style.cod"
       ref="codRef"
@@ -15,7 +16,7 @@
         <Card
           :index="index"
           :isActive="activeCards.includes(index)"
-          :isDisabled="stage === 1 || isSuccess"
+          :isDisabled="stage === 1 || isSuccess || isCheckingInProgress"
           :isWrong="
             isCheckingInProgress &&
             ((index === 2 && activeCards.includes(2)) || (index === 5 && activeCards.includes(5)))
@@ -47,10 +48,6 @@
         <p :class="$style.modalText">
           Центр обработки данных, сокращённо – ЦОД. Туда поступают данные с множества источников из
           разных точек планеты.
-        </p>
-        <p :class="$style.modalText">
-          Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
-          требуются.
         </p>
         <v-btn lg @click="onGameStart">Начать</v-btn>
       </div>
@@ -198,6 +195,7 @@ export default {
                 ? '/assets/img/lesson2/achieveGold.png'
                 : '/assets/img/lesson2/achieveSilver.png'
             );
+            errorCount.value === 0 ? store.dispatch('updateProgress', [2, 2]) : store.dispatch('updateProgress', [2, 1]);
             isModalActive.value = true;
           } else {
             onNext();

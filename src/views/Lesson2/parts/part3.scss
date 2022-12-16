@@ -31,6 +31,17 @@
   text-align: center;
 }
 
+// .progress {
+//   position: absolute;
+//   top: rem(30);
+//   left: rem(30);
+//   z-index: 10;
+//   @media screen and (max-width: 450px) {
+//     top: rem(15);
+//     left: rem(15);
+//   }
+// }
+
 .starsWrapper {
   position: absolute;
   background-color: #fff;
@@ -75,6 +86,28 @@
   }
 }
 
+.popupMsg {
+  @media screen and (min-width: 451px) {
+    position: absolute;
+    bottom: rem(92);
+    overflow: scroll;
+    right: rem(30);
+    z-index: 0 !important;
+    overflow: auto;
+    max-height: calc(100vh - 20rem);
+    -webkit-mask-image: -webkit-linear-gradient(
+      top,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 7%,
+      rgba(0, 0, 0, 1) 100%
+    );
+    &.full {
+      -webkit-mask-image: unset;
+      max-height: calc(100vh - 7rem);
+    }
+  }
+}
+
 .cardWrapper {
   width: rem(723);
   height: rem(472);
@@ -91,7 +124,7 @@
   z-index: 9999;
   pointer-events: all;
   opacity: 1;
-  transition: opacity .3s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transition: opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   &.disabled {
     opacity: 0.5;
     pointer-events: none;
@@ -160,8 +193,8 @@
   margin-bottom: rem(20);
   transform: scale(0);
   animation-name: scale;
-  animation-duration: .3s;
-  animation-delay: .1s;
+  animation-duration: 0.3s;
+  animation-delay: 0.1s;
   animation-timing-function: cubic-bezier(0.81, -0.11, 0.35, 1.26);
   animation-iteration-count: 1;
   animation-fill-mode: forwards;

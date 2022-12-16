@@ -93,7 +93,7 @@
     <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="startGame">
       <div :class="$style.modalInner">
         <img :class="$style.modalImg" src="../../../components/@ui/Speaker/speaker.png" alt="" />
-        <p :class="$style.modalText">{{ texts.start }}</p>
+        <p :class="$style.modalText">{{ texts.start[`level${level}`] }}</p>
         <v-btn lg @click="startGame">Начать</v-btn>
       </div>
     </v-modal>

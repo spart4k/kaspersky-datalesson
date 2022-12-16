@@ -7,6 +7,7 @@ const store = new Vuex.Store({
   state: {
     session: null,
     level: null,
+    progress: [0, 2, 0, 0, 0, 0],
   },
   mutations: {
     setSession(state, session) {
@@ -15,6 +16,9 @@ const store = new Vuex.Store({
     setLevel(state, level) {
       state.level = level
     },
+    setProgress(state, payload) {
+      state.progress[payload[0] - 1] = payload[1]
+    },
   },
   actions: {
     updateSession({ commit }, session) {
@@ -22,6 +26,9 @@ const store = new Vuex.Store({
     },
     updateLevel({ commit }, level) {
       commit('setLevel', level)
+    },
+    updateProgress({ commit }, payload) {
+      commit('setProgress', payload)
     },
   },
   modules: {

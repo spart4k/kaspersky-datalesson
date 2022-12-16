@@ -55,12 +55,7 @@
       <div :class="$style.modalInner">
         <img :class="$style.speaker" src="../../../components/@ui/Speaker/speaker.png" alt="" />
         <p :class="$style.modalText">
-          Центр обработки данных, сокращённо – ЦОД. Туда поступают данные с множества источников из
-          разных точек планеты.
-        </p>
-        <p :class="$style.modalText">
-          Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
-          требуются.
+          {{texts.start[`level${level}`]}}
         </p>
         <v-btn lg @click="onGameStart">Начать</v-btn>
       </div>
