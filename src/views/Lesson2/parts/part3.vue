@@ -6,7 +6,7 @@
     <img
       :class="$style.cod"
       ref="codRef"
-      :src="isAnimated ? '/assets/img/lesson2/cod_2.svg' : '/assets/img/lesson2/cod_1.svg'"
+      :src="isAnimated ? '/assets/img/lesson2/cod_2.png' : '/assets/img/lesson2/cod_1.png'"
       alt=""
     />
     <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
@@ -153,43 +153,43 @@ export default {
           gsap.to('.card1', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 2,
+            duration: 0.7,
             scale: 0.5,
           });
           setTimeout(() => {
-            gsap.to('.card1', { opacity: 0, duration: 1 });
+            gsap.to('.card1', { opacity: 0, duration: 0.3 });
             isAnimated.value = true;
-          }, 1000);
+          }, 200);
           gsap.to('.card3', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 1,
+            duration: 0.5,
             scale: 0.5,
           });
           setTimeout(() => {
-            gsap.to('.card3', { opacity: 0, duration: 1 });
+            gsap.to('.card3', { opacity: 0, duration: 0.3 });
           }, 0);
           gsap.to('.card4', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 2,
+            duration: 0.7,
             scale: 0.5,
           });
           setTimeout(() => {
-            gsap.to('.card4', { opacity: 0, duration: 1 });
-          }, 1000);
+            gsap.to('.card4', { opacity: 0, duration: 0.3 });
+          }, 100);
           gsap.to('.card6', {
             x: (i, el) => left - el.getBoundingClientRect().left,
             y: (i, el) => top - el.getBoundingClientRect().top,
-            duration: 1,
+            duration: 0.5,
             scale: 0.5,
           });
           setTimeout(() => {
-            gsap.to('.card6', { opacity: 0, duration: 1 });
+            gsap.to('.card6', { opacity: 0, duration: 0.3 });
           }, 0);
           setTimeout(() => {
             resolve();
-          }, 2500);
+          }, 1000);
         }).then(async () => {
           onNext();
           if (errorCount.value < 2) {
