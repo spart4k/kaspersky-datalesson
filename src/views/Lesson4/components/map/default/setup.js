@@ -39,7 +39,7 @@ export default {
     const smallMap = ref(true)
     const isMobile = useMobile();
     const isShowPanel = ref(false)
-    const isShowGrade = ref(false)
+    const isShowGrade = ref(true)
     const checking = (box) => {
       if (props.level !== '1') return
       if (props.stage !== 2 && props.stage !== 5) return

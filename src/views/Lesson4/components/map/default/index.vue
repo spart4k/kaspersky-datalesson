@@ -41,7 +41,7 @@
       <map-panel @closePanel="isShowPanel = false" :isShowPanel="isShowPanel" v-show="$props.stage >= 4 && $props.level !== '1' && (isMobile ? isShowPanel ? true : false : true)" @changeCount="changeCount"></map-panel>
     </div>
     <div :class="[$style.col, $style.grade]">
-      <map-grade @closePanel="isShowGrade = false" :level="$props.level" @check="check" v-if="$props.stage >= 5 && $props.level !== '1' && (isMobile ? isShowGrade ? true : false : true)"></map-grade>
+      <map-grade @closePanel="isShowGrade = false" :level="$props.level" @check="check" v-if="$props.stage === 5 && $props.level !== '1' && (isMobile ? isShowGrade ? true : false : true)"></map-grade>
     </div>
     <svg v-if="$props.stage >= 5 && $props.level !== '1'" :class="$style.openGrade" @click="isShowGrade = true" width="58" height="59" viewBox="0 0 58 59" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g filter="url(#filter0_d_461_464)">
