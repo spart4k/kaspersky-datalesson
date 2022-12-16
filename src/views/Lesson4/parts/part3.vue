@@ -9,7 +9,7 @@
     <accuracy :procents="procentAll" v-show="level === '2' || level === '3'"></accuracy>
     <!-- <img v-if="stage >= 4" :class="$style.maplittle" src="../assets/maplittle.png" alt=""> -->
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
-    <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
+    <v-speaker :class="$style.speaker" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
     <!-- <transition name="fade">
@@ -190,8 +190,10 @@ export default {
         if (level.value === '1') {
           timer.value.stopInterval()
           messages.value.push('Отлично, у тебя все быстро получилось. Но давай посмотрим, насколько точным вышел этот прогноз.')
+          // mobileChatCounter.value += 1
           setTimeout(() => {
             messages.value.push('Граница дождя недостаточно точная.')
+            // mobileChatCounter.value += 1
           }, 1500)
           setTimeout(() => {
             onNext()
@@ -199,6 +201,7 @@ export default {
         } else if (level.value === '2' || level.value === '3') {
           if (squere.value === 324) {
             messages.value.push('А теперь давай в нашей модели учитывать дополнительные параметры. Обрати внимание на то, как меняются время и точность прогноза.')
+            // mobileChatCounter.value += 1
           }
           onNext()
         }
@@ -208,6 +211,7 @@ export default {
         if (level.value === '1') {
           messages.value.push('Давай посмотрим на другую сетку, теперь из 16 клеточек. Снова помоги компьютеру сделать вычисления. Нажми на каждую из клеточек.')
           squere.value = 16
+          // mobileChatCounter.value += 1
           showNextBtn.value = true
           timer.value.clearTimerValue()
           mapDefault.value.clearFirstClicked()
@@ -221,14 +225,17 @@ export default {
           console.log('NEXT STEP 5+')
           messages.value.push('На основании своих наблюдений выбери из списка корректное утверждение.')
           showNextBtn.value = false
+          // mobileChatCounter.value += 1
         }
       } 
       if (stage.value === 6) {
         if (level.value === '1') {
           messages.value.push('Отличный эксперимент! Теперь ты видишь, что, чем точнее мы хотим получить прогноз, тем дольше его придется считать.')
           timer.value.stopInterval()
+          mobileChatCounter.value += 1
           showNextBtn.value = true
         } else if (level.value === '2' || level.value === '3') {
+          mobileChatCounter.value += 1
           messages.value.push('У тебя получилось! Теперь ты видишь, как связаны точность прогноза и время на его расчёт.')
           isModalActive.value = true
         }

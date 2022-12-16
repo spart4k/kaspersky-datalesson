@@ -70,7 +70,7 @@
     </linearGradient>
     </defs>
   </svg>  -->
-  <svg width="507" height="568" viewBox="0 0 507 568" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <svg @click="tryClick" width="507" height="568" viewBox="0 0 507 568" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M298 431H209V1501H298V431Z" fill="white"/>
     <path d="M334.79 317.337H172.948L178.955 424.222C181.188 463.963 214.065 495.045 253.869 495.045C293.673 495.045 326.55 463.963 328.783 424.222L334.79 317.337Z" fill="url(#paint0_linear_426_5078)"/>
     <path d="M291.949 317.336H334.561L438.204 58.118L506.151 -0.000244141H440.507L374.576 53.1788L291.949 317.336Z" fill="white"/>
@@ -97,7 +97,7 @@
     <path d="M263.754 250H244.572" stroke="#095296"/>
     <path d="M258.523 208H249.804" stroke="#095296"/>
     <path d="M263.754 222H244.572" stroke="#095296"/>
-    <rect :class="$style.answer" @click="successAnswer" x="240" y="208" width="47" height="27" fill="#D9D9D9" fill-opacity="0.01"/>
+    <rect :class="[$style.answer, tryClicked ? $style.active : '']" @click="successAnswer" x="240" y="208" width="47" height="27" fill="#D9D9D9" fill-opacity="0.01"/>
     <path d="M258.523 236H249.804" stroke="#095296"/>
     <path d="M258.523 292H249.804" stroke="#095296"/>
     <path d="M263.754 306H244.572" stroke="#095296"/>
@@ -148,7 +148,12 @@
 
 <style scoped lang="scss"  module>
   .answer {
-    stroke: red;
+    transition-box: fill-box;
+    transition: .2s;
+    &.active {
+      stroke: red;
+    }
+    
     &:hover {
       cursor: pointer;
     }
@@ -162,6 +167,7 @@ export default {
   setup(props, ctx) {
     const { emit } = ctx
     const isShow = ref(false)
+    const tryClicked = ref(false)
     onMounted(() => {
       isShow.value = true
     })
@@ -169,10 +175,16 @@ export default {
     const successAnswer = () => {
       emit('successAnswer', 'precipitation')
     }
+    const tryClick = () => {
+      console.log('try')
+      tryClicked.value = true
+    }
     return {
       isShow,
       emitClick,
-      successAnswer
+      successAnswer,
+      tryClick,
+      tryClicked
     }
   }
 }

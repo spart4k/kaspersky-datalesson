@@ -91,11 +91,19 @@ export default {
         })
       }
     })
+    const applyOptions = () => {
+      
+    }
+    const closePanel = () => {
+      emit('closePanel')
+    }
     return {
       cards,
       selectedPattern,
       checkPattern,
-      selectedPatternArray
+      selectedPatternArray,
+      applyOptions,
+      closePanel
     }
   },
 }
