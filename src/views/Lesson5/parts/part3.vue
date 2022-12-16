@@ -134,7 +134,7 @@
     </transition>
     <v-modal v-if="stage === 1" :isActive="isModalActive">
       <div :class="$style.modalInner">
-        <img :class="$style.speaker" src="../../../assets/img/leader.svg" alt="" />
+        <img :class="$style.speaker" src="../../../components/@ui/Speaker/speaker.png" alt="" />
         <p :class="$style.modalText">
           Центр обработки данных, сокращённо – ЦОД. Туда поступают данные с множества источников из
           разных точек планеты.
@@ -283,7 +283,7 @@ export default {
           setTimeout(() => {
             isCheckingInProgress.value = false;
             selectedRows.value = [];
-          }, 2000);
+          }, 1000);
         }
       }
 
@@ -310,7 +310,7 @@ export default {
           setTimeout(() => {
             isCheckingInProgress.value = false;
             selectedRows.value = [];
-          }, 2000);
+          }, 1000);
         }
       }
 
@@ -354,7 +354,7 @@ export default {
         }
         setTimeout(() => {
           isCheckingInProgress.value = false;
-        }, 2000);
+        }, 1000);
       }
     };
 
