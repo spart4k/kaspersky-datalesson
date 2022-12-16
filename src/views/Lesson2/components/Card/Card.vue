@@ -79,6 +79,7 @@ export default {
   box-shadow: 0px rem(2) rem(3) rgba(0, 0, 0, 0.05), 0px rem(5) rem(20) rgba(0, 0, 0, 0.15);
   border-radius: rem(20);
   padding: rem(5) rem(15) rem(20);
+  border: 3px solid #fff;
   color: #000;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.25, 0.1, 0.25, 1);
