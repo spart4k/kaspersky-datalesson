@@ -134,10 +134,9 @@ export default {
     margin-bottom: rem(4);
     background-size: rem(44) rem(44);
     @media screen and (max-width: 450px) {
-      width: rem(31);
       height: rem(31);
-      background-size: 100% 100%;
       background-repeat: no-repeat;
+      background-size: 100% 100%;
     }
   }
   &.gold1 {

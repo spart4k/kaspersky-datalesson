@@ -96,7 +96,6 @@ import Diary from '../components/Diary/index.vue';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
 import precipitation from '../components/precipitation/index.vue'
-import starts from '@/components/@ui/Stars'
 import speaker from '@/components/@ui/Speaker/Speaker.vue'
 import useMobile from '@/hooks/useMobile';
 export default {
@@ -106,7 +105,6 @@ export default {
     home,
     precipitation,
     mill,
-    starts,
     speaker
     // Card,
   },
