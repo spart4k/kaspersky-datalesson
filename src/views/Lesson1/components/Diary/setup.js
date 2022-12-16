@@ -48,7 +48,7 @@ export default {
       {
         title: 'Атм. давление',
         postfix: 'гПа',
-        answer: 35,
+        answer: 995,
         class: 'davl',
         state: 'writing',
         value: ''

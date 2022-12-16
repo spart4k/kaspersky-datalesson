@@ -74,6 +74,7 @@ export default {
     const { emit } = ctx
     const isShow = ref(false)
     const tryClicked = ref(false)
+    const tryClickedFirst = ref(false)
     onMounted(() => {
       isShow.value = true
     })
@@ -84,14 +85,24 @@ export default {
     }
     const tryClick = () => {
       console.log('try')
-      tryClicked.value = true
+      // tryClicked.value = true
+      if (tryClicked.value) return
+      if (!tryClickedFirst.value) {
+        emit('addMessage', 'Посмотри внимательнее, показания снимаются со счётчика.')
+        tryClickedFirst.value = true
+      }
+      else {
+        tryClicked.value = true
+        emit('addMessage', 'Нажми сюда, чтобы снять показания с анемометра.')
+      }
     }
     return {
       isShow,
       emitClick,
       successAnswer,
       tryClicked,
-      tryClick
+      tryClick,
+      tryClickedFirst
     }
   }
 }

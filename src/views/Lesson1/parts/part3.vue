@@ -21,6 +21,7 @@
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
+    <v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$router.push('/lesson2')">Продолжить</v-btn>
     <div :class="$style.appliances">
       <div v-if="zoom === 'all'" :class="$style.wrap">
         <div :class="[
@@ -48,7 +49,7 @@
       $style[precipitationChoosed]
     ]">
       <div :class="$style.wrap">
-        <component @successAnswer="successAnswer" @emitClick="successSingle" :lightingHome="lightingHome" :is="precipitationChoosed"></component>
+        <component @successAnswer="successAnswer" @addMessage="addMessage" @emitClick="successSingle" :lightingHome="lightingHome" :is="precipitationChoosed"></component>
       </div>
     </div>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
@@ -62,11 +63,11 @@
         >Проверить</v-btn
       >
     </transition> -->
-    <v-modal v-if="stage === 1" :isActive="isModalActive" :toggleActive="closeModal">
+    <v-modal v-if="stage === 0" :isActive="isModalActive" :toggleActive="closeModal">
       <div :class="$style.modalInner">
         <img src="../assets/prof.svg" alt="" />
         <p :class="$style.modalText">
-          Погоду изучают метеорологи. Они анализируют погодные явления и прогнозируют их.
+          {{  level === '1' ? 'Погоду изучают метеорологи. Они анализируют погодные явления и прогнозируют их.' : level === '2' ? 'Погоду изучают метеорологи. Они исследуют строение и свойства земной атмосферы и процессы, происходящие в ней.' : level === '3' ? 'Изучением погодных явлений занимаются метеорологи. Они исследуют строение и свойства атмосферы Земли, а также физические и химические процессы, происходящие в ней.' : '' }}
         </p>
         <!-- <p :class="$style.modalText">
           Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
@@ -75,22 +76,23 @@
         <v-btn lg @click="closeModal">Начать</v-btn>
       </div>
     </v-modal>
-    <v-modal v-if="stage === 15" :isActive="isModalActive">
+    <v-modal v-if="stage === 14" :isActive="isModalActive">
       <div :class="$style.modalInner">
-        <img :class="$style.achieve" src="../assets/achieve.svg" alt="" />
+        <img :class="$style.achieve" src="../assets/achieve.png" alt="" />
         <p :class="[$style.modalText, $style.modalTextBottom]">
           Отличная работа! Ты получаешь золотое достижение «Метеоролог»!<br /> Продолжай в том же духе!
         </p>
-        <v-btn lg @click="$router.push('/lesson2')">Продолжить</v-btn>
+        <v-btn lg @click="closeModal">Продолжить</v-btn>
       </div>
     </v-modal>
   </div>
 </template>
 
 <script>
-import { ref, reactive } from 'vue';
+import { ref, reactive, computed } from 'vue';
 // import gsap from 'gsap';
 // import Card from '../components/Card/Card.vue';
+import { useStore } from '@/store';
 import Diary from '../components/Diary/index.vue';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
@@ -110,8 +112,9 @@ export default {
     // Card,
   },
   setup() {
+    const store = useStore();
     const isModalActive = ref(true);
-    const stage = ref(1);
+    const stage = ref(0);
     const isCheckingInProgress = ref(false);
     const isSuccess = ref(false);
     const isAnimated = ref(false);
@@ -119,7 +122,9 @@ export default {
     const zoom = ref('all')
     const isMobileChatOpened = ref(true)
     const mobileChatCounter = ref(0);
+    const level = computed(() => store.state.level);
     const lightingHome = ref('')
+    const showNextLessonBtn = ref(false)
     const isShowPrecipitation = reactive({
       precipitation: false,
       home: false,
@@ -133,14 +138,18 @@ export default {
     })
     const isMobile = useMobile();
     const precipitationChoosed = ref('')
-    const messages = ref([
-      'Кликай на приборы, чтобы посмотреть на них поближе и зафиксировать их показания.',
-    ]);
-
+    const messages = ref([]);
+    showNextBtn.value = false
     const closeModal = () => {
       isModalActive.value = false;
+      onNext()
     };
-
+    // setTimeout(() => {
+    //   messages.value.push(
+    //     'На метеостанции, где мы находимся, для этого существуют специальные приборы.'
+    //   )
+      
+    // }, 2500)
     const onNext = (appliance) => {
       if (stage.value === 2 & appliance !== 'precipitation') return
       if (appliance === 'precipitation' && stage.value !== 2) return
@@ -148,6 +157,31 @@ export default {
       if (appliance === 'mill' && stage.value !== 5) return
       stage.value += 1;
       mobileChatCounter.value += 1
+      if (stage.value === 1) {
+        setTimeout(() => {
+          if (level.value === '1') {
+            messages.value.push(
+              'Чтобы создать прогноз, метеорологи измеряют температуру воздуха, количество осадков и много других погодных параметров.'
+            )
+          }
+          if (level.value === '2') {
+            messages.value.push(
+              'Чтобы прогнозировать погоду, метеорологи измеряют температуру воздуха, количество осадков, скорость ветра и другие метеорологические параметры.'
+            )
+          } 
+          if (level.value === '3') {
+            messages.value.push(
+              'Чтобы создать прогноз погоды, метеорологи собирают текущие данные о температуре воздуха, количестве осадков, атмосферном давлении, скорости ветра, а также берут во внимание и многие другие параметры.'
+            )
+          } 
+        }, 1000)
+      setTimeout(() => {
+        messages.value.push(
+          'На метеостанции, где мы находимся, для этого существуют специальные приборы. '
+        )
+        showNextBtn.value = true
+      }, 2500)
+      }
       if (stage.value == 2) { 
         showAppliance('precipitation')
         showNextBtn.value = false
@@ -158,10 +192,12 @@ export default {
       }
       if (stage.value === 3) {
         console.log(3)
-        messages.value.push('Прибор для измерения количества выпавших осадков. Осадки измеряются в миллиметрах (мм).')
+        if (level.value === '1') messages.value.push('Осадкомер: Прибор для измерения количества выпавших осадков. Осадки измеряются в миллиметрах (мм).')
+        if (level.value === '2') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
+        if (level.value === '3') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
         setTimeout(() => {
-          messages.value.push('Нажми сюда, чтобы снять показания с осадкомера.')
-        }, 1000)
+          messages.value.push('А теперь давай запишем показания этих приборов!')
+        }, 2500)
         hideAppliance('precipitation')
         showSigleAppliance('precipitation')
         changeZoom('single')
@@ -196,13 +232,16 @@ export default {
         // hideAppliance('home')
         // showSigleAppliance('home')
         // changeZoom('single')
-        messages.value.push('Анемометр: помогает измерить скорость ветра в метрах в секунду (м/с).')
+        if (level.value === '1') messages.value.push('Анемометр: помогает измерить скорость ветра в метрах в секунду (м/с).')
+        if (level.value === '2') messages.value.push('Анемометр: Прибор для определения скорости ветра. Сперва подсчитывается число оборотов чашек анемометра в минуту, затем по специальной таблице рассчитывается скорость ветра. Единицей измерения скорости ветра являются метры в секунду (м/с).')
+        if (level.value === '3') messages.value.push('Анемометр: Прибор для определения скорости ветра. Сперва подсчитывается число оборотов чашек анемометра в минуту, затем по специальной таблице рассчитывается скорость ветра. Единицей измерения скорости ветра являются метры в секунду (м/с).')
+        // messages.value.push('Анемометр: помогает измерить скорость ветра в метрах в секунду (м/с).')
+        // setTimeout(() => {
+        //   messages.value.push('Посмотри внимательнее, показания снимаются со счётчика.')
+        // }, 1000)
         setTimeout(() => {
-          messages.value.push('Посмотри внимательнее, показания снимаются со счётчика.')
-        }, 1000)
-        setTimeout(() => {
-          messages.value.push('Нажми сюда, чтобы снять показания с анемометра.')
-        }, 2000)
+          messages.value.push('А теперь давай запишем показания этих приборов!')
+        }, 2500)
         hideAppliance('mill')
         showSigleAppliance('mill')
         changeZoom('single')
@@ -230,13 +269,15 @@ export default {
         // hideAppliance('mill')
         // showSigleAppliance('mill')
         // changeZoom('single')
+        if (level.value === '1') messages.value.push('Термометр: показывает температуру в градусах Цельсия (°С).')
+        if (level.value === '2') messages.value.push('Термометр: Прибор для измерения температуры воздуха. Единицей измерения температуры является градус Цельсия (°С).')
+        if (level.value === '3') messages.value.push('Термометр: Прибор для измерения температуры воздуха. Единицей измерения температуры является градус Цельсия (°С).')
         
-        messages.value.push('Термометр: показывает температуру в градусах Цельсия (°С).')
+        // setTimeout(() => {
+        //   messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
+        // }, 1000)
         setTimeout(() => {
-          messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
-        }, 1000)
-        setTimeout(() => {
-          messages.value.push('Нажми сюда, чтобы снять показания с метеорологического термометра.')
+          messages.value.push('А теперь давай запишем показания этих приборов!')
           lightingHome.value = 'termometr'
         }, 2000)
         hideAppliance('home')
@@ -256,13 +297,14 @@ export default {
       //   showNextBtn.value = false
       // } 
       if (stage.value === 11) {
-        
-        messages.value.push('Гигрометр: измеряет влажность воздуха в процентах (%).')
+        if (level.value === '1') messages.value.push('Гигрометр: измеряет влажность воздуха в процентах (%).')
+        if (level.value === '2') messages.value.push('Гигрометр: Прибор для измерения относительной влажности воздуха. Единицей измерения относительной влажности воздуха является процент (%).')
+        if (level.value === '3') messages.value.push('Гигрометр: Прибор для измерения относительной влажности воздуха. Единицей измерения относительной влажности воздуха является процент (%).')
+        // setTimeout(() => {
+        //   messages.value.push('Посмотри внимательно, куда указывает стрелка.')
+        // }, 1000)
         setTimeout(() => {
-          messages.value.push('Посмотри внимательно, куда указывает стрелка.')
-        }, 1000)
-        setTimeout(() => {
-          messages.value.push('Нажми сюда, чтобы снять показания с гигрометра.')
+          messages.value.push('А теперь давай запишем показания этих приборов!')
           lightingHome.value = 'girometr'
         }, 2000)
         hideAppliance('home')
@@ -281,15 +323,16 @@ export default {
       } 
       if (stage.value === 13) {
         showNextBtn.value = false
-        
-        messages.value.push('Барометр: показывает атмосферное давление в миллиметрах ртутного столба (мм рт. ст.) или гектопаскалях (гПа).')
+        if (level.value === '1') messages.value.push('Барометр: показывает атмосферное давление в миллиметрах ртутного столба (мм рт. ст.) или гектопаскалях (гПа).')
+        if (level.value === '2') messages.value.push('Барометр: Прибор для измерения атмосферного давления. Официальной единицей измерения атмосферного давления является гектопаскаль (гПа), но в жизни мы привыкли использовать миллиметры ртутного столба (мм рт. ст.). ')
+        if (level.value === '3') messages.value.push('Барометр: Прибор для измерения атмосферного давления. Официальной единицей измерения атмосферного давления является гектопаскаль (гПа), но в жизни мы привыкли использовать миллиметры ртутного столба (мм рт. ст.). ')
+        // setTimeout(() => {
+        //   messages.value.push('Посмотри внимательно, куда указывает стрелка.')
+        // }, 1000)
         setTimeout(() => {
-          messages.value.push('Посмотри внимательно, куда указывает стрелка.')
-        }, 1000)
-        setTimeout(() => {
-          messages.value.push('Нажми сюда, чтобы снять показания с барометра.')
+          messages.value.push('А теперь давай запишем показания этих приборов!')
           lightingHome.value = 'barometr'
-        }, 2000)
+        }, 2500)
       } 
       if (stage.value === 14) {
         messages.value.push('Да, это верные показания.')
@@ -297,8 +340,18 @@ export default {
         changeZoom('all')
         let input = diaryComp.value.form.find((el) => el.title === "Атм. давление" )
         input.value = input.answer
-        showNextBtn.value = true
-        isModalActive.value = true
+        // showNextBtn.value = true
+        
+        setTimeout(() => {
+          messages.value.push('Отличная работа! Мы записали всё, что нужно. ')
+        }, 1000)
+        setTimeout(() => {
+          // messages.value.push('Отличная работа! Мы записали всё, что нужно. ')
+          isModalActive.value = true
+        }, 2500)
+      }
+      if (stage.value === 15) {
+        showNextLessonBtn.value = true
       }
     };
     const changeZoom = (state) => {
@@ -329,6 +382,9 @@ export default {
     const toggleMobileChat = () => {
       isMobileChatOpened.value = !isMobileChatOpened.value
       mobileChatCounter.value = 0
+    }
+    const addMessage = (text) => {
+      messages.value.push(text)
     }
     const successAnswer = (appliance) => {
       console.log('prop')
@@ -379,7 +435,10 @@ export default {
       isMobileChatOpened,
       mobileChatCounter,
       isMobile,
-      lightingHome
+      lightingHome,
+      addMessage,
+      showNextLessonBtn,
+      level
     };
   },
 };

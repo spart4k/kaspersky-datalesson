@@ -153,7 +153,6 @@
     &.active {
       stroke: red;
     }
-    
     &:hover {
       cursor: pointer;
     }
@@ -168,6 +167,7 @@ export default {
     const { emit } = ctx
     const isShow = ref(false)
     const tryClicked = ref(false)
+    const tryClickedFirst = ref(false)
     onMounted(() => {
       isShow.value = true
     })
@@ -177,14 +177,24 @@ export default {
     }
     const tryClick = () => {
       console.log('try')
-      tryClicked.value = true
+      // tryClicked.value = true
+      if (tryClicked.value) return
+      if (!tryClickedFirst.value) {
+        emit('addMessage', 'Посмотри внимательно на уровень жидкости в стакане.')
+        tryClickedFirst.value = true
+      }
+      else {
+        tryClicked.value = true
+        emit('addMessage', 'Нажми сюда, чтобы снять показания с осадкомера.')
+      }
     }
     return {
       isShow,
       emitClick,
       successAnswer,
       tryClick,
-      tryClicked
+      tryClicked,
+      tryClickedFirst
     }
   }
 }
