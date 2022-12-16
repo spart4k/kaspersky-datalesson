@@ -2,7 +2,7 @@
   <div :class="[
     $style.wrapper
   ]">
-    <starts :class="$style.stars"/>
+    <v-progress :class="$style.progress"></v-progress>
     <timer v-show="level === '1'" ref="timer"></timer>
     <map-default :level="level" ref="mapDefault" @checkPattern="checkPattern" @changeCountValue="changeCountValue" @changeSquereValue="changeSquereValue" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
     <calculation :seconds="calculationTimer" v-show="level === '2' || level === '3'"></calculation>

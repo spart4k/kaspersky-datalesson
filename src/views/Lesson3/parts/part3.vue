@@ -1,8 +1,6 @@
 <template>
   <div :class="$style.wrapper" id="wrapper">
-    <div :class="$style.starsWrapper">
-      <img :class="$style.stars" src="../assets/stars2.svg" alt="" />
-    </div>
+    <v-progress :class="$style.progress"></v-progress>
     <v-speaker
       v-if="stage > 1 || (stage === 1 && !isModalActive)"
       @toggle="toggleMobileChat"
@@ -183,12 +181,14 @@ export default {
       if (isMobile.value) isMobileChatOpened.value = true;
       messages.value.push(texts.stage3[`level${level.value}`]);
       onNext();
+      store.dispatch('updateCurrentLesson', 4)
       if (errorCount.value <= 1) {
         await loadImage(
           errorCount.value === 0
             ? '/assets/img/lesson3/achieveGold.png'
             : '/assets/img/lesson3/achieveSilver.png'
         );
+        errorCount.value === 0 ? store.dispatch('updateProgress', [3, 2]) : store.dispatch('updateProgress', [3, 1]);
         setTimeout(() => {
           isModalActive.value = true;
         }, 1000);

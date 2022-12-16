@@ -3,8 +3,7 @@
     $style.wrapper,
     zoom === 'all' ? $style.zoomAll : $style.zoomSingle
   ]">
-    <!-- <img :class="$style.stars" src="../assets/stars1.svg" alt="" /> -->
-    <starts :class="$style.stars"/>
+    <v-progress :class="$style.progress"></v-progress>
     <Diary ref="diaryComp" :stage="stage"/>
     <div v-if="zoom === 'all'" :class="$style.paginations">
       <div :class="$style.button">
