@@ -1,8 +1,11 @@
 <template>
-  <div :class="$style.mainWrap">
+  <div :class="[
+    $style.mainWrap,
+    $props.level !== '1' ? $style.highLevel : ''
+  ]">
     <div :class="[
       $style.wrap,
-      $props.stage >= 5 && $props.level !== '1' ? $style.small : ''
+      $props.stage >= 5 && $props.level !== '1' ? $style.small : '',
     ]">
       <div :class="[
         $style.map,
@@ -32,7 +35,10 @@
     </div>
     <div :class="$style.col">
       <map-range v-if="$props.level !== '1'" :class="[$style.rangeSlider, $props.stage < 2 ? $style.disable : '']" @changeSquere="changeSquere"></map-range>
-      <map-panel v-show="$props.stage >= 4 && $props.level !== '1'" @changeCount="changeCount"></map-panel>
+      <div v-if="$props.stage >= 4 && $props.level !== '1'" :class="$style.btnWrapper">
+        <v-btn md :class="$style.btn" @click="isShowPanel = true">Настройки</v-btn>
+      </div>
+      <map-panel @closePanel="isShowPanel = false" :isShowPanel="isShowPanel" v-show="$props.stage >= 4 && $props.level !== '1' && (isMobile ? isShowPanel ? true : false : true)" @changeCount="changeCount"></map-panel>
     </div>
     <div :class="[$style.col, $style.grade]">
       <map-grade :level="$props.level" @check="check" v-if="$props.stage >= 5 && $props.level !== '1'"></map-grade>

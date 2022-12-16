@@ -3,9 +3,8 @@
     <div :class="$style.title">
       Размер сектора
     </div>
-    <vue-slider :data="rangeData" :tooltip="'none'" :dotSize="24" :class="$style.rangeSlider" v-model="rangeValue" />
+    <vue-slider :direction="isMobile ? 'btt' : 'ltr'" :data="rangeData" :tooltip="'none'" :dotSize="24" :class="$style.rangeSlider" v-model="rangeValue" />
     <div :class="$style.panel">
-      <div>{{ rangeValue }}</div>
       <div>{{ rangeKm }}</div>
     </div>
   </div>

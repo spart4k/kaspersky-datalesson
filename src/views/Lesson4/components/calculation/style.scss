@@ -24,4 +24,10 @@
   @media (min-width: $mobileWidth) {
     z-index: 9999;
   }
+  @media (max-width: $mobileWidth) {
+    top: rem(86);
+    right: rem(15);
+    width: 44%;
+    border-radius: rem(15); 
+  }
 }

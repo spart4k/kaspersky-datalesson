@@ -5,6 +5,7 @@ import mapGrade from '../grade'
 // import 'vue-range-component/dist/vue-range-slider.css'
 // import VueRangeSlider from 'vue-range-component'
 import VueSlider from 'vue-slider-component'
+import useMobile from '@/hooks/useMobile';
 import '@/styles/_range.scss'
 // import 'vue-slider-component/theme/antd.css'
 export default {
@@ -36,6 +37,8 @@ export default {
     const firstClicked = ref(false)
     const rangeValue = ref(20)
     const smallMap = ref(true)
+    const isMobile = useMobile();
+    const isShowPanel = ref(false)
     const checking = (box) => {
       if (props.level !== '1') return
       if (props.stage !== 2 && props.stage !== 5) return
@@ -137,7 +140,9 @@ export default {
       smallMap,
       mapGrade,
       changeCount,
-      check
+      check,
+      isShowPanel,
+      isMobile
     }
   },
 }
