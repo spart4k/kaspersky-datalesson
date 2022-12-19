@@ -20,7 +20,7 @@
       src="../assets/stack.png"
       alt=""
     />
-    <div v-if="level === '1'" :class="$style.window">
+    <div v-if="level === '1'" :class="[$style.window, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
       <div :class="[$style.inner, $style.level1]">
@@ -29,7 +29,7 @@
         </template>
       </div>
     </div>
-    <div v-if="level === '2'" :class="$style.window">
+    <div v-if="level === '2'" :class="[$style.window, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
       <div :class="$style.inner">
@@ -38,7 +38,7 @@
         </template>
       </div>
     </div>
-    <div v-if="level === '3'" :class="[$style.window, $style.level3]">
+    <div v-if="level === '3'" :class="[$style.window, $style.level3, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Папка: Данные для отправки в ЦОД</p>
       <div :class="$style.inner">

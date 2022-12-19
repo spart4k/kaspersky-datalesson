@@ -183,6 +183,11 @@ export default {
       }
       if (stage.value == 2) { 
         showAppliance('precipitation')
+        if (level.value === '1') {
+          messages.value.push(
+            'Посмотри на подсвеченный прибор слева. Нажми на него.'
+          )
+        } 
         showNextBtn.value = false
         if (isMobile) {
           isMobileChatOpened.value = false
@@ -195,7 +200,7 @@ export default {
         if (level.value === '2') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
         if (level.value === '3') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
         setTimeout(() => {
-          messages.value.push('А теперь давай запишем показания этих приборов!')
+          messages.value.push('Посмотри на осадкомер. Нажми на уровень воды в ёмкости, чтобы занести показания в дневник погоды.')
         }, 2500)
         hideAppliance('precipitation')
         showSigleAppliance('precipitation')
@@ -218,6 +223,11 @@ export default {
         // hideSigleAppliance('precipitation')
         // changeZoom('all')
         showAppliance('mill')
+        if (level.value === '1') {
+          messages.value.push(
+            'Посмотри на подсвеченный прибор справа. Кликни на него.'
+          )
+        } 
         showNextBtn.value = false
       } 
       if (stage.value === 6) {
@@ -239,7 +249,7 @@ export default {
         //   messages.value.push('Посмотри внимательнее, показания снимаются со счётчика.')
         // }, 1000)
         setTimeout(() => {
-          messages.value.push('А теперь давай запишем показания этих приборов!')
+          messages.value.push('Посмотри на анемометр. Где на приборе отображается его значение? Нажми на него, чтобы занести показания в дневник погоды.')
         }, 2500)
         hideAppliance('mill')
         showSigleAppliance('mill')
@@ -256,6 +266,11 @@ export default {
       if (stage.value === 8) {
         showNextBtn.value = false
         showAppliance('home')
+        if (level.value === '1') {
+          messages.value.push(
+            'Посмотри на подсвеченное жёлтым сооружение в центре. Это метеобудка. Нажми на неё.'
+          )
+        } 
       } 
       if (stage.value === 9) {
         // messages.value.push('Анемометр: помогает измерить скорость ветра в метрах в секунду (м/с).')
@@ -276,7 +291,7 @@ export default {
         //   messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
         // }, 1000)
         setTimeout(() => {
-          messages.value.push('А теперь давай запишем показания этих приборов!')
+          messages.value.push('Термометр находится слева. Нажми на значение температуры на нём.')
           lightingHome.value = 'termometr'
         }, 2000)
         hideAppliance('home')
@@ -303,7 +318,7 @@ export default {
         //   messages.value.push('Посмотри внимательно, куда указывает стрелка.')
         // }, 1000)
         setTimeout(() => {
-          messages.value.push('А теперь давай запишем показания этих приборов!')
+          messages.value.push('Гигрометр находится в центре. Где на приборе отображается его значение? Кликни на это место, чтобы снять показания.')
           lightingHome.value = 'girometr'
         }, 2000)
         hideAppliance('home')
@@ -329,7 +344,7 @@ export default {
         //   messages.value.push('Посмотри внимательно, куда указывает стрелка.')
         // }, 1000)
         setTimeout(() => {
-          messages.value.push('А теперь давай запишем показания этих приборов!')
+          messages.value.push('Барометр находится справа. Где на приборе отображается его значение? Нажми туда.')
           lightingHome.value = 'barometr'
         }, 2500)
       } 

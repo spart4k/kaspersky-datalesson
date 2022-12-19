@@ -9,7 +9,7 @@
       @toggle="toggleMobileChat"
       :counter="mobileChatCounter"
     />
-    <div :class="$style.window">
+    <div :class="[$style.window, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Прогноз погоды</p>
       <table :class="[$style.table, level === '3' && $style.level3]">
