@@ -4,7 +4,7 @@
     <img
       :class="$style.cod"
       ref="codRef"
-      :src="isAnimated ? '/assets/img/lesson2/cod_2.png' : '/assets/img/lesson2/cod_1.png'"
+      :src="isAnimated ? '/assets/img/lesson2/cod_2.svg' : '/assets/img/lesson2/cod_1.svg'"
       alt=""
     />
     <v-speaker v-if="stage > 1 || (stage === 1 && !isModalActive)" @toggle="toggleMobileChat" :counter="mobileChatCounter" />
@@ -13,7 +13,7 @@
         <Card
           :index="index"
           :isActive="activeCards.includes(index)"
-          :isDisabled="stage === 1 || isSuccess || isCheckingInProgress"
+          :isDisabled="stage === 1 || isSuccess || isCheckingInProgress || (!activeCards.includes(index) && activeCards.length >= 4)"
           :isWrong="
             isCheckingInProgress &&
             ((index === 2 && activeCards.includes(2)) || (index === 5 && activeCards.includes(5)))
@@ -132,6 +132,7 @@ export default {
       if (activeCards.value.includes(num)) {
         activeCards.value = activeCards.value.filter((el) => el !== num);
       } else {
+        if (activeCards.value.length >= 4) return;
         activeCards.value.push(num);
       }
     };

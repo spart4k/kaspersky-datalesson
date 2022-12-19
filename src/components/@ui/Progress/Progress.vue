@@ -80,6 +80,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
+    transition: width .3s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
   &.lesson1::after {
     width: 0;

@@ -214,7 +214,7 @@
   &:nth-child(1) {
     margin-left: rem(5);
     & .columnTitle {
-      background-color: #ededed;
+      opacity: 0;
     }
   }
   &:nth-child(2) {
@@ -280,7 +280,7 @@
 .task {
   cursor: move;
   font-weight: 700;
-  font-size: rem(10.5);
+  font-size: rem(10);
   line-height: rem(15);
   padding: rem(10) rem(13);
   color: #000;

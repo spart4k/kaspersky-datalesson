@@ -42,9 +42,9 @@
 }
 
 .basket {
-  position: absolute;
-  bottom: rem(30);
-  left: rem(30);
+  position: fixed;
+  bottom: rem(45);
+  left: rem(50);
   z-index: 0;
   width: rem(83);
   height: rem(114);
@@ -273,7 +273,7 @@
 }
 
 .btn {
-  position: absolute;
+  position: fixed;
   bottom: rem(30);
   right: rem(30);
   z-index: 1300;

@@ -15,7 +15,7 @@
     <div :class="[$style.window, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Расчёт прогноза погоды</p>
-      <div :class="$style.outer">
+      <div :class="$style.outer" ref="outerRef">
         <div :class="$style.inner">
           <div v-for="column in columnsData" :key="column.title" :class="$style.column">
             <div :class="$style.columnTitle">{{ column.title }}</div>
@@ -97,6 +97,7 @@ export default {
     const isMobileChatOpened = ref(true);
     const mobileChatCounter = ref(0);
     const isCheckAvailable = ref(false);
+    const outerRef = ref(null);
 
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -127,6 +128,16 @@ export default {
     const onGameInit = () => {
       isMobileChatOpened.value = false;
       onNext();
+      outerRef.value.scroll({
+        left: 100,
+        behavior: 'smooth'
+      });
+      setTimeout(() => {
+        outerRef.value.scroll({
+          left: 0,
+          behavior: 'smooth'
+        });
+      }, 350);
     };
 
     const closeAchieveModal = () => {
@@ -247,6 +258,7 @@ export default {
       columnsData,
       isCheckAvailable,
       checkCards,
+      outerRef,
     };
   },
 };

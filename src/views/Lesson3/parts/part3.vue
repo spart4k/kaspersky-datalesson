@@ -17,7 +17,7 @@
     />
     <img
       :class="[$style.stack, isStackVisible && !isChatFullLength && $style.visible]"
-      src="../assets/stack.svg"
+      src="../assets/stack.png"
       alt=""
     />
     <div v-if="level === '1'" :class="$style.window">
@@ -341,14 +341,12 @@ export default {
               if (!targets[i].classList.contains('occupied')) {
                 const box = targets[i].getBoundingClientRect();
                 targets[i].classList.add('occupied');
-
-                // const newCard = document.createElement('div');
-                // newCard.innerHTML = cardHtml;
                 targets[i].appendChild(target);
                 gsap.to(target, {
                   left: 0,
                   top: 0,
                   duration: 0,
+                  rotate: 0,
                 });
 
                 if (

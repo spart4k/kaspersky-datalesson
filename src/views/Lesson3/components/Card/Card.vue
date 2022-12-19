@@ -1,7 +1,7 @@
 <template>
   <div :class="[$style.wrapper, level === '3' && $style.level3]" :style="{ zIndex: 100 - index }">
     <div :class="[$style.cardImgWrapper, level === '3' && $style.level3]">
-      <img :src="`/assets/img/lesson3/level${level}/card${index}.png`" alt="" />
+      <img :src="`/assets/img/lesson3/level${level}/card${index}.svg`" alt="" />
     </div>
     <p :class="[$style.cardText, level === '3' && $style.level3]">
       {{ titles[index - 1] }}
@@ -97,7 +97,7 @@ export default {
   user-select: none;
   transform: rotate(-9deg);
   &.level3 {
-    padding: rem(7) rem(8);
+    padding: rem(10) rem(8);
   }
   @media screen and (max-width: 450px) {
     padding: rem(10);
@@ -112,18 +112,20 @@ export default {
   justify-content: center;
   box-shadow: unset;
   margin-bottom: rem(10);
+  max-width: 75%;
   & img {
     max-width: 100%;
     max-height: 100%;
   }
   @media screen and (min-width: 451px) {
     &.level3 {
-      height: rem(95);
-      margin-bottom: rem(3);
+      height: rem(85);
+      margin-bottom: rem(10);
     }
   }
   @media screen and (max-width: 450px) {
     height: 60%;
+    max-width: 50%;
   }
 }
 
@@ -136,7 +138,7 @@ export default {
   color: inherit;
   &.level3 {
     font-size: rem(9.6);
-    line-height: rem(13);
+    line-height: rem(12);
   }
   @media screen and (max-width: 450px) {
     font-size: rem(10);

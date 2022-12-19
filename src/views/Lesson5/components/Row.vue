@@ -297,16 +297,16 @@ export default {
 }
 
 .row.correct {
-  background-color: #ffdede;
+  background-color: #D5F7DD;
   position: relative;
   &::after {
     content: '';
     position: absolute;
     transform: translateY(100%);
     left: rem(14);
-    width: rem(14);
-    height: rem(14);
-    background-image: url('../assets/cross.svg');
+    width: rem(17);
+    height: rem(12);
+    background-image: url('../assets/correct.svg');
     background-repeat: no-repeat;
     background-size: cover;
   }
