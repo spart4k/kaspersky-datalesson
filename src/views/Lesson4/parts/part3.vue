@@ -266,6 +266,8 @@ export default {
             messages.value.push('Отличный эксперимент! Теперь ты видишь, что, чем точнее мы хотим получить прогноз, тем дольше его придется считать.')
             // mobileChatCounter.value += 1
             // showNextBtn.value = false
+            store.dispatch('updateProgress', [1, 2])
+            store.dispatch('updateCurrentLesson', 5)
             onNext()
           }, 3500)
           
@@ -274,6 +276,13 @@ export default {
           mobileChatCounter.value += 1
           // showNextBtn.value = true
         } else if (level.value === '2' || level.value === '3') {
+          if (errorCount.value === 0) {
+            store.dispatch('updateProgress', [1, 2])
+          }
+          if (errorCount.value === 1) {
+            store.dispatch('updateProgress', [1, 1])
+          }
+          store.dispatch('updateCurrentLesson', 5)
           mobileChatCounter.value += 1
           messages.value.push('У тебя получилось! Теперь ты видишь, как связаны точность прогноза и время на его расчёт.')
           setTimeout(() => {

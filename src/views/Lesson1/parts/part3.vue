@@ -19,7 +19,7 @@
     </div>
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
-    <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
+    <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">{{ nextBtnText }}</v-btn>
     <v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$router.push('/lesson2')">Продолжить</v-btn>
     <div :class="$style.appliances">
       <div v-if="zoom === 'all'" :class="$style.wrap">
@@ -117,6 +117,7 @@ export default {
     const isAnimated = ref(false);
     const diaryComp = ref(null)
     const zoom = ref('all')
+    const nextBtnText = ref('Хорошо')
     const isMobileChatOpened = ref(true)
     const mobileChatCounter = ref(0);
     const level = computed(() => store.state.level);
@@ -176,6 +177,7 @@ export default {
         messages.value.push(
           'На метеостанции, где мы находимся, для этого существуют специальные приборы. '
         )
+        if (level.value === '1') nextBtnText.value = 'Понятно'
         showNextBtn.value = true
       }, 2500)
       }
@@ -344,6 +346,8 @@ export default {
         }, 1000)
         setTimeout(() => {
           // messages.value.push('Отличная работа! Мы записали всё, что нужно. ')
+          store.dispatch('updateProgress', [1, 2])
+          store.dispatch('updateCurrentLesson', 2)
           isModalActive.value = true
         }, 2500)
       }
@@ -435,7 +439,8 @@ export default {
       lightingHome,
       addMessage,
       showNextLessonBtn,
-      level
+      level,
+      nextBtnText
     };
   },
 };
