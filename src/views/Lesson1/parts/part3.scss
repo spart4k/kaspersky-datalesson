@@ -291,15 +291,14 @@
   text-align: center;
 }
 
-.stars {
+.progress {
   position: absolute;
   top: rem(30);
   left: rem(30);
   z-index: 10;
-  @media (max-width: $mobileWidth) {
-    position: fixed;
-    left: rem(15);
+  @media screen and (max-width: 450px) {
     top: rem(15);
+    left: rem(15);
   }
 }
 

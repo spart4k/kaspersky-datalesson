@@ -2,7 +2,7 @@
   <div :class="[
     $style.wrapper
   ]">
-    <starts :class="$style.stars"/>
+    <v-progress :class="$style.progress"></v-progress>
     <timer v-show="level === '1'" ref="timer"></timer>
     <map-default :level="level" ref="mapDefault" @checkPattern="checkPattern" @changeCountValue="changeCountValue" @changeSquereValue="changeSquereValue" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
     <calculation :seconds="calculationTimer" v-show="level === '2' || level === '3'"></calculation>
@@ -65,7 +65,6 @@ import mapDefault from '../components/map/default';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
 import precipitation from '../components/precipitation/index.vue'
-import starts from '@/components/@ui/Stars'
 import speaker from '@/components/@ui/Speaker/Speaker.vue'
 import useMobile from '@/hooks/useMobile';
 import timer from '../components/timer';
@@ -78,7 +77,6 @@ export default {
     home,
     precipitation,
     mill,
-    starts,
     speaker,
     mapDefault,
     timer,

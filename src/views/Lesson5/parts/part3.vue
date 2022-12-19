@@ -1,8 +1,6 @@
 <template>
   <div :class="[$style.wrapper, level === '3' && $style.level3]">
-    <div :class="$style.starsWrapper">
-      <img :class="$style.stars" src="../assets/stars4.svg" alt="" />
-    </div>
+    <v-progress :class="$style.progress"></v-progress>
     <div v-if="isMobile && stage > 3" :class="$style.patternsBtnWrapper">
       <div :class="$style.patternsBtn" @click="isPatternWindowActive = true">?</div>
     </div>
@@ -310,6 +308,7 @@ export default {
       }
 
       if (stage.value === 7) {
+        store.dispatch('updateCurrentLesson', 6)
         if (errorCount.value <= 1) {
           setTimeout(async () => {
             await loadImage(
@@ -317,6 +316,7 @@ export default {
                 ? '/assets/img/lesson5/achieveGold.png'
                 : '/assets/img/lesson5/achieveSilver.png'
             );
+            errorCount.value === 0 ? store.dispatch('updateProgress', [5, 2]) : store.dispatch('updateProgress', [5, 1]);
             isModalActive.value = true;
           }, 1000);
         } else {

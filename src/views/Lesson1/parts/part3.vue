@@ -3,8 +3,7 @@
     $style.wrapper,
     zoom === 'all' ? $style.zoomAll : $style.zoomSingle
   ]">
-    <!-- <img :class="$style.stars" src="../assets/stars1.svg" alt="" /> -->
-    <starts :class="$style.stars"/>
+    <v-progress :class="$style.progress"></v-progress>
     <Diary ref="diaryComp" :stage="stage"/>
     <div v-if="zoom === 'all'" :class="$style.paginations">
       <div :class="$style.button">
@@ -97,7 +96,6 @@ import Diary from '../components/Diary/index.vue';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
 import precipitation from '../components/precipitation/index.vue'
-import starts from '@/components/@ui/Stars'
 import speaker from '@/components/@ui/Speaker/Speaker.vue'
 import useMobile from '@/hooks/useMobile';
 export default {
@@ -107,7 +105,6 @@ export default {
     home,
     precipitation,
     mill,
-    starts,
     speaker
     // Card,
   },

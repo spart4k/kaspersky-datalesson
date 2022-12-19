@@ -1,9 +1,6 @@
 <template>
   <div :class="$style.wrapper">
-    <div :class="$style.starsWrapper">
-      <img :class="$style.stars" src="../assets/stars1.svg" alt="" />
-    </div>
-    <!-- <v-progress :class="$style.progress"></v-progress> -->
+    <v-progress :class="$style.progress"></v-progress>
     <img
       :class="$style.cod"
       ref="codRef"
@@ -189,6 +186,7 @@ export default {
           }, 1000);
         }).then(async () => {
           onNext();
+          store.dispatch('updateCurrentLesson', 3)
           if (errorCount.value < 2) {
             await loadImage(
               errorCount.value === 0
