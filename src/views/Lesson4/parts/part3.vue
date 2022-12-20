@@ -3,7 +3,7 @@
     $style.wrapper
   ]">
     <v-progress :class="$style.progress"></v-progress>
-    <timer v-show="level === '1'" ref="timer"></timer>
+    <timer v-show="level === '1'" :class="$style.timer" ref="timer"></timer>
     <map-default :level="level" ref="mapDefault" @checkPattern="checkPattern" @changeCountValue="changeCountValue" @changeSquereValue="changeSquereValue" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
     <calculation :seconds="calculationTimer" v-show="level === '2' || level === '3'"></calculation>
     <accuracy :procents="procentAll" v-show="level === '2' || level === '3'"></accuracy>
@@ -41,7 +41,7 @@
         <achieveSilver v-if="(level === '2' && errorCount === 1) || (level === '3' && errorCount === 1)" :class="$style.achieve"></achieveSilver>
         <!-- <img  :class="$style.achieve" src="../assets/achieve.svg" alt="" /> -->
         <!-- <img v-else :class="$style.achieve" src="../assets/achieve.svg" alt="" /> -->
-        <p  v-if="errorCount === 0" :class="[$style.modalText, $style.modalTextBottom]">
+        <p  v-if="!errorCount" :class="[$style.modalText, $style.modalTextBottom]">
           Отличная работа! Ты получаешь золотое достижение «Специалист по вычислительной математике»!<br>
 Продолжай в том же духе!
         </p>
@@ -189,7 +189,7 @@ export default {
         console.log('DVA')
         if (level.value === '1') {
           setTimeout(()=>{
-            messages.value.push('Модель делит Землю на много клеточек. Чем больше будет клеточек, тем точнее будет прогноз. Как мозаика – чем больше деталей, тем чётче картинка.') 
+            // messages.value.push('Модель делит Землю на много клеточек. Чем больше будет клеточек, тем точнее будет прогноз. Как мозаика – чем больше деталей, тем чётче картинка.') 
           }, 500) 
         }
         
@@ -203,14 +203,14 @@ export default {
         if (level.value === '1') {
           timer.value.stopInterval()
           messages.value.push('Отлично, у тебя все быстро получилось. Но давай посмотрим, насколько точным вышел этот прогноз.')
+          showNextBtn.value = true
           // mobileChatCounter.value += 1
-          setTimeout(() => {
-            messages.value.push('Граница дождя недостаточно точная.')
-            // mobileChatCounter.value += 1
-          }, 2000)
-          setTimeout(() => {
-            onNext()
-          }, 4000)
+          // setTimeout(() => {
+          //   messages.value.push('Граница дождя недостаточно точная.')
+          // }, 2000)
+          // setTimeout(() => {
+          //   onNext()
+          // }, 4000)
         } else if (level.value === '2' || level.value === '3') {
           if (squere.value === 324) {
             messages.value.push('А теперь давай в нашей модели учитывать дополнительные параметры. Обрати внимание на то, как меняются время и точность прогноза.')
@@ -222,19 +222,38 @@ export default {
       } 
       if (stage.value === 4) {
         if (level.value === '1') {
-          messages.value.push('Давай посмотрим на другую сетку, теперь из 16 клеточек. Снова помоги компьютеру сделать вычисления. Нажми на каждую из клеточек.')
-          squere.value = 16
+          showNextBtn.value = false
+          setTimeout(() => {
+            messages.value.push('Граница дождя недостаточно точная.')
+          }, 1000)
+          // setTimeout(() => {
+          //   onNext()
+          // }, 2000)
+          setTimeout(() => {
+            // onNext()
+            messages.value.push('Давай посмотрим на другую сетку, теперь из 16 клеточек. Снова помоги компьютеру сделать вычисления. Нажми на каждую из клеточек.')
+            // showNextBtn.value = true
+            squere.value = 16
+            let oldTimerValue = timer.value.timerValue
+            let objCopy = Object.assign({}, oldTimerValue);
+            timer.value.clearTimerValue()
+            mapDefault.value.isShowDoubleMap = true
+            mapDefault.value.timer.timerValue = objCopy
+            console.log(mapDefault.value.timer.timerValue)
+            mapDefault.value.clearFirstClicked()
+          }, 2500)
+          setTimeout(() => {
+            showNextBtn.value = true
+          }, 4000)
           // mobileChatCounter.value += 1
-          showNextBtn.value = true
-          timer.value.clearTimerValue()
-          mapDefault.value.clearFirstClicked()
+          
         }
         // if ()
       }
       if (stage.value === 5) {
         if (level.value === '1') {
-          // messages.value.push('Кажется, на этот раз понадобилось гораздо больше времени. Давай посмотрим, помогло ли это с точностью прогноза.')
           showNextBtn.value = false
+          // messages.value.push('Кажется, на этот раз понадобилось гораздо больше времени. Давай посмотрим, помогло ли это с точностью прогноза.')
           // setTimeout(() => {
           //   messages.value.push('Да! Теперь мы выделили границу гораздо точнее.')
           // }, 2000)

@@ -36,6 +36,11 @@
     background-repeat: no-repeat;
     pointer-events: none;
   }
+  &.blur {
+    &::before {
+      opacity: .6;
+    }
+  }
   &.zoomSingle {
     @media (max-width: $mobileWidth) {
       overflow: hidden;
@@ -82,6 +87,13 @@
           background-size: cover;
           background-repeat: no-repeat;
         }
+      }
+      .precipitation, .home, .mill {
+        transition: .2s;
+        &.blur {
+          opacity: 0.5;
+        }
+        
       }
       .precipitation {
         width: rem(120);

@@ -316,7 +316,18 @@
     z-index: 10000;
   }
 }
-
+.timer {
+  @media (max-width: $mobileWidth) {
+    display: flex;
+    width: rem(169);
+    height: rem(40);
+    font-size: rem(25);
+    border-radius: rem(13);
+    top: calc(rem(106) - rem(40) - rem(5));
+    right: unset;
+    left: rem(15);
+  }
+}
 .achieve {
   width: rem(150);
   height: rem(150);

@@ -2,6 +2,7 @@ import { ref, onMounted, watch, toRefs, computed } from 'vue';
 import mapRange from '../range'
 import mapPanel from '../panel'
 import mapGrade from '../grade'
+import timer from '../../timer'
 // import 'vue-range-component/dist/vue-range-slider.css'
 // import VueRangeSlider from 'vue-range-component'
 import VueSlider from 'vue-slider-component'
@@ -14,7 +15,8 @@ export default {
     mapRange,
     VueSlider,
     mapPanel,
-    mapGrade
+    mapGrade,
+    timer
     // VueRangeSlider
   },
   props: {
@@ -40,6 +42,9 @@ export default {
     const isMobile = useMobile();
     const isShowPanel = ref(false)
     const isShowGrade = ref(true)
+    const isShowDoubleMap = ref(false)
+    const timer = ref(null)
+    const isShowRainDouble = ref(false)
     const checking = (box) => {
       if (props.level !== '1') return
       if (props.stage !== 2 && props.stage !== 5) return
@@ -57,7 +62,6 @@ export default {
         if (props.stage === 2) {
           grid.value[1].lighting = true
           grid.value[3].lighting = true
-          showRain()
         } else if (props.stage === 5) {
           let array = [
             grid.value[1],
@@ -77,6 +81,7 @@ export default {
       
     }
     const squereNum = toRefs(props).squere
+    const stageNum = toRefs(props).stage
     const boxSize = ref(null)
     const showRain = () => {
       isShowRain.value = true
@@ -120,9 +125,19 @@ export default {
       console.log(item)
       emit('checkPattern', item)
     }
+    const showRainDouble = () => {
+      isShowRainDouble.value = true
+    }
     watch(squereNum, () => {
       isShowRain.value = false
       drawBoxes()
+    })
+    watch(stageNum, () => {
+      console.log(stageNum.value)
+      if (stageNum.value === 4) {
+        showRain()
+        showRainDouble()
+      }
     })
     return {
       checking,
@@ -144,7 +159,11 @@ export default {
       check,
       isShowPanel,
       isShowGrade,
-      isMobile
+      isMobile,
+      stageNum,
+      isShowRainDouble,
+      isShowDoubleMap,
+      timer
     }
   },
 }

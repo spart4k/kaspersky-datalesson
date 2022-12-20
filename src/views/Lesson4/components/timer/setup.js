@@ -10,7 +10,8 @@ export default {
       default: null
     }
   },
-  setup(props) {
+  setup(props, ctx) {
+    const { emit } = ctx
     const timerValue = ref({
       hour: '00',
       minutes: '00',
@@ -66,6 +67,7 @@ export default {
     }
     const stopInterval = () => {
       console.log('stop timer')
+      // emit('oldValue', timerInterval.value)
       console.log(timerInterval.value)
       clearInterval(timerInterval.value)
     }

@@ -25,7 +25,9 @@
             ]" @click="checking(item)" v-for="(item, index) in grid" :key="index"></div>
           </div>
         </div>
-        <div :class="[
+        <div 
+        v-if="$props.level === '1'"
+        :class="[
           $style.rain,
           isShowRain ? $style.isShow : $style.isHide
         ]">
@@ -33,6 +35,50 @@
         </div>
       </div>
     </div>
+    <div 
+    v-if="$props.level === '1'"
+    :class="[
+      $style.wrap,
+      $style.doubleMap,
+      $props.level === '1' && stage >= 4 && isShowDoubleMap ? $style.translateRight : '',
+    ]">
+      <div :class="[
+        $style.map,
+        ($props.stage !== 2 && $props.stage !== 3 && $props.stage !== 5 && $props.level === '1') || $props.stage >= 5 ? $style.disabled : ''
+      ]">
+        <div :class="$style.separator">
+          <div :class="$style.grid">
+            <div 
+            :style="{
+              width: '50%',
+              height: '50%'
+            }"
+            :class="[
+              $style.box, 
+              $props.stage >= 4 ? $style.checkedAll : '',
+              item.checked ? $style.checked : $style.unChecked,
+              item.lighting ? $style.lighting : '',
+              $props.stage >= 4 && index === 0 ? $style.unLighting : '',
+              $props.stage >= 4 && index === 2 ? $style.unLighting : '',
+              $props.stage >= 4 && index === 1 ? $style.lighting : '',
+              $props.stage >= 4 && index === 3 ? $style.lighting : '',
+            ]" @click="checking(item)" v-for="(item, index) in grid" :key="index"></div>
+          </div>
+        </div>
+        <div
+        v-if="$props.level === '1'"
+        :class="[
+          $style.rain,
+          isShowRainDouble ? $style.isShow : $style.isHide
+        ]">
+          <img src="../../../assets/rain.svg" alt="">
+        </div>
+      </div>
+    </div>
+    <timer ref="timer" :class="[
+      $style.timer,
+      $props.stage >= 4 && $props.level === '1' && isShowDoubleMap ? $style.show: ''
+    ]"></timer>
     <div :class="$style.col">
       <map-range v-if="$props.level !== '1'" :class="[$style.rangeSlider, $props.stage < 2 ? $style.disable : '']" @changeSquere="changeSquere"></map-range>
       <div v-if="$props.stage >= 4 && $props.level !== '1'" :class="$style.btnWrapper">
@@ -62,7 +108,8 @@
       </defs>
     </svg>
     <!-- <vue-range-slider :class="$style.rangeSlider" ref="slider" v-model="rangeValue"></vue-range-slider> -->
-    <img v-if="stage >= 4 && $props.level === '1'" :class="$style.maplittle" src="../../../assets/maplittle.png" alt="">
+    <!-- <img v-if="stage >= 4 && $props.level === '1'" :class="$style.maplittle" src="../../../assets/maplittle.png" alt=""> -->
+    <!-- <img v-if="true" :class="$style.maplittle" src="../../../assets/maplittle.png" alt=""> -->
   </div>
 </template>
 <style lang="scss" module src="./style.scss"></style>

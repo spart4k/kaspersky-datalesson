@@ -1,6 +1,7 @@
 <template>
   <div :class="[
     $style.wrapper,
+    stage < 2 ? $style.blur : '',
     zoom === 'all' ? $style.zoomAll : $style.zoomSingle
   ]">
     <v-progress :class="$style.progress"></v-progress>
@@ -21,22 +22,27 @@
     <v-speaker @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">{{ nextBtnText }}</v-btn>
     <v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$router.push('/lesson2')">Продолжить</v-btn>
-    <div :class="$style.appliances">
+    <div :class="[
+      $style.appliances,
+    ]">
       <div v-if="zoom === 'all'" :class="$style.wrap">
         <div :class="[
           $style.precipitation,
+          stage < 2 ? $style.blur : '',
           isShowPrecipitation['precipitation'] ? $style.lighting : ''
         ]">
           <img @click="onNext('precipitation')" src="../assets/precipitation.svg" alt="">
         </div>
         <div :class="[
           $style.home,
+          stage < 2 ? $style.blur : '',
           isShowPrecipitation['home'] ? $style.lighting : ''
         ]">
           <img @click="onNext('home')" src="../assets/home.svg" alt="">
         </div>
         <div :class="[
           $style.mill,
+          stage < 2 ? $style.blur : '',
           isShowPrecipitation['mill'] ? $style.lighting : ''
         ]">
           <img @click="onNext('mill')" src="../assets/mill.svg" alt="">
