@@ -25,4 +25,15 @@ module.exports = {
       ],
     },
   },
+  // devServer: {
+  //   proxy: {
+  //     '/api_webhook': {
+  //       target: 'http://stage.datalesson.ru/trainer/webhook',
+  //       changeOrigin: true,
+  //       pathRewrite: {
+  //         '^/api_webhook': ''
+  //       }
+  //     }
+  //   }
+  // }
 }

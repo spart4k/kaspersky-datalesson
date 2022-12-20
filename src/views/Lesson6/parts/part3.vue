@@ -45,7 +45,7 @@
         >Хорошо</v-btn
       >
       <v-btn v-if="isCheckAvailable" sm :class="$style.btn" @click="checkCards">Проверить</v-btn>
-      <v-btn v-if="stage === 3" sm :class="$style.btn" @click="$router.push('/')"
+      <v-btn v-if="stage === 3" sm :class="$style.btn" @click="$emit('next')"
         >Продолжить</v-btn
       >
     </transition>

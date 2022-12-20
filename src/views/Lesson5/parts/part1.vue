@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.wrapper">
+  <div :class="[$style.wrapper, level === '1' && $style.level1, level === '2' && $style.level2, level === '3' && $style.level3]">
     <div :class="$style.btnWrapper">
       <v-btn lg :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
     </div>
@@ -7,11 +7,19 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useStore } from '@/store';
+
 export default {
   name: 'part1',
   components: {},
   setup() {
-    return {};
+    const store = useStore();
+    const level = computed(() => store.state.level);
+
+    return {
+      level,
+    };
   },
 };
 </script>
@@ -20,8 +28,20 @@ export default {
 .wrapper {
   height: 100vh;
   overflow: hidden;
-  background-color: #ebebeb;
+  background-color: #fff;
   position: relative;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center center;
+  &.level1 {
+    background-image: url('/assets/comics/level1/1_4-5.png');
+  }
+  &.level2 {
+    background-image: url('/assets/comics/level2/5_8-5.png');
+  }
+  &.level3 {
+    background-image: url('/assets/comics/level3/9_11-5.png');
+  }
 }
 
 .btnWrapper {

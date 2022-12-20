@@ -34,13 +34,13 @@ export default {
   background-size: contain;
   background-position: center center;
   &.level1 {
-    background-image: url('/assets/comics/level1/1_4-3.png');
+    background-image: url('/assets/comics/level1/1_4-8.png');
   }
   &.level2 {
-    background-image: url('/assets/comics/level2/5_8-3.png');
+    background-image: url('/assets/comics/level2/5_8-8.png');
   }
   &.level3 {
-    background-image: url('/assets/comics/level3/9_11-3.png');
+    background-image: url('/assets/comics/level3/9_11-8.png');
   }
 }
 
