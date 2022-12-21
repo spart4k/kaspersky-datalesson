@@ -1,15 +1,22 @@
 <template>
   <div :class="[$style.wrapper, level === '1' && $style.level1, level === '2' && $style.level2, level === '3' && $style.level3]">
-    <div :class="$style.btnWrapper">
-      <v-btn md :class="$style.btn" @click="$emit('prev')">Назад</v-btn>
-      <v-btn lg :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
-    </div>
+    <template v-if="!isMobile">
+      <v-btn sm :class="$style.btn" @click="$emit('prev')">Назад</v-btn>
+      <v-btn sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
+    </template>
+    <template v-if="isMobile">
+      <div :class="$style.btnWrapper">
+        <v-btn md :class="$style.btn" @click="$emit('prev')">Назад</v-btn>
+        <v-btn lg :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import { computed } from 'vue';
 import { useStore } from '@/store';
+import useMobile from '@/hooks/useMobile';
 
 export default {
   name: 'part2',
@@ -18,8 +25,11 @@ export default {
     const store = useStore();
     const level = computed(() => store.state.level);
 
+    const isMobile = useMobile();
+
     return {
       level,
+      isMobile,
     };
   },
 };
@@ -42,6 +52,23 @@ export default {
   }
   &.level3 {
     background-image: url('/assets/comics/level3/9_11-7.png');
+  }
+  @media screen and (min-width: 451px) { 
+    & button:nth-child(1) {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      color: #000;
+      left: rem(20);
+      bottom: rem(20);
+      position: absolute;
+    }
+    & button:nth-child(2) {
+      background-color: #ffcc00;
+      color: #000;
+      right: rem(20);
+      bottom: rem(20);
+      position: absolute;
+    }
   }
 }
 
