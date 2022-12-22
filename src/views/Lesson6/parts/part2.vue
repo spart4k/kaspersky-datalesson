@@ -37,13 +37,13 @@ export default {
 
 <style lang="scss" module>
 .wrapper {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   background-color: #fff;
   position: relative;
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center center;
+  background-position: center 15%;
   &.level1 {
     background-image: url('/assets/comics/level1/1_4-7.png');
   }
@@ -60,14 +60,14 @@ export default {
       color: #000;
       left: rem(20);
       bottom: rem(20);
-      position: absolute;
+      position: fixed;
     }
     & button:nth-child(2) {
       background-color: #ffcc00;
       color: #000;
       right: rem(20);
       bottom: rem(20);
-      position: absolute;
+      position: fixed;
     }
   }
 }

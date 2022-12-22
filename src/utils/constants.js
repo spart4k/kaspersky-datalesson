@@ -1,1 +1,1 @@
-export const BASE_URL = 'https://stage.datalesson.ru'
+export const BASE_URL = 'https://datalesson.ru'

@@ -31,7 +31,7 @@ export default {
 
 <style lang="scss" module>
 .wrapper {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   background-color: #fff;
   position: relative;
@@ -50,7 +50,7 @@ export default {
 }
 
 .btnWrapper {
-  position: absolute;
+  position: fixed;
   bottom: rem(51);
   left: 50%;
   transform: translateX(-50%);

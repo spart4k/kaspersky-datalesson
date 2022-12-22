@@ -50,7 +50,7 @@ export default {
 }
 
 .btnWrapper {
-  position: absolute;
+  position: fixed;
   bottom: rem(51);
   left: 50%;
   transform: translateX(-50%);

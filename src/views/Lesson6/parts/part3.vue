@@ -125,18 +125,24 @@ export default {
       messages.value.push(texts.start[`level${level.value}`]);
     };
 
+    const scrollTo = (element, to, duration) => {
+    if (duration <= 0) return;
+    const difference = to - element.scrollLeft;
+    const perTick = difference / duration * 10;
+
+    setTimeout(function() {
+      element.scrollLeft = element.scrollLeft + perTick;
+      if (element.scrollLeft === to) return;
+      scrollTo(element, to, duration - 10);
+    }, 10);
+}
+
     const onGameInit = () => {
       isMobileChatOpened.value = false;
       onNext();
-      outerRef.value.scroll({
-        left: 100,
-        behavior: 'smooth'
-      });
+      scrollTo(outerRef.value, 100, 100)
       setTimeout(() => {
-        outerRef.value.scroll({
-          left: 0,
-          behavior: 'smooth'
-        });
+        scrollTo(outerRef.value, -100, 300)
       }, 350);
     };
 

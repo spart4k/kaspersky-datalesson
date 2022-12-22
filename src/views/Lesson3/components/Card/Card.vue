@@ -134,15 +134,15 @@ export default {
   margin: 0 auto;
   font-weight: 700;
   font-size: rem(11);
-  line-height: rem(17);
+  line-height: rem(14);
   color: inherit;
   &.level3 {
-    font-size: rem(9.6);
-    line-height: rem(12);
+    font-size: rem(9);
+    line-height: rem(11);
   }
   @media screen and (max-width: 450px) {
-    font-size: rem(10);
-    line-height: rem(15);
+    font-size: rem(9);
+    line-height: rem(13);
     width: 100%;
   }
 }
