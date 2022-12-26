@@ -12,10 +12,8 @@ export default {
     const selectedPattern = ref(null);
     const selectedPatternArray = ref([])
     const cards = ref([])
-    console.log()
     
     const checkPattern = (num) => {
-      console.log(num)
       // if (isCheckingInProgress.value) return;
       // isCheckingInProgress.value = true;
       if (props.level === '2' || props.level === '3') {
@@ -58,7 +56,6 @@ export default {
       // }
     };
     onMounted(() => {
-      console.log(props.level)
       if (props.level == '2') {
         cards.value.push({
           label: 'Чем больше параметров и мельче сетка, тем менее точным будет прогноз и тем дольше он будет просчитываться.',

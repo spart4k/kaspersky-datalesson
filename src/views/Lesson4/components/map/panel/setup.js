@@ -111,8 +111,6 @@ export default {
       weatherOptions.value.forEach((item) => {
         if (item.value) count++
       })
-      console.log(count)
-      console.log(isMobile.value)
       if (!isMobile.value) emit('changeCount', count)
       return count
     })
@@ -121,7 +119,6 @@ export default {
       weatherOptions.value.forEach((item) => {
         if (item.value) count++
       })
-      console.log(count)
       if (isMobile.value) emit('changeCount', count)
       emit('closePanel')
     }
@@ -138,17 +135,13 @@ export default {
       emit('closePanel')
     }
     onMounted(() => {
-      console.log('mount')
     })
     watch(isShowPanelValue, (curValue) => {
-      console.log(curValue)
       if (curValue) {
         weatherOptionsClone.value.forEach((item, index) => {
-          console.log(weatherOptions.value[index].value)
           item.value = weatherOptions.value[index].value
         })
       }
-      console.log('MOUNT')
     })
     return {
       weatherOptions,

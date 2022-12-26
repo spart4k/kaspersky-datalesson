@@ -122,7 +122,6 @@ export default {
     })
     const emitClick = () => emit('emitClick')
     const successAnswer = (appliance) => {
-      console.log(appliance)
       emit('successAnswer', appliance)
     }
     return {

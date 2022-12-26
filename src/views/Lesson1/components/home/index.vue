@@ -319,7 +319,6 @@ export default {
       event.stopPropagation()
     }
     const tryClick = () => {
-      console.log('try')
       // tryClicked.value = true
       if (tryClicked.value) return
       if (!tryClickedFirst.value) {

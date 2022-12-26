@@ -292,9 +292,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
-  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
   border-radius: 20px;
+  &.modalAchieve {
+    background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
+  }
 }
 
 .modalText {
@@ -424,4 +425,9 @@
     }
   }
   
+}
+
+.imgModal {
+  width: rem(81);
+  height: rem(81);
 }

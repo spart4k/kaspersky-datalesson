@@ -58,23 +58,18 @@ export default {
       if (!isOpen.value) isOpen.value = true
     }
     const hide = () => {
-      console.log(isOpen.value)
       isOpen.value = false
     }
     form.value.forEach((item) => {
       watch(() => item.value, (currentValue, oldValue) => {
-        console.log(currentValue);
         if (+currentValue === item.answer) {
           item.state = 'success'
         }
-        console.log(item)
       });
     })
     onMounted(() => {
     })
     // watch(() => form.value[0].value, (currentValue, oldValue) => {
-    //   console.log(currentValue);
-    //   console.log(oldValue);
     //   },
     //   { deep: true }
     // );

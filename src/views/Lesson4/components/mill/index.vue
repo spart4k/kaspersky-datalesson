@@ -46,7 +46,6 @@ export default {
     })
     const emitClick = () => emit('emitClick')
     const successAnswer = () => {
-      console.log('temp')
       emit('successAnswer', 'veter')
     }
     return {

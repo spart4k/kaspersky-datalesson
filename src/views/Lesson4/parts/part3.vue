@@ -9,7 +9,7 @@
     <accuracy :procents="procentAll" v-show="level === '2' || level === '3'"></accuracy>
     <!-- <img v-if="stage >= 4" :class="$style.maplittle" src="../assets/maplittle.png" alt=""> -->
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
-    <v-speaker :class="$style.speaker" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
+    <v-speaker v-if="stage > 0" :class="$style.speaker" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
     <v-btn v-if="showNextBtnLesson" sm :class="$style.btn" @click="$router.push('/lesson5')">Продолжить</v-btn>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
@@ -25,7 +25,7 @@
     </transition> -->
     <v-modal v-if="stage === 0" :isActive="isModalActive" :toggleActive="closeModal">
       <div :class="$style.modalInner">
-        <img src="../assets/prof.svg" alt="" />
+        <img :class="$style.modalImg" src="../assets/prof.svg" alt="" />
         <p :class="$style.modalText">
           {{  level === '1' ? 'Прогнозы рассчитываются на мощных суперкомпьютерах. Они делают прогноз гораздо быстрее и точнее обычных компьютеров.' : level === '2' ? 'Для расчётов прогноза используются суперкомпьютеры – они гораздо мощнее обычных компьютеров и позволяют делать точный прогноз за считаные часы. Обычный компьютер справился бы с такими расчётами за неделю и не дал бы прогноз вовремя.' : level === '3' ? 'Расчёты метеорологической модели производит суперкомпьютер. Благодаря своей мощности он может делать точный прогноз всего за несколько часов.' : '' }}
         </p>
@@ -36,7 +36,7 @@
       </div>
     </v-modal>
     <v-modal v-if="(stage === 7 && level === '1') || (stage === 7 && level === '2') || (stage === 7 && level === '3')" :isActive="isModalActive">
-      <div :class="$style.modalInner">
+      <div :class="[$style.modalInner, !errorCount && $style.modalGold, errorCount === 1 && $style.modalSilver]">
         <achieveGold v-if="(level === '1') || (level === '2' && !errorCount) || (level === '3' && !errorCount)" :class="$style.achieve"></achieveGold>
         <achieveSilver v-if="(level === '2' && errorCount === 1) || (level === '3' && errorCount === 1)" :class="$style.achieve"></achieveSilver>
         <!-- <img  :class="$style.achieve" src="../assets/achieve.svg" alt="" /> -->
@@ -107,7 +107,6 @@ export default {
     const procentOptions = ref(30)
     const showNextBtnLesson = ref(false)
     const errorCount = ref(null)
-    console.log(level.value)
     const messages = ref([]);
     const closeModal = () => {
       isModalActive.value = false;
@@ -186,7 +185,6 @@ export default {
       }
       if (stage.value == 2) { 
         showNextBtn.value = false  
-        console.log('DVA')
         if (level.value === '1') {
           setTimeout(()=>{
             // messages.value.push('Модель делит Землю на много клеточек. Чем больше будет клеточек, тем точнее будет прогноз. Как мозаика – чем больше деталей, тем чётче картинка.') 
@@ -199,7 +197,6 @@ export default {
         }
       }
       if (stage.value === 3) {
-        console.log('3 step')
         if (level.value === '1') {
           timer.value.stopInterval()
           messages.value.push('Отлично, у тебя все быстро получилось. Но давай посмотрим, насколько точным вышел этот прогноз.')
@@ -239,7 +236,6 @@ export default {
             timer.value.clearTimerValue()
             mapDefault.value.isShowDoubleMap = true
             mapDefault.value.timer.timerValue = objCopy
-            console.log(mapDefault.value.timer.timerValue)
             mapDefault.value.clearFirstClicked()
           }, 2500)
           setTimeout(() => {
@@ -258,7 +254,6 @@ export default {
           //   messages.value.push('Да! Теперь мы выделили границу гораздо точнее.')
           // }, 2000)
         } else if (level.value === '2' || level.value === '3') {
-          console.log('NEXT STEP 5+')
           setTimeout(() => {
             messages.value.push('Отличный эксперимент! Двигай ползунок, подключай и отключай метеорологические параметры и следи, как меняются время и точность прогноза.')
           }, 500)
@@ -285,7 +280,7 @@ export default {
             messages.value.push('Отличный эксперимент! Теперь ты видишь, что, чем точнее мы хотим получить прогноз, тем дольше его придется считать.')
             // mobileChatCounter.value += 1
             // showNextBtn.value = false
-            store.dispatch('updateProgress', [1, 2])
+            store.dispatch('updateProgress', [4, 2])
             store.dispatch('updateCurrentLesson', 5)
             onNext()
           }, 3500)
@@ -296,10 +291,10 @@ export default {
           // showNextBtn.value = true
         } else if (level.value === '2' || level.value === '3') {
           if (errorCount.value === 0) {
-            store.dispatch('updateProgress', [1, 2])
+            store.dispatch('updateProgress', [4, 2])
           }
           if (errorCount.value === 1) {
-            store.dispatch('updateProgress', [1, 1])
+            store.dispatch('updateProgress', [4, 1])
           }
           store.dispatch('updateCurrentLesson', 5)
           mobileChatCounter.value += 1
@@ -312,7 +307,6 @@ export default {
         }
       } 
       if (stage.value === 7) {
-        console.log('STEP 7')
         // messages.value.push('Да, это верные показания.')
         // hideSigleAppliance('home')
         // changeZoom('all')
@@ -431,11 +425,9 @@ export default {
       timer.value.startTimer()
     }
     const changeSquereValue = (param) => {
-      console.log(param)
       squere.value = param
     }
     const changeCountValue = (val) => {
-      console.log('main', val)
       val = val - 1
       calculationOptions.value = val * 900
       val = val + 1
@@ -447,12 +439,8 @@ export default {
       // if (val === 10) {
       //   calculationOptions.value = val * 900
       // }
-      console.log(val * 900)
-      console.log(calculationOptions.value )
       procentOptions.value = val * 5
-      console.log(calculationOptions.value, stage.value)
       if (calculationOptions.value === 8100 && stage.value === 4) {
-        console.log('ON NEXT')
         onNext()
       }
     }
@@ -466,7 +454,6 @@ export default {
       let second = null
       let procent = null
       if (squere.value === 324 && stage.value === 2) {
-        console.log('NEXT STEP')
         onNext()
       }
       switch (squere.value) {
@@ -502,14 +489,9 @@ export default {
           break;
       }
       procentMap.value = procent
-      console.log(procentMap.value)
       calculationMap.value = second
-      console.log(calculationMap.value)
-      console.log(calculationTimer.value)
     })
     const checkPattern = (item) => {
-      console.log(item)
-      console.log(level.value)
       if (level.value === '2') {
         if (item !== 1) {
           errorCount.value++
@@ -520,7 +502,6 @@ export default {
             messages.value.push('Чем больше параметров и мельче сетка, тем точнее будет прогноз, но времени на его расчёт требуется больше. Найди утверждение, обратное этому.')
           }
           if (errorCount.value > 2) return
-          console.log(errorCount.value)
         } else {
           onNext()
         }
@@ -528,7 +509,6 @@ export default {
       if (level.value === '3') {
         if (item.includes(0) && item.includes(3)) {
           onNext()
-          console.log(errorCount.value)
         } if (item.includes(0) || item.includes(3)) {
           return
         } else if (item.includes) {
@@ -540,12 +520,11 @@ export default {
             messages.value.push('Чем больше параметров и мельче сетка в нашей модели, тем точнее прогноз, но времени на его расчёт требуется больше. Отметишь верные утверждения?')
           }
           if (errorCount.value > 2) return
-          console.log(errorCount.value)
         }
       }
       
     }
-     return {
+    return {
       isModalActive,
       closeModal,
       stage,

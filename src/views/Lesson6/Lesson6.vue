@@ -1,5 +1,6 @@
 <template>
   <div :class="$style.wrapper">
+    <v-loader v-if="isLoading"></v-loader>
     <transition name="fade" mode="out-in">
       <part1 v-if="stage === 1" @next="next"></part1>
       <part2 v-if="stage === 2" @prev="prev" @next="next"></part2>
@@ -26,7 +27,8 @@ export default {
     part4,
   },
   setup() {
-    const stage = ref(1);
+    const stage = ref(4);
+    const isLoading = ref(false);
 
     const next = () => {
       stage.value += 1;
@@ -36,8 +38,13 @@ export default {
       stage.value -= 1;
     };
 
-    const finishApp = () => {
-      webhook()
+    const finishApp = async () => {
+      isLoading.value = true;
+      const res = await webhook();
+      setTimeout(() => {
+        isLoading.value = false;
+      }, 1000);
+      window.location.replace(res.data.link);
     }
 
     return {
@@ -49,6 +56,7 @@ export default {
       part3,
       part4,
       finishApp,
+      isLoading,
     };
   },
 };

@@ -36,7 +36,6 @@ export default {
       return text
     })
     watch(rangeValue, () => {
-      console.log(rangeValue.value)
       let square = null
       switch (rangeValue.value) {
         case '2x2':
@@ -54,7 +53,6 @@ export default {
         default:
           break;
       }
-      console.log(square)
       emit('changeSquere', square)
     })
     return {

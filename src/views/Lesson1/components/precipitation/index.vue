@@ -176,7 +176,6 @@ export default {
       emit('successAnswer', 'precipitation')
     }
     const tryClick = () => {
-      console.log('try')
       // tryClicked.value = true
       if (tryClicked.value) return
       if (!tryClickedFirst.value) {

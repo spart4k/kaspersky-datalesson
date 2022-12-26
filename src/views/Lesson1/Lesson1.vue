@@ -1,5 +1,6 @@
 <template>
-  <div :class="$style.wrapper">
+  <v-loader v-if="!level"></v-loader>
+  <div v-else :class="$style.wrapper">
     <transition name="fade" mode="out-in">
       <part1 v-if="stage === 1" @next="next"></part1>
       <!-- <part2 v-if="stage === 2" @prev="prev" @next="next"></part2> -->
@@ -39,6 +40,7 @@ export default {
       part1,
       // part2,
       part3,
+      level
     };
   },
 };

@@ -111,18 +111,15 @@ export default {
       firstClicked.value = false
     }
     const changeSquere = (param) => {
-      console.log(param)
       emit('changeSquereValue', param)
     }
     const changeCount = (val) => {
       emit('changeCountValue', val)
-      console.log(val)
     }
     onMounted(() => {
       drawBoxes()
     })
     const check = (item) => {
-      console.log(item)
       emit('checkPattern', item)
     }
     const showRainDouble = () => {
@@ -133,7 +130,6 @@ export default {
       drawBoxes()
     })
     watch(stageNum, () => {
-      console.log(stageNum.value)
       if (stageNum.value === 4) {
         showRain()
         showRainDouble()

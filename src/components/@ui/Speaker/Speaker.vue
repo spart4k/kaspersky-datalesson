@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style.wrapper" @click.self="$emit('toggle')">
+  <div :class="[$style.wrapper, $props.type === 2 && $style.wrapper2]" @click.self="$emit('toggle')">
     <div v-if="isMobile && digit > 0" :class="$style.digit">{{ digit }}</div>
   </div>
 </template>
@@ -13,6 +13,7 @@ export default {
   components: {},
   props: {
     counter: Number,
+    type: Number,
   },
   setup(props) {
     const isMobile = useMobile();

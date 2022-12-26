@@ -16,7 +16,6 @@ export default {
   },
   setup(props) {
     const startTimer = computed(() => {
-      console.log('start timer')
       let seconds = props.seconds
       // let time = new Date(+timestamp - 14400 * 1000)
       let time = new Date('July 1, 1999, 00:00:00')

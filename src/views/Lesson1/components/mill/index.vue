@@ -80,11 +80,9 @@ export default {
     })
     const emitClick = () => emit('emitClick')
     const successAnswer = () => {
-      console.log('temp')
       emit('successAnswer', 'veter')
     }
     const tryClick = () => {
-      console.log('try')
       // tryClicked.value = true
       if (tryClicked.value) return
       if (!tryClickedFirst.value) {

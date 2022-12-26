@@ -6,6 +6,7 @@
     </div>
     <v-speaker
       v-if="stage > 1 || (stage === 1 && !isModalActive)"
+      :type="2"
       @toggle="toggleMobileChat"
       :counter="mobileChatCounter"
     />
@@ -132,7 +133,7 @@
     </transition>
     <v-modal v-if="stage === 1" :isActive="isModalActive">
       <div :class="$style.modalInner">
-        <img :class="$style.speaker" src="../../../components/@ui/Speaker/speaker.png" alt="" />
+        <img :class="$style.speaker" src="../../../components/@ui/Speaker/speaker2.png" alt="" />
         <p :class="$style.modalText">
           {{texts.modal}}
         </p>

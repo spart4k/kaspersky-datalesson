@@ -5,7 +5,7 @@ module.exports = {
         prependData: '@import "@/styles/global.scss";',
       },
     },
-    sourceMap: true,
+    sourceMap: process.env.NODE_ENV === 'development',
   },
   configureWebpack: {
     devtool: 'inline-source-map',

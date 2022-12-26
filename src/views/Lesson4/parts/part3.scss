@@ -230,9 +230,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
-  background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
   border-radius: 20px;
+  &.modalGold {
+    background: linear-gradient(180deg, rgba(255, 204, 0, 0.15) 0%, rgba(255, 255, 255, 0.15) 25.47%), #FFFFFF;
+  }
+  &.modalSilver {
+    background: linear-gradient(180deg, rgba(100, 120, 143, 0.15) 0%, rgba(255, 255, 255, 0) 26.27%),
+      #fff;
+  }
 }
 
 .modalText {
@@ -376,4 +381,9 @@
     }
   }
   
+}
+
+.modalImg {
+  width: rem(81);
+  height: rem(81);
 }

@@ -21,7 +21,6 @@
       </div>
       <p v-if="session" :class="$style.text">session_id: {{ session }}</p>
       <p v-if="level" :class="$style.text2">level: {{ level }}</p>
-      <button :class="$style.btn" @click="webhook">Send request to webhook</button>
     </div>
   </div>
 </template>
@@ -29,7 +28,6 @@
 <script>
 import { computed } from 'vue';
 import { useStore } from '@/store';
-import webhook from '@/services/webhook'
 
 export default {
   name: 'TemporaryStartScreen',
@@ -41,7 +39,6 @@ export default {
     return {
       session,
       level,
-      webhook,
     };
   },
 };

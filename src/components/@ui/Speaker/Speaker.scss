@@ -17,6 +17,11 @@
     cursor: pointer;
     position: fixed;
   }
+  &.wrapper2 {
+    background-image: url('./speaker2.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
 }
 
 .digit {

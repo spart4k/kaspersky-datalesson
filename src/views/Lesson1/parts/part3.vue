@@ -70,7 +70,7 @@
     </transition> -->
     <v-modal v-if="stage === 0" :isActive="isModalActive" :toggleActive="closeModal">
       <div :class="$style.modalInner">
-        <img src="../assets/prof.svg" alt="" />
+        <img :class="$style.imgModal" src="../assets/prof.svg" alt="" />
         <p :class="$style.modalText">
           {{  level === '1' ? 'Погоду изучают метеорологи. Они анализируют погодные явления и прогнозируют их.' : level === '2' ? 'Погоду изучают метеорологи. Они исследуют строение и свойства земной атмосферы и процессы, происходящие в ней.' : level === '3' ? 'Изучением погодных явлений занимаются метеорологи. Они исследуют строение и свойства атмосферы Земли, а также физические и химические процессы, происходящие в ней.' : '' }}
         </p>
@@ -82,7 +82,7 @@
       </div>
     </v-modal>
     <v-modal v-if="stage === 14" :isActive="isModalActive">
-      <div :class="$style.modalInner">
+      <div :class="[$style.modalInner, $style.modalAchieve]">
         <img :class="$style.achieve" src="../assets/achieve.png" alt="" />
         <p :class="[$style.modalText, $style.modalTextBottom]">
           Отличная работа! Ты получаешь золотое достижение «Метеоролог»!<br /> Продолжай в том же духе!
@@ -104,6 +104,7 @@ import mill from '../components/mill/index.vue';
 import precipitation from '../components/precipitation/index.vue'
 import speaker from '@/components/@ui/Speaker/Speaker.vue'
 import useMobile from '@/hooks/useMobile';
+import markFirstTask from '@/services/markFirstTask';
 export default {
   name: 'part3',
   components: {
@@ -201,7 +202,6 @@ export default {
         }
       }
       if (stage.value === 3) {
-        console.log(3)
         if (level.value === '1') messages.value.push('Осадкомер: Прибор для измерения количества выпавших осадков. Осадки измеряются в миллиметрах (мм).')
         if (level.value === '2') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
         if (level.value === '3') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
@@ -213,7 +213,6 @@ export default {
         changeZoom('single')
       } 
       if (stage.value === 4) {
-        console.log(4)
         messages.value.push('Да, это верные показания.')
         let input = diaryComp.value.form.find((el) => el.title === "Кол-во осадков" )
         input.value = input.answer
@@ -222,7 +221,6 @@ export default {
         showNextBtn.value = true
       }
       if (stage.value === 5) {
-        // console.log(5)
         // messages.value.push('Да, это верные показания.')
         // let input = diaryComp.value.form.find((el) => el.title === "Температура" )
         // input.value = input.answer
@@ -369,6 +367,7 @@ export default {
           // messages.value.push('Отличная работа! Мы записали всё, что нужно. ')
           store.dispatch('updateProgress', [1, 2])
           store.dispatch('updateCurrentLesson', 2)
+          markFirstTask()
           isModalActive.value = true
         }, 2500)
       }
@@ -388,9 +387,7 @@ export default {
       precipitationChoosed.value = ''
     }
     const showAppliance = (appliance) => {
-      console.log(isShowPrecipitation)
       isShowPrecipitation[appliance] = true
-      console.log(appliance)
     }
     const hideAppliance = (appliance) => {
       isShowPrecipitation[appliance] = false
@@ -399,7 +396,6 @@ export default {
       onNext()
     }
     const successSingle = () => {
-      console.log('log')
     }
     const toggleMobileChat = () => {
       isMobileChatOpened.value = !isMobileChatOpened.value
@@ -409,8 +405,6 @@ export default {
       messages.value.push(text)
     }
     const successAnswer = (appliance) => {
-      console.log('prop')
-      console.log(appliance)
       if (appliance === 'precipitation' && stage.value === 3) {
         onNext()
       }

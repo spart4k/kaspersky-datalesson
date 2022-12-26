@@ -29,8 +29,6 @@ export default {
       return props.procents + '%'
     })
     // watch(() => form.value[0].value, (currentValue, oldValue) => {
-    //   console.log(currentValue);
-    //   console.log(oldValue);
     //   },
     //   { deep: true }
     // );

@@ -23,7 +23,6 @@ export default {
   
     })
     const startTimer = () => {
-      console.log('start timer')
       let seconds = timerValue.value.seconds
       let minutes = timerValue.value.minutes
       let hour = timerValue.value.hour
@@ -66,14 +65,10 @@ export default {
       timerValue.value.minutes = '00'
     }
     const stopInterval = () => {
-      console.log('stop timer')
       // emit('oldValue', timerInterval.value)
-      console.log(timerInterval.value)
       clearInterval(timerInterval.value)
     }
     // watch(() => form.value[0].value, (currentValue, oldValue) => {
-    //   console.log(currentValue);
-    //   console.log(oldValue);
     //   },
     //   { deep: true }
     // );
