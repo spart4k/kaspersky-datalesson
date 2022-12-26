@@ -106,7 +106,7 @@ export default {
     const procentMap = ref(8*2)
     const procentOptions = ref(30)
     const showNextBtnLesson = ref(false)
-    const errorCount = ref(null)
+    const errorCount = ref(0)
     const messages = ref([]);
     const closeModal = () => {
       isModalActive.value = false;
@@ -131,8 +131,13 @@ export default {
             messages.value.push(
               'Но нельзя просто так сделать сетку из огромного множества клеточек. Давайте попробуем провести такие расчёты и посмотрим почему.',
             )
-            showNextBtn.value = true
           }, 2500)
+          setTimeout(() => {
+            messages.value.push(
+              'Давай представим, что у тебя есть сетка из четырёх клеточек. Помоги компьютеру сделать погодные вычисления – нажми на каждую из клеточек.',
+            )
+            showNextBtn.value = true
+          }, 4000)
         }
         if (level.value === '2') {
           showNextBtn.value = false
@@ -259,7 +264,7 @@ export default {
           }, 500)
           setTimeout(() => {
             showNextBtn.value = false
-            messages.value.push('На основании своих наблюдений выбери из списка корректное утверждение.')
+            level.value === '2' ? messages.value.push('На основании своих наблюдений выбери из списка корректное утверждение.') : messages.value.push('На основании своих наблюдений выбери из списка 2 корректных утверждения.')
           }, 2000)
           
           // mobileChatCounter.value += 1
@@ -282,7 +287,9 @@ export default {
             // showNextBtn.value = false
             store.dispatch('updateProgress', [4, 2])
             store.dispatch('updateCurrentLesson', 5)
-            onNext()
+            setTimeout(() => {
+              onNext()
+            }, 2500);
           }, 3500)
           
         }
