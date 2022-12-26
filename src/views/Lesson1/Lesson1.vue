@@ -14,6 +14,7 @@ import { ref } from 'vue';
 import part1 from './parts/part1';
 // import part2 from './parts/part2';
 import part3 from './parts/part3';
+import { useStore } from '@/store';
 
 export default {
   name: 'lesson1',
@@ -24,6 +25,9 @@ export default {
   },
   setup() {
     const stage = ref(1);
+
+    const store = useStore();
+    const level = computed(() => store.state.level);
 
     const next = () => {
       stage.value += 1;
