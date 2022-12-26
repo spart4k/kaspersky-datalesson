@@ -31,7 +31,8 @@ export default {
     level: {
       type: String,
       default: ''
-    }
+    },
+    isPaused: Boolean
   },
   setup(props, ctx) {
     const { emit } = ctx
@@ -62,7 +63,7 @@ export default {
         if (props.stage === 2) {
           grid.value[1].lighting = true
           grid.value[3].lighting = true
-        } else if (props.stage === 5) {
+        } else if (props.stage === 5 && props.level !== '1') {
           let array = [
             grid.value[1],
             grid.value[2],
@@ -133,6 +134,26 @@ export default {
       if (stageNum.value === 4) {
         showRain()
         showRainDouble()
+      }
+    })
+
+    const isPausedProp = computed(() => props.isPaused)
+
+    watch(isPausedProp, () => {
+      if (!isPausedProp.value) {
+        let array = [
+          grid.value[1],
+          grid.value[2],
+          grid.value[3],
+          grid.value[6],
+          grid.value[7],
+          grid.value[10],
+          grid.value[11]
+        ]
+        array.forEach((item) => {
+          item.lighting = true
+        })
+        showRain()
       }
     })
     return {

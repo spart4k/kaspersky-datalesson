@@ -234,6 +234,7 @@
     z-index: 1;
     opacity: 0;
     transition : .2s;
+    pointer-events: none;
     &.show {
       transform: translate(0, calc(rem(240) + rem(10)));
       opacity: 1;

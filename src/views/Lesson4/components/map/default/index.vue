@@ -9,7 +9,7 @@
     ]">
       <div :class="[
         $style.map,
-        $props.stage !== 2 && $props.stage !== 3 && $props.stage !== 5 && $props.level === '1' ? $style.disabled : ''
+        $props.stage !== 2 && $props.stage !== 3 && $props.stage !== 5 && $props.level === '1' && !($props.stage > 4 && $props.level === '1') ? $style.disabled : ''
       ]">
         <div :class="$style.separator">
           <div :class="$style.grid">

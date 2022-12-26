@@ -16,8 +16,15 @@ export default {
     const checkPattern = (num) => {
       // if (isCheckingInProgress.value) return;
       // isCheckingInProgress.value = true;
-      if (props.level === '2' || props.level === '3') {
+      if (props.level === '2') {
         if (num !== 1) {
+          setTimeout(() =>{
+            selectedPattern.value = null
+          }, 1000)
+        }
+      }
+      if (props.level === '3') {
+        if (num !== 0 && num !== 3) {
           setTimeout(() =>{
             selectedPattern.value = null
           }, 1000)

@@ -4,13 +4,14 @@
   ]">
     <v-progress :class="$style.progress"></v-progress>
     <timer v-show="level === '1'" :class="$style.timer" ref="timer"></timer>
-    <map-default :level="level" ref="mapDefault" @checkPattern="checkPattern" @changeCountValue="changeCountValue" @changeSquereValue="changeSquereValue" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
+    <map-default :level="level" ref="mapDefault" @checkPattern="checkPattern" :isPaused="isPaused" @changeCountValue="changeCountValue" @changeSquereValue="changeSquereValue" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
     <calculation :seconds="calculationTimer" v-show="level === '2' || level === '3'"></calculation>
     <accuracy :procents="procentAll" v-show="level === '2' || level === '3'"></accuracy>
     <!-- <img v-if="stage >= 4" :class="$style.maplittle" src="../assets/maplittle.png" alt=""> -->
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker v-if="stage > 0" :class="$style.speaker" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
+    <v-btn v-if="stage === 5.5" sm :class="$style.btn" @click="handlePaused">Хорошо</v-btn>
     <v-btn v-if="showNextBtnLesson" sm :class="$style.btn" @click="$router.push('/lesson5')">Продолжить</v-btn>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
     <!-- <transition name="fade">
@@ -111,6 +112,7 @@ export default {
     const closeModal = () => {
       isModalActive.value = false;
     };
+    const isPaused = ref(true);
     
     const onNext = (appliance) => {
       // if (stage.value === 2 & appliance !== 'precipitation') return
@@ -275,8 +277,6 @@ export default {
           showNextBtn.value = false
           if (level.value === '1') {
           showNextBtn.value = false
-          messages.value.push('Кажется, на этот раз понадобилось гораздо больше времени. Давай посмотрим, помогло ли это с точностью прогноза.')
-          
           setTimeout(() => {
             messages.value.push('Да! Теперь мы выделили границу гораздо точнее.')
             // mobileChatCounter.value += 1
@@ -426,7 +426,11 @@ export default {
       }
     }
     const allChecked = () => {
-      onNext()
+      if (stage.value === 5 && level.value === '1') {
+        stage.value = 5.5
+      } else {
+        onNext()
+      }
     }
     const firstClicked = () => {
       timer.value.startTimer()
@@ -531,6 +535,20 @@ export default {
       }
       
     }
+
+    const handlePaused = () => {
+      stage.value = 5;
+      isPaused.value = false;
+      onNext()
+    }
+
+    watch(stage, () => {
+      if (stage.value === 5.5) {
+        timer.value.stopInterval();
+        messages.value.push('Кажется, на этот раз понадобилось гораздо больше времени. Давай посмотрим, помогло ли это с точностью прогноза.')
+      } 
+    })
+
     return {
       isModalActive,
       closeModal,
@@ -563,7 +581,9 @@ export default {
       procentOptions,
       checkPattern,
       errorCount,
-      showNextBtnLesson
+      showNextBtnLesson,
+      isPaused,
+      handlePaused,
     };
   },
 };
