@@ -7,8 +7,7 @@
     "serve": "vue-cli-service serve --host 0.0.0.0",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "upload": "rsync -rav --delete --no-perms ./dist/* app@95.142.45.204:/opt/pogoda.datalesson.ru",
-    "deploy": "npm run build && npm run upload"
+    "deploy_prod": "ssh app@95.142.45.204 'cd /opt; ./pogoda_dep.sh'"
   },
   "dependencies": {
     "axios": "^0.19.0",
