@@ -27,7 +27,7 @@ export default {
     part4,
   },
   setup() {
-    const stage = ref(4);
+    const stage = ref(1);
     const isLoading = ref(false);
 
     const next = () => {
