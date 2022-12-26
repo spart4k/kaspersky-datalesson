@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import part1 from './parts/part1';
 // import part2 from './parts/part2';
 import part3 from './parts/part3';
