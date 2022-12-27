@@ -8,32 +8,6 @@ module.exports = {
     sourceMap: process.env.NODE_ENV === 'development',
   },
   configureWebpack: {
-    devtool: 'inline-source-map',
-    module: {
-      rules: [
-        {
-          test: /\.(doc|pdf|docx)(\?.*)?$/,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                name: 'assets/files/[name].[hash:8].[ext]',
-              },
-            },
-          ],
-        },
-      ],
-    },
+    devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : false,
   },
-  // devServer: {
-  //   proxy: {
-  //     '/api_webhook': {
-  //       target: 'http://stage.datalesson.ru/trainer/webhook',
-  //       changeOrigin: true,
-  //       pathRewrite: {
-  //         '^/api_webhook': ''
-  //       }
-  //     }
-  //   }
-  // }
 }

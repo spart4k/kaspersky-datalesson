@@ -48,10 +48,8 @@ export default {
           break;
       }
 
-      console.log(sessionData.data);
       localStorage.setItem(lsVar, session);
       localStorage.setItem(levelVar, level);
-      // this.$router.push('/');
     }
 
     if (localStorage.getItem(lsVar)) {

@@ -19,6 +19,9 @@
       <div :class="$style.linkWrapper">
         <router-link :class="$style.link" to="/lesson6">Lesson 6</router-link>
       </div>
+      <div :class="$style.linkWrapper">
+        <router-link :class="$style.link" to="/bonus">Bonus</router-link>
+      </div>
       <p v-if="session" :class="$style.text">session_id: {{ session }}</p>
       <p v-if="level" :class="$style.text2">level: {{ level }}</p>
     </div>

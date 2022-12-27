@@ -7,6 +7,7 @@ import Lesson3 from '@/views/Lesson3/Lesson3'
 import Lesson4 from '@/views/Lesson4/Lesson1'
 import Lesson5 from '@/views/Lesson5/Lesson5'
 import Lesson6 from '@/views/Lesson6/Lesson6'
+import Bonus from '@/views/Bonus/Bonus'
 import TemporaryStartScreen from '@/components/temp/TemporaryStartScreen'
 
 Vue.use(VueRouter)
@@ -45,6 +46,11 @@ const routes = [
     path: '/lesson6',
     name: 'lesson6',
     component: Lesson6,
+  },
+  {
+    path: '/bonus',
+    name: 'bonus',
+    component: Bonus,
   },
 ]
 

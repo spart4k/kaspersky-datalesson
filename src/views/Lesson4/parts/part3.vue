@@ -320,7 +320,7 @@ export default {
         // let input = diaryComp.value.form.find((el) => el.title === "Температура" )
         // input.value = input.answer
         // showNextBtn.value = true
-        if (level.value === '2' || level.value === '3' && errorCount.value > 1 ) {
+        if ((level.value === '2' || level.value === '3') && errorCount.value > 1 ) {
           isModalActive.value = false
           onNext()
         }
