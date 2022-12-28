@@ -116,6 +116,210 @@
         />
       </td>
     </template>
+    <template v-if="$props.part === 3">
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part3[index - 1][0].slice(0, -4)
+                : imgDataPart3[index - 1][0].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part3[index - 1][0] : imgDataPart3[index - 1][0]
+          }`"
+          alt=""
+        />
+      </td>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part3[index - 1][1].slice(0, -4)
+                : imgDataPart3[index - 1][1].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part3[index - 1][1] : imgDataPart3[index - 1][1]
+          }`"
+          alt=""
+        />
+      </td>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part3[index - 1][2].slice(0, -4)
+                : imgDataPart3[index - 1][2].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part3[index - 1][2] : imgDataPart3[index - 1][2]
+          }`"
+          alt=""
+        />
+      </td>
+      <td
+        :class="[
+          $style.cell,
+          $props.stage < 2 && $style.hidden,
+          $props.stage === 6 && $style.scaled,
+        ]"
+      >
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part3[index - 1][3].slice(0, -4)
+                : imgDataPart3[index - 1][3].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part3[index - 1][3] : imgDataPart3[index - 1][3]
+          }`"
+          alt=""
+        />
+      </td>
+    </template>
+    <template v-if="$props.part === 4">
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part4[index - 1][0].slice(0, -4)
+                : imgDataPart4[index - 1][0].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part4[index - 1][0] : imgDataPart4[index - 1][0]
+          }`"
+          alt=""
+        />
+      </td>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part4[index - 1][1].slice(0, -4)
+                : imgDataPart4[index - 1][1].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part4[index - 1][1] : imgDataPart4[index - 1][1]
+          }`"
+          alt=""
+        />
+      </td>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part4[index - 1][2].slice(0, -4)
+                : imgDataPart4[index - 1][2].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part4[index - 1][2] : imgDataPart4[index - 1][2]
+          }`"
+          alt=""
+        />
+      </td>
+      <td
+        :class="[
+          $style.cell,
+          $props.stage < 2 && $style.hidden,
+          $props.stage === 6 && $style.scaled,
+        ]"
+      >
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part4[index - 1][3].slice(0, -4)
+                : imgDataPart4[index - 1][3].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part4[index - 1][3] : imgDataPart4[index - 1][3]
+          }`"
+          alt=""
+        />
+      </td>
+    </template>
+    <template v-if="$props.part === 5">
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part5[index - 1][0].slice(0, -4)
+                : imgDataPart5[index - 1][0].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part5[index - 1][0] : imgDataPart5[index - 1][0]
+          }`"
+          alt=""
+        />
+      </td>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part5[index - 1][1].slice(0, -4)
+                : imgDataPart5[index - 1][1].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part5[index - 1][1] : imgDataPart5[index - 1][1]
+          }`"
+          alt=""
+        />
+      </td>
+      <td :class="$style.cell">
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part5[index - 1][2].slice(0, -4)
+                : imgDataPart5[index - 1][2].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part5[index - 1][2] : imgDataPart5[index - 1][2]
+          }`"
+          alt=""
+        />
+      </td>
+      <td
+        :class="[
+          $style.cell,
+          $props.stage < 2 && $style.hidden,
+          $props.stage === 6 && $style.scaled,
+        ]"
+      >
+        <img
+          :class="
+            $style[
+              $props.stage > 5
+                ? imgDataStage6Part5[index - 1][3].slice(0, -4)
+                : imgDataPart5[index - 1][3].slice(0, -4)
+            ]
+          "
+          :src="`/assets/img/lesson5/${
+            $props.stage > 5 ? imgDataStage6Part5[index - 1][3] : imgDataPart5[index - 1][3]
+          }`"
+          alt=""
+        />
+      </td>
+    </template>
   </tr>
 </template>
 
@@ -181,13 +385,98 @@ export default {
       ['wind-down.png', 'hot.png', ''],
     ];
 
+    const imgDataPart3 = [
+      ['wind-left.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-up.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind-right.png', 'sun.png', 'cold.png', 'hot.png'],
+      ['wind-down.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-left.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind-right.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-up.png', 'sun.png', 'cold.png', 'cold.png'],
+      ['wind-right.png', 'sun.png', 'hot.png', 'cold.png'],
+      ['wind-up.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-left.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-down.png', 'sun.png', 'cold.png', 'cold.png'],
+      ['wind-right.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-left.png', 'sun.png', 'cold.png', 'cold.png'],
+      ['wind-down.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind-up.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-down.png', 'rain.png', 'hot.png', 'cold.png'],
+    ];
+
+    const imgDataStage6Part3 = [
+      ['wind-left.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-down.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-up.png', 'sun.png', 'hot.png', ''],
+      ['wind-right.png', 'sun.png', 'hot.png', 'cold.png'],
+      ['wind-down.png', 'sun.png', 'cold.png', ''],
+      ['wind-right.png', 'rain.png', 'hot.png', 'cold.png'],
+    ];
+
+    const imgDataPart4 = [
+      ['wind-left.png', 'rain.png', 'hot.png', 'hot.png'],
+      ['wind-up.png', 'sun.png', 'cold.png', 'hot.png'],
+      ['wind-up.png', 'sun.png', 'hot.png', 'cold.png'],
+      ['wind-down.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-right.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind-left.png', 'sun.png', 'cold.png', 'hot.png'],
+      ['wind-down.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-left.png', 'rain.png', 'hot.png', 'hot.png'],
+      ['wind-up.png', 'rain.png', 'cold.png', 'cold.png'],
+      ['wind-left.png', 'sun.png', 'hot.png', 'cold.png'],
+      ['wind-down.png', 'sun.png', 'cold.png', 'cold.png'],
+      ['wind-right.png', 'rain.png', 'cold.png', 'cold.png'],
+    ];
+
+    const imgDataStage6Part4 = [
+      ['wind-right.png', 'rain.png', 'hot.png', ''],
+      ['wind-down.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-right.png', 'sun.png', 'cold.png', ''],
+      ['wind-down.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-down.png', 'sun.png', 'hot.png', ''],
+      ['wind-left.png', 'sun.png', 'cold.png', 'hot.png'],
+      ['wind-up.png', 'sun.png', 'cold.png', 'hot.png'],
+    ];
+
+    const imgDataPart5 = [
+      ['wind-left.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-up.png', 'sun.png', 'cold.png', 'cold.png'],
+      ['wind-down.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-up.png', 'sun.png', 'hot.png', 'cold.png'],
+      ['wind-right.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind-left.png', 'sun.png', 'cold.png', 'cold.png'],
+      ['wind-down.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-left.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-up.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-left.png', 'sun.png', 'hot.png', 'hot.png'],
+      ['wind-down.png', 'sun.png', 'cold.png', 'cold.png'],
+      ['wind-right.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-up.png', 'rain.png', 'hot.png', 'cold.png'],
+    ];
+
+    const imgDataStage6Part5 = [
+      ['wind-right.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-down.png', 'rain.png', 'hot.png', 'cold.png'],
+      ['wind-up.png', 'sun.png', 'hot.png', 'cold.png'],
+      ['wind-down.png', 'rain.png', 'cold.png', 'hot.png'],
+      ['wind-down.png', 'sun.png', 'hot.png', ''],
+      ['wind-left.png', 'sun.png', 'cold.png', ''],
+      ['wind-up.png', 'sun.png', 'cold.png', ''],
+    ];
+
     return {
       index,
       stage,
       imgDataPart1,
       imgDataStage6Part1,
       imgDataPart2,
-      imgDataStage6Part2
+      imgDataStage6Part2,
+      imgDataPart3,
+      imgDataStage6Part3,
+      imgDataPart4,
+      imgDataStage6Part4,
+      imgDataPart5,
+      imgDataStage6Part5,
     };
   },
 };

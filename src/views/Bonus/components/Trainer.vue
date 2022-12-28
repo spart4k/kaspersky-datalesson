@@ -128,10 +128,24 @@
       <v-btn v-if="(stage === 3 || (stage === 5 && !isMobile))" sm :class="$style.btn" @click="onNext"
         >Продолжить</v-btn
       >
-      <v-btn v-if="stage === 8 && (!isMobile || !isPatternWindowActive)" sm :class="$style.btn" @click="$emit('next')"
-        >Продолжить</v-btn
+      <v-btn v-if="stage === 7 && (!isMobile || !isPatternWindowActive) && $props.part !== 5" sm :class="$style.btn" @click="$props.part !== 5 && $emit('next')"
+        >{{$props.part === 5 ? 'Ура, это всё!' : 'К заданию посложнее'}}</v-btn
+      >
+      <v-btn
+        sm
+        :class="$style.btn"
+        @click="() => {}"
+        v-if="!isModalActive && !(stage === 1 && messages.length >= texts.start.length && (!isMobile || (isMobile && isMobileChatOpened))) && !((stage === 2 || (stage === 6 && (!isMobile || !isPatternWindowActive))) && selectedRows.length > 0 && !isCheckingInProgress) && !(stage === 3 || (stage === 5 && !isMobile)) && !(stage === 7 && (!isMobile || !isPatternWindowActive) && $props.part !== 5)"
+        >Пропустить задание</v-btn
       >
     </transition>
+    <v-modal v-if="stage === 1 && $props.part === 1" :isActive="isModalActive">
+      <div :class="$style.modalInner">
+        <img :class="$style.speaker" src="../../../components/@ui/Speaker/speaker.png" alt="" />
+        <p :class="$style.modalText">{{texts.modal}}</p>
+        <v-btn lg @click="onGameStart">Начать</v-btn>
+      </div>
+    </v-modal>
   </div>
 </template>
 
@@ -168,9 +182,9 @@ export default {
 
     const isMobile = useMobile();
 
-    const correctRows = props.part === 1 ? [2, 7] : props.part === 2 ? [4, 6, 8, 9, 11, 12] : [];
-    const correctRows2 = props.part === 1 ? [3, 5] : props.part === 2 ? [2, 5] : [];
-    const correctPattern = props.part === 1 ? 1 : props.part === 2 ? 4 : 3;
+    const correctRows = props.part === 1 ? [2, 7] : props.part === 2 ? [4, 6, 8, 9, 11, 12] : props.part === 3 ? [1, 3, 4, 6, 8, 9, 10, 12, 15, 16] : props.part === 4 ? [2, 3, 4, 6, 7, 10] : [1, 3, 4, 7, 8, 9, 12, 13];
+    const correctRows2 = props.part === 1 ? [3, 5] : props.part === 2 ? [2, 5] : props.part === 3 ? [1, 2, 4, 6] : props.part === 4 ? [2, 4, 6, 7] : [1, 2, 3, 4];
+    const correctPattern = props.part === 1 ? 1 : props.part === 2 ? 4 : props.part === 3 ? 1 : props.part === 4 ? 2 : 2;
 
     const onNext = () => {
       stage.value += 1;
@@ -188,6 +202,15 @@ export default {
       }
       if (props.part === 2) {
         return stage.value < 6 ? 12 : 6
+      }
+      if (props.part === 3) {
+        return stage.value < 6 ? 16 : 6
+      }
+      if (props.part === 4) {
+        return stage.value < 6 ? 12 : 7
+      }
+      if (props.part === 5) {
+        return stage.value < 6 ? 13 : 7
       }
     }
 
@@ -249,7 +272,7 @@ export default {
           onNext();
         } else {
           errorCount.value += 1;
-          messages.value.push(texts.stage2.error);
+          messages.value.push(texts.stage2.error[`part${props.part}`]);
           mobileChatCounter.value += 1;
           setTimeout(() => {
             isCheckingInProgress.value = false;
@@ -269,7 +292,7 @@ export default {
           onNext();
         } else {
           errorCount.value += 1;
-          messages.value.push(texts.stage6.error);
+          messages.value.push(texts.stage6.error[`part${props.part}`]);
           mobileChatCounter.value += 1;
           setTimeout(() => {
             isCheckingInProgress.value = false;
@@ -279,23 +302,11 @@ export default {
       }
 
       if (stage.value === 7) {
-        // store.dispatch('updateCurrentLesson', 6)
-        if (false) {
-        // if (errorCount.value <= 1) {
-          // setTimeout(async () => {
-          //   await loadImage(
-          //     errorCount.value === 0
-          //       ? '/assets/img/lesson5/achieveGold.png'
-          //       : '/assets/img/lesson5/achieveSilver.png'
-          //   );
-          //   errorCount.value === 0 ? store.dispatch('updateProgress', [5, 2]) : store.dispatch('updateProgress', [5, 1]);
-          //   isModalActive.value = true;
-          // }, 1000);
-        } else {
-          setTimeout(() => {
-            onNext();
-          }, 1000);
-        }
+        // if(props.part === 5) {
+        //   setTimeout(() => {
+        //     isModalActive.value = true;
+        //   }, 2000);
+        // }
       }
     };
 
@@ -310,7 +321,7 @@ export default {
         onNext();
       } else {
         errorCount.value += 1;
-        messages.value.push(texts.stage4.error);
+        messages.value.push(texts.stage4.error[`part${props.part}`]);
         mobileChatCounter.value += 1;
         setTimeout(() => {
           isCheckingInProgress.value = false;
@@ -324,7 +335,7 @@ export default {
     };
 
     onMounted(() => {
-      onGameStart();
+      if (props.part > 1) onGameStart();
     })
 
     return {

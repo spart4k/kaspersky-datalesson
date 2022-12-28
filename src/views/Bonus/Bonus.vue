@@ -3,6 +3,9 @@
     <transition name="fade" mode="out-in">
       <trainer :key="stage" v-if="stage === 1" :part="stage" @next="next"></trainer>
       <trainer :key="stage" v-if="stage === 2" :part="stage" @next="next"></trainer>
+      <trainer :key="stage" v-if="stage === 3" :part="stage" @next="next"></trainer>
+      <trainer :key="stage" v-if="stage === 4" :part="stage" @next="next"></trainer>
+      <trainer :key="stage" v-if="stage === 5" :part="stage" @next="next"></trainer>
     </transition>
   </div>
 </template>
