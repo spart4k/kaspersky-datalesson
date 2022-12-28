@@ -127,7 +127,7 @@
       <v-btn v-if="(stage === 3 || (stage === 5 && !isMobile))" sm :class="$style.btn" @click="onNext"
         >Продолжить</v-btn
       >
-      <v-btn v-if="stage === 8 && (!isMobile || !isPatternWindowActive)" sm :class="$style.btn" @click="$router.push('/lesson6')"
+      <v-btn v-if="stage === 8 && (!isMobile || !isPatternWindowActive)" sm :class="$style.btn" @click="$emit('next')"
         >Продолжить</v-btn
       >
     </transition>

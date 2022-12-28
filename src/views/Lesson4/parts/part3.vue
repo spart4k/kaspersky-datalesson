@@ -12,7 +12,7 @@
     <v-speaker v-if="stage > 0" :class="$style.speaker" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
     <v-btn v-if="stage === 5.5" sm :class="$style.btn" @click="handlePaused">Хорошо</v-btn>
-    <v-btn v-if="showNextBtnLesson" sm :class="$style.btn" @click="$router.push('/lesson5')">Продолжить</v-btn>
+    <v-btn v-if="showNextBtnLesson" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
     <!-- <transition name="fade">
       <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>

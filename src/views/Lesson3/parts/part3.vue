@@ -84,7 +84,7 @@
         @click="enableGame"
         >Хорошо</v-btn
       >
-      <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$router.push('/lesson4')"
+      <v-btn v-if="stage === 4" sm :class="$style.btn" @click="$emit('next')"
         >Продолжить</v-btn
       >
     </transition>

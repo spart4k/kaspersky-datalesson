@@ -3,7 +3,7 @@
     <transition name="fade" mode="out-in">
       <part1 v-if="stage === 1" @next="next"></part1>
       <!-- <part2 v-if="stage === 2" @prev="prev" @next="next"></part2> -->
-      <part3 v-if="stage === 2" @next="next"></part3>
+      <part3 v-if="stage === 2" @next="$emit('next-lesson')"></part3>
     </transition>
   </div>
 </template>

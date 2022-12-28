@@ -21,7 +21,7 @@
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker v-if="stage > 0" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">{{ nextBtnText }}</v-btn>
-    <v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$router.push('/lesson2')">Продолжить</v-btn>
+    <v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
     <div :class="[
       $style.appliances,
     ]">

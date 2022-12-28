@@ -1,7 +1,19 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <router-view />
+      <!-- <router-view /> -->
+      <v-loader v-if="!level"></v-loader>
+      <bonus v-else-if="bonus" />
+      <template v-else>
+        <transition name="fade" mode="out-in">
+          <lesson-1 v-if="stage === 1" @next-lesson="onNext" />
+          <lesson-2 v-if="stage === 2" @next-lesson="onNext" />
+          <lesson-3 v-if="stage === 3" @next-lesson="onNext" />
+          <lesson-4 v-if="stage === 4" @next-lesson="onNext" />
+          <lesson-5 v-if="stage === 5" @next-lesson="onNext" />
+          <lesson-6 v-if="stage === 6" />
+        </transition>
+      </template>
     </component>
     <PortalTarget name="popup" multiple></PortalTarget>
   </div>
@@ -10,15 +22,41 @@
 <script>
 import axios from 'axios';
 import { BASE_URL } from './utils/constants';
+import Lesson1 from '@/views/Lesson1/Lesson1';
+import Lesson2 from '@/views/Lesson2/Lesson2';
+import Lesson3 from '@/views/Lesson3/Lesson3';
+import Lesson4 from '@/views/Lesson4/Lesson1';
+import Lesson5 from '@/views/Lesson5/Lesson5';
+import Lesson6 from '@/views/Lesson6/Lesson6';
+import Bonus from '@/views/Bonus/Bonus';
 
 export default {
   name: 'App',
   metaInfo: {
     titleTemplate: 'Урок Цифры',
   },
+  components: {
+    Lesson1, Lesson2, Lesson3, Lesson4, Lesson5, Lesson6, Bonus
+  },
+  data() {
+    return {
+      stage: 1,
+    }
+  },
+  methods: {
+    onNext() {
+      this.stage += 1
+    },
+  },
   computed: {
     layout() {
       return this.$route.meta.layout || 'default-layout';
+    },
+    level() {
+      return this.$store.state.level
+    },
+    bonus() {
+      return this.$route.query.bonus
     },
   },
   async created() {
