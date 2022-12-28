@@ -395,8 +395,25 @@
   position: absolute;
   top: rem(30);
   left: rem(30);
+  padding-left: rem(50) !important;
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: rem(12);
+    width: rem(30);
+    height: rem(30);
+    background-image: url('../assets/back-arrow-90.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    filter: invert(100%);
+
+  }
   @media screen and (max-width: 450px) {
     top: rem(15);
-    left: rem(15);
+    left: rem(0);
+    padding-left: rem(50) !important;
   }
 }
