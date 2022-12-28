@@ -81,7 +81,7 @@
   &::after {
     content: '';
     position: absolute;
-    bottom: rem(-30);
+    bottom: rem(-150);
     left: 0;
     height: rem(30);
     width: 100%;
@@ -389,4 +389,14 @@
 
 .disabled {
   pointer-events: none;
+}
+
+.skipBtn {
+  position: absolute;
+  top: rem(30);
+  left: rem(30);
+  @media screen and (max-width: 450px) {
+    top: rem(15);
+    left: rem(15);
+  }
 }

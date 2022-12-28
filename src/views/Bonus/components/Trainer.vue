@@ -1,6 +1,11 @@
 <template>
   <div :class="$style.wrapper">
-    <v-progress :class="$style.progress"></v-progress>
+    <v-btn
+        sm
+        :class="$style.skipBtn"
+        @click="skipTask"
+        >К сертификату</v-btn
+      >
     <div v-if="isMobile && stage > 3" :class="$style.patternsBtnWrapper">
       <div :class="$style.patternsBtn" @click="isPatternWindowActive = true">?</div>
     </div>
@@ -9,7 +14,6 @@
       @toggle="toggleMobileChat"
       :counter="mobileChatCounter"
     />
-    {{$props.part}}
     <div :class="[$style.window, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />
       <p :class="$style.title">Прогноз погоды</p>
@@ -128,15 +132,8 @@
       <v-btn v-if="(stage === 3 || (stage === 5 && !isMobile))" sm :class="$style.btn" @click="onNext"
         >Продолжить</v-btn
       >
-      <v-btn v-if="stage === 7 && (!isMobile || !isPatternWindowActive) && $props.part !== 5" sm :class="$style.btn" @click="$props.part !== 5 && $emit('next')"
+      <v-btn v-if="stage === 7 && (!isMobile || !isPatternWindowActive)" sm :class="$style.btn" @click="$props.part === 5 ? isModalActive = true : $emit('next')"
         >{{$props.part === 5 ? 'Ура, это всё!' : 'К заданию посложнее'}}</v-btn
-      >
-      <v-btn
-        sm
-        :class="$style.btn"
-        @click="() => {}"
-        v-if="!isModalActive && !(stage === 1 && messages.length >= texts.start.length && (!isMobile || (isMobile && isMobileChatOpened))) && !((stage === 2 || (stage === 6 && (!isMobile || !isPatternWindowActive))) && selectedRows.length > 0 && !isCheckingInProgress) && !(stage === 3 || (stage === 5 && !isMobile)) && !(stage === 7 && (!isMobile || !isPatternWindowActive) && $props.part !== 5)"
-        >Пропустить задание</v-btn
       >
     </transition>
     <v-modal v-if="stage === 1 && $props.part === 1" :isActive="isModalActive">
@@ -144,6 +141,13 @@
         <img :class="$style.speaker" src="../../../components/@ui/Speaker/speaker.png" alt="" />
         <p :class="$style.modalText">{{texts.modal}}</p>
         <v-btn lg @click="onGameStart">Начать</v-btn>
+      </div>
+    </v-modal>
+    <v-modal v-if="stage === 7 && $props.part === 5" :isActive="isModalActive">
+      <div :class="$style.modalInner">
+        <img :class="$style.speaker" src="../../../components/@ui/Speaker/speaker.png" alt="" />
+        <p :class="$style.modalText">{{texts.modalFinish}}</p>
+        <v-btn lg @click="$emit('next')">Продолжить</v-btn>
       </div>
     </v-modal>
   </div>
@@ -156,6 +160,7 @@ import { useStore } from '@/store';
 import { pushPopup } from '@/utils/pushPopup';
 import useMobile from '@/hooks/useMobile';
 import texts from './texts';
+import { BASE_URL } from '@/utils/constants'
 
 export default {
   name: 'Trainer',
@@ -179,6 +184,7 @@ export default {
 
     const store = useStore();
     const level = computed(() => store.state.level);
+    const session = computed(() => store.state.session);
 
     const isMobile = useMobile();
 
@@ -334,6 +340,10 @@ export default {
       onNext();
     };
 
+    const skipTask = () => {
+      window.location.replace(`${BASE_URL}/lessons/pogoda/certificate?session_id=${session.value}`);
+    }
+
     onMounted(() => {
       if (props.part > 1) onGameStart();
     })
@@ -364,6 +374,7 @@ export default {
       onMobileBtnClick,
       getRowsNumber,
       correctPattern,
+      skipTask
     };
   },
 };
