@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <!-- <router-view /> -->
       <v-loader v-if="!level"></v-loader>
       <bonus v-else-if="bonus" />
       <template v-else>
@@ -20,8 +19,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-import { BASE_URL } from './utils/constants';
 import Lesson1 from '@/views/Lesson1/Lesson1';
 import Lesson2 from '@/views/Lesson2/Lesson2';
 import Lesson3 from '@/views/Lesson3/Lesson3';
@@ -29,6 +26,8 @@ import Lesson4 from '@/views/Lesson4/Lesson1';
 import Lesson5 from '@/views/Lesson5/Lesson5';
 import Lesson6 from '@/views/Lesson6/Lesson6';
 import Bonus from '@/views/Bonus/Bonus';
+import { getSession } from '@/services/getSession';
+import { createSession } from '@/services/createSession';
 
 export default {
   name: 'App',
@@ -66,10 +65,7 @@ export default {
     const levelVar = 'level_5d5151';
 
     if (session) {
-      const sessionData = await axios.get(`${BASE_URL}/api/v2/get_session`, {
-        params: { session_id: session },
-        headers: { Accept: 'application/json' },
-      });
+      const sessionData = await getSession(session);
 
       let level;
       switch (sessionData.data.id_trainer) {
@@ -88,6 +84,11 @@ export default {
 
       localStorage.setItem(lsVar, session);
       localStorage.setItem(levelVar, level);
+
+      if (this.bonus) {
+        const { id_lesson, id_trainer, type, grade, grades, not_from_russia, id_country, id_region, id_city } = sessionData.data;
+        await createSession(id_lesson, id_trainer, type, grade, grades, not_from_russia, id_country, id_region, id_city);
+      }
     }
 
     if (localStorage.getItem(lsVar)) {

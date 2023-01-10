@@ -342,9 +342,18 @@
 .popupMsg {
   position: absolute;
   bottom: rem(92);
-  // overflow: scroll;
+  overflow: auto;
   right: rem(30);
   z-index: 999;
+  @media screen and (min-width: 451px) {
+    max-height: calc(100vh - 12rem);
+    -webkit-mask-image: -webkit-linear-gradient(
+    top,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 1) 7%,
+    rgba(0, 0, 0, 1) 100%
+    );
+  }
 }
 
 .prof {

@@ -21,6 +21,7 @@
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <v-speaker v-if="stage > 0" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
     <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">{{ nextBtnText }}</v-btn>
+    <v-btn v-if="isPaused" sm :class="$style.btn" @click="onPaused">Хорошо</v-btn>
     <v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
     <div :class="[
       $style.appliances,
@@ -54,7 +55,7 @@
       $style[precipitationChoosed]
     ]">
       <div :class="$style.wrap">
-        <component @successAnswer="successAnswer" @addMessage="addMessage" @emitClick="successSingle" :lightingHome="lightingHome" :is="precipitationChoosed"></component>
+        <component @successAnswer="successAnswer" @addMessage="addMessage" @emitClick="successSingle" :lightingHome="lightingHome" :is="precipitationChoosed" :isPaused="isPaused"></component>
       </div>
     </div>
     <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" />
@@ -149,6 +150,7 @@ export default {
       isModalActive.value = false;
       onNext()
     };
+    const isPaused = ref(false);
     // setTimeout(() => {
     //   messages.value.push(
     //     'На метеостанции, где мы находимся, для этого существуют специальные приборы.'
@@ -205,12 +207,10 @@ export default {
         if (level.value === '1') messages.value.push('Осадкомер: Прибор для измерения количества выпавших осадков. Осадки измеряются в миллиметрах (мм).')
         if (level.value === '2') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
         if (level.value === '3') messages.value.push('Осадкомер: Прибор для сбора и измерения количества выпавших осадков. Осадки собираются в специальное металлическое ведро и переливаются в измерительный стеклянный стакан для определения их точного количества. Единицей измерения количества атмосферных осадков является миллиметр (мм).')
-        setTimeout(() => {
-          messages.value.push('Посмотри на осадкомер. Нажми на уровень воды в ёмкости, чтобы занести показания в дневник погоды.')
-        }, 2500)
         hideAppliance('precipitation')
         showSigleAppliance('precipitation')
         changeZoom('single')
+        isPaused.value = true
       } 
       if (stage.value === 4) {
         messages.value.push('Да, это верные показания.')
@@ -252,12 +252,10 @@ export default {
         // setTimeout(() => {
         //   messages.value.push('Посмотри внимательнее, показания снимаются со счётчика.')
         // }, 1000)
-        setTimeout(() => {
-          messages.value.push('Посмотри на анемометр. Где на приборе отображается его значение? Нажми на него, чтобы занести показания в дневник погоды.')
-        }, 2500)
         hideAppliance('mill')
         showSigleAppliance('mill')
         changeZoom('single')
+        isPaused.value = true
       } 
       if (stage.value === 7) {
         messages.value.push('Да, это верные показания.')
@@ -294,13 +292,10 @@ export default {
         // setTimeout(() => {
         //   messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
         // }, 1000)
-        setTimeout(() => {
-          messages.value.push('Термометр находится слева. Нажми на значение температуры на нём.')
-          lightingHome.value = 'termometr'
-        }, 2000)
         hideAppliance('home')
         showSigleAppliance('home')
         changeZoom('single')
+        isPaused.value = true
       } 
       if (stage.value === 10) {
         messages.value.push('Да, это верные показания.')
@@ -421,6 +416,23 @@ export default {
         onNext()
       }
     }
+
+    const onPaused = () => {
+      if (stage.value === 3) {
+        isPaused.value = false;
+        messages.value.push('Посмотри на осадкомер. Нажми на уровень воды в ёмкости, чтобы занести показания в дневник погоды.')
+      }
+      if (stage.value === 6) {
+        isPaused.value = false;
+        messages.value.push('Посмотри на анемометр. Где на приборе отображается его значение? Нажми на него, чтобы занести показания в дневник погоды.')
+      }
+      if (stage.value === 9) {
+        isPaused.value = false;
+        messages.value.push('Термометр находится слева. Нажми на значение температуры на нём.')
+        lightingHome.value = 'termometr'
+      }
+    }
+
     return {
       isModalActive,
       closeModal,
@@ -455,7 +467,9 @@ export default {
       addMessage,
       showNextLessonBtn,
       level,
-      nextBtnText
+      nextBtnText,
+      isPaused,
+      onPaused
     };
   },
 };
