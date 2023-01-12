@@ -5,7 +5,8 @@
       <part1 v-if="stage === 1" @next="next"></part1>
       <part2 v-if="stage === 2" @prev="prev" @next="next"></part2>
       <part3 v-if="stage === 3" @next="next"></part3>
-      <part4 v-if="stage === 4" @next="finishApp"></part4>
+      <part4 v-if="stage === 4" @next="next" @finish="finishApp"></part4>
+      <professions v-if="stage === 5" @next="finishApp"></professions>
     </transition>
   </div>
 </template>
@@ -16,7 +17,8 @@ import part1 from './parts/part1';
 import part2 from './parts/part2';
 import part3 from './parts/part3';
 import part4 from './parts/part4';
-import webhook from '@/services/webhook'
+import webhook from '@/services/webhook';
+import Professions from './parts/Professions';
 
 export default {
   name: 'lesson6',
@@ -25,6 +27,7 @@ export default {
     part2,
     part3,
     part4,
+    Professions,
   },
   setup() {
     const stage = ref(1);
