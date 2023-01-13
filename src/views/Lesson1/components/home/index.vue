@@ -82,18 +82,34 @@
     $style.answer,
     ($props.lightingHome === 'barometr') && !$attrs.isPaused ? $style.active : ''
   ]" @click="successAnswer('davl', $event)" width="35" height="18" fill="#D9D9D9" fill-opacity="0.01"/>
-  <rect x="371" y="325" :class="$style.answer" @click="successAnswer('vlaga', $event)" width="32" height="30" fill="#D9D9D9" fill-opacity="0.01"/>
-  <rect x="502" y="334" :class="$style.answer" @click="successAnswer('davl', $event)" width="32" height="30" fill="#D9D9D9" fill-opacity="0.01"/>    
+  <rect x="371" y="325" :class="[
+    $style.answer,
+    ($props.lightingHome === 'girometr') && !$attrs.isPaused ? $style.active2 : ''
+  ]" @click="successAnswer('vlaga', $event)" width="32" height="30" fill="#D9D9D9" fill-opacity="0.01"/>
+  <rect x="502" y="334" :class="[
+    $style.answer,
+    ($props.lightingHome === 'barometr') && !$attrs.isPaused ? $style.active2 : ''
+  ]" @click="successAnswer('davl', $event)" width="32" height="30" fill="#D9D9D9" fill-opacity="0.01"/>    
 </svg>
 </template>
 
 <style lang="scss" scoped module>
+  .answer {
+    pointer-events: none;
+  }
   .active {
     transform-box: fill-box;
     transition: .2s;
     stroke: red;
+    pointer-events: all;
+    &:hover {
+      cursor: pointer;
+    }
   }
-  .answer {
+  .active2 {
+    transform-box: fill-box;
+    transition: .2s;
+    pointer-events: all;
     &:hover {
       cursor: pointer;
     }
