@@ -8,7 +8,7 @@
     <div :class="[$style.main, isOpened && $style.opened]" ref="mainRef">
       <div :class="[$style.wrapper, !isOpened && $style.hidden]">
         <transition-group name="fade-list" :class="$style.list">
-          <div v-for="(item, index) in items" :class="[$style.popupWrap, 'message']" :key="index">
+          <div v-for="(item, index) in items" :class="[$style.popupWrap, 'message']" :style="[index === 0 ? {'marginTop': `${$props.shift}rem`} : {}]" :key="index">
             <div :class="$style.popup">
               <div :class="$style.text">{{ item }}</div>
             </div>
@@ -32,6 +32,7 @@ export default {
   props: {
     items: Array,
     isOpened: Boolean,
+    shift: Number,
   },
   setup(props) {
     const mainRef = ref(null);

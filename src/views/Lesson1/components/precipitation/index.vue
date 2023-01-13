@@ -97,7 +97,7 @@
     <path d="M263.754 250H244.572" stroke="#095296"/>
     <path d="M258.523 208H249.804" stroke="#095296"/>
     <path d="M263.754 222H244.572" stroke="#095296"/>
-    <rect :class="[$style.answer, !$attrs.isPaused && $style.active]" @click="successAnswer" x="240" y="208" width="47" height="27" fill="#D9D9D9" fill-opacity="0.01"/>
+    <rect v-if="!$attrs.isPaused" :class="[$style.answer, !$attrs.isPaused && $style.active]" @click="successAnswer" x="240" y="208" width="47" height="27" fill="#D9D9D9" fill-opacity="0.01"/>
     <path d="M258.523 236H249.804" stroke="#095296"/>
     <path d="M258.523 292H249.804" stroke="#095296"/>
     <path d="M263.754 306H244.572" stroke="#095296"/>
@@ -177,6 +177,7 @@ export default {
     }
     const tryClick = () => {
       // tryClicked.value = true
+      if (ctx.attrs.isPaused) return
       if (tryClicked.value) return
       if (!tryClickedFirst.value) {
         emit('addMessage', 'Посмотри внимательно на уровень жидкости в стакане.')

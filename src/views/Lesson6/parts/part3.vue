@@ -11,6 +11,7 @@
       :isOpened="isMobileChatOpened"
       @toggle="toggleMobileChat"
       :class="$style.popupMsg"
+      :shift="isMobile ? 8 : 0"
     />
     <div :class="[$style.window, stage === 1 && $style.disabled]">
       <img :class="$style.controls" src="../assets/controls.svg" alt="" />

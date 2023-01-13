@@ -25,7 +25,7 @@
         />
       </template>
     </div>
-    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="$style.popupMsg" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :class="$style.popupMsg" :shift="16" />
     <transition name="fade">
       <v-btn v-if="stage === 1 && messages.length >= texts.start[`level${level}`].length && (!isMobile || isMobile && isMobileChatOpened)" sm :class="$style.btn" @click="onGameInit">Хорошо</v-btn>
       <v-btn

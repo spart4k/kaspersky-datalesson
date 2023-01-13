@@ -104,6 +104,7 @@
       :isOpened="isMobileChatOpened"
       @toggle="toggleMobileChat"
       :class="$style.popupMsg"
+      :shift="isMobile ? 8 : 0"
     />
     <transition name="fade">
       <v-btn
