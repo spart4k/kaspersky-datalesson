@@ -7,6 +7,19 @@
       level === '3' && $style.level3,
     ]"
   >
+    <inner-image-zoom
+      :src="
+        level === '1'
+          ? '/assets/comics/level1/1_4-1.png'
+          : level === '2'
+          ? '/assets/comics/level2/5_8-1.png'
+          : '/assets/comics/level3/9_11-1.png'
+      "
+      className="comics"
+      :zoomScale="isMobile ? 0.3 : 1"
+      :hideCloseButton="true"
+      :hideHint="true"
+    />
     <div :class="$style.btnWrapper">
       <v-btn v-if="!isMobile" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
       <v-btn v-if="isMobile" lg :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
@@ -18,10 +31,11 @@
 import { computed } from 'vue';
 import { useStore } from '@/store';
 import useMobile from '@/hooks/useMobile';
+import InnerImageZoom from 'vue-inner-image-zoom';
 
 export default {
   name: 'part1',
-  components: {},
+  components: { InnerImageZoom },
   setup() {
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -42,18 +56,9 @@ export default {
   overflow: hidden;
   background-color: #fff;
   position: relative;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center center;
-  &.level1 {
-    background-image: url('/assets/comics/level1/1_4-1.png');
-  }
-  &.level2 {
-    background-image: url('/assets/comics/level2/5_8-1.png');
-  }
-  &.level3 {
-    background-image: url('/assets/comics/level3/9_11-1.png');
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btnWrapper {

@@ -1,5 +1,18 @@
 <template>
   <div :class="[$style.wrapper, level === '1' && $style.level1, level === '2' && $style.level2, level === '3' && $style.level3]">
+    <inner-image-zoom
+      :src="
+        level === '1'
+          ? '/assets/comics/level1/1_4-7.png'
+          : level === '2'
+          ? '/assets/comics/level2/5_8-7.png'
+          : '/assets/comics/level3/9_11-7.png'
+      "
+      className="comics"
+      :zoomScale="isMobile ? 0.3 : 1"
+      :hideCloseButton="true"
+      :hideHint="true"
+    />
     <template v-if="!isMobile">
       <v-btn sm :class="$style.btn" @click="$emit('prev')">Назад</v-btn>
       <v-btn sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
@@ -17,10 +30,11 @@
 import { computed } from 'vue';
 import { useStore } from '@/store';
 import useMobile from '@/hooks/useMobile';
+import InnerImageZoom from 'vue-inner-image-zoom';
 
 export default {
   name: 'part2',
-  components: {},
+  components: { InnerImageZoom },
   setup() {
     const store = useStore();
     const level = computed(() => store.state.level);
@@ -41,20 +55,11 @@ export default {
   overflow: hidden;
   background-color: #fff;
   position: relative;
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center 15%;
-  &.level1 {
-    background-image: url('/assets/comics/level1/1_4-7.png');
-  }
-  &.level2 {
-    background-image: url('/assets/comics/level2/5_8-7.png');
-  }
-  &.level3 {
-    background-image: url('/assets/comics/level3/9_11-7.png');
-  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
   @media screen and (min-width: 451px) { 
-    & button:nth-child(1) {
+    & button:nth-child(2) {
       background-color: #fff;
       border: 1px solid #ccc;
       color: #000;
@@ -62,12 +67,17 @@ export default {
       bottom: rem(20);
       position: fixed;
     }
-    & button:nth-child(2) {
+    & button:nth-child(3) {
       background-color: #ffcc00;
       color: #000;
       right: rem(20);
       bottom: rem(20);
       position: fixed;
+    }
+  }
+  @media screen and (max-width: 450px) {
+    & figure {
+      margin-bottom: rem(250) !important;
     }
   }
 }
