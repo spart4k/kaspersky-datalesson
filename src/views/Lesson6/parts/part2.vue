@@ -75,11 +75,6 @@ export default {
       position: fixed;
     }
   }
-  @media screen and (max-width: 450px) {
-    & figure {
-      margin-bottom: rem(250) !important;
-    }
-  }
 }
 
 .btnWrapper {

@@ -50,6 +50,9 @@ img {
     @media screen and (min-width: 1000px) {
       height: 100vh;
     }
+    @media screen and (max-width: 450px) {
+      height: 75vh;
+    }
   }
   & picture {
     margin-top: 50%;
@@ -57,5 +60,8 @@ img {
       max-height: 100%;
       margin: 0 auto;
     }
+  }
+  @media screen and (max-width: 450px) {
+    margin-bottom: rem(200) !important;
   }
 }
