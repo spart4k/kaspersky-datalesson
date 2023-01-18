@@ -81,7 +81,7 @@
     ]"></timer>
     <div :class="$style.col">
       <map-range v-if="$props.level !== '1'" :class="[$style.rangeSlider, $props.stage < 2 ? $style.disable : '']" @changeSquere="changeSquere"></map-range>
-      <div v-if="$props.stage >= 4 && $props.level !== '1'" :class="$style.btnWrapper">
+      <div v-if="$props.stage >= 4 && $props.stage < 8 && $props.level !== '1'" :class="$style.btnWrapper">
         <v-btn md :class="$style.btn" @click="isShowPanel = true">Настройки</v-btn>
       </div>
       <map-panel @closePanel="isShowPanel = false" :isShowPanel="isShowPanel" v-show="$props.stage >= 4 && $props.level !== '1' && (isMobile ? isShowPanel ? true : false : true)" @changeCount="changeCount"></map-panel>

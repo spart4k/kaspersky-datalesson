@@ -3,7 +3,7 @@
     $style.wrapper,
     stage < 2 ? $style.blur : '',
     zoom === 'all' ? $style.zoomAll : $style.zoomSingle
-  ]">
+  ]" ref="wrapperRef">
     <v-progress :class="$style.progress"></v-progress>
     <Diary ref="diaryComp" :stage="stage"/>
     <div v-if="zoom === 'all'" :class="$style.paginations">
@@ -157,6 +157,21 @@ export default {
     //   )
       
     // }, 2500)
+
+    const wrapperRef = ref(null);
+
+    const scrollTo = (element, to, duration) => {
+      if (duration <= 0) return;
+      const difference = to - element.scrollLeft;
+      const perTick = difference / duration * 10;
+
+      setTimeout(function() {
+        element.scrollLeft = element.scrollLeft + perTick;
+        if (element.scrollLeft === to) return;
+        scrollTo(element, to, duration - 10);
+      }, 10);
+    }
+
     const onNext = (appliance) => {
       if (stage.value === 2 & appliance !== 'precipitation') return
       if (appliance === 'precipitation' && stage.value !== 2) return
@@ -165,6 +180,7 @@ export default {
       stage.value += 1;
       mobileChatCounter.value += 1
       if (stage.value === 1) {
+        mobileChatCounter.value = 0
         setTimeout(() => {
           if (level.value === '1') {
             messages.value.push(
@@ -192,6 +208,10 @@ export default {
       }
       if (stage.value == 2) { 
         showAppliance('precipitation')
+        scrollTo(wrapperRef.value, 100, 100)
+        setTimeout(() => {
+          scrollTo(wrapperRef.value, -100, 300)
+        }, 350);
         if (level.value === '1') {
           messages.value.push(
             'Посмотри на подсвеченный прибор слева. Нажми на него.'
@@ -469,7 +489,8 @@ export default {
       level,
       nextBtnText,
       isPaused,
-      onPaused
+      onPaused,
+      wrapperRef
     };
   },
 };

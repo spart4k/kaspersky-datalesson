@@ -9,6 +9,7 @@
   display: flex;
   align-items: flex-start;
   @media (max-width: $mobileWidth) {
+    position: absolute;
     width: 100%;
     height: auto;
     top: rem(96);

@@ -49,11 +49,11 @@ export default {
       timeout = setTimeout(() => {
         pushMsg.value = null;
       }, 3000);
-      if (!isMobile.value) {
+      // if (!isMobile.value) {
         setTimeout(() => {
           mainRef.value.scrollTop = mainRef.value.scrollHeight;
         }, 0);
-      }
+      // }
     });
 
     const isOpened = computed(() => (props.isOpened ? true : false));

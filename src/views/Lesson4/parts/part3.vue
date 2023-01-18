@@ -2,7 +2,8 @@
   <div :class="[
     $style.wrapper
   ]">
-    <v-progress :class="$style.progress"></v-progress>
+    <div :class="$style.inner">
+      <v-progress :class="$style.progress"></v-progress>
     <timer v-show="level === '1'" :class="$style.timer" ref="timer"></timer>
     <map-default :level="level" ref="mapDefault" @checkPattern="checkPattern" :isPaused="isPaused" @changeCountValue="changeCountValue" @changeSquereValue="changeSquereValue" @firstClicked="firstClicked" :stage="stage" :squere="squere" @allChecked="allChecked"/>
     <calculation :seconds="calculationTimer" v-show="level === '2' || level === '3'"></calculation>
@@ -53,6 +54,7 @@
         <v-btn lg @click="onNext">Продолжить</v-btn>
       </div>
     </v-modal>
+    </div>
   </div>
 </template>
 
@@ -124,6 +126,7 @@ export default {
       stage.value += 1;
       mobileChatCounter.value += 1
       if (stage.value == 1) {
+        mobileChatCounter.value = 0
         showNextBtn.value = false
         if (level.value === '1') {
           setTimeout(() => {
