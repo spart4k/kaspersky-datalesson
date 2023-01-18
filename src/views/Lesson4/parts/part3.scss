@@ -293,7 +293,7 @@
   right: rem(30);
   z-index: 999;
   @media screen and (min-width: 451px) {
-    max-height: calc(100vh - 12rem);
+    max-height: calc(100vh - 14rem);
     -webkit-mask-image: -webkit-linear-gradient(
     top,
     rgba(0, 0, 0, 0) 0%,
@@ -320,7 +320,7 @@
 }
 
 .btn {
-  position: absolute;
+  position: fixed;
   bottom: rem(30);
   right: rem(30);
   z-index: 999;

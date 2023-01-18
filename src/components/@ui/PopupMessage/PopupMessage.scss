@@ -88,6 +88,7 @@
     opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   border-radius: rem(20);
   overflow: hidden;
+  user-select: none;
   &:last-child {
     border-radius: rem(20) rem(20) rem(20) 0;
   }
