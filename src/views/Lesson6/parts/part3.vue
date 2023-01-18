@@ -112,6 +112,8 @@ export default {
     watch(isMobile, () => {
       if (!isMobile.value) {
         isMobileChatOpened.value = false;
+      } else {
+        isMobileChatOpened.value = true;
       }
     });
 

@@ -226,6 +226,7 @@ export default {
         if (stage.value > 1) isChatFullLength.value = false;
       } else {
         isChatFullLength.value = true;
+        isMobileChatOpened.value = true;
       }
     });
 
