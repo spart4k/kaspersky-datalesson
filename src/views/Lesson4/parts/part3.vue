@@ -15,7 +15,7 @@
     <v-btn v-if="stage === 5.5" sm :class="$style.btn" @click="handlePaused">Хорошо</v-btn>
     <v-btn v-if="timeout !== 0 && !showNextBtn && stage < 2" sm :class="$style.btn" @click="onPaused">Хорошо</v-btn>
     <v-btn v-if="showNextBtnLesson" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
-    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" :shift="10" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" :shift="isMobile ? 5 : 10" />
     <!-- <transition name="fade">
       <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
       <v-btn

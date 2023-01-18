@@ -58,7 +58,7 @@
         <component @successAnswer="successAnswer" @addMessage="addMessage" @emitClick="successSingle" :lightingHome="lightingHome" :is="precipitationChoosed" :isPaused="isPaused"></component>
       </div>
     </div>
-    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" :shift="8" />
+    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" :shift="isMobile ? 5 : 8" />
     <!-- <transition name="fade">
       <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
       <v-btn

@@ -71,7 +71,7 @@
       :isOpened="isMobileChatOpened"
       @toggle="toggleMobileChat"
       :class="[$style.popupMsg, isChatFullLength && $style.full]"
-      :shift="21"
+      :shift="isMobile ? 5 : 21"
     />
     <transition name="fade">
       <v-btn
