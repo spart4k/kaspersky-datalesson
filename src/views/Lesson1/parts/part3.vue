@@ -208,10 +208,12 @@ export default {
       }
       if (stage.value == 2) { 
         showAppliance('precipitation')
-        scrollTo(wrapperRef.value, 100, 100)
         setTimeout(() => {
-          scrollTo(wrapperRef.value, -100, 300)
-        }, 350);
+          scrollTo(wrapperRef.value, 100, 200)
+          setTimeout(() => {
+            scrollTo(wrapperRef.value, -100, 500)
+          }, 350);
+        }, 1000);
         if (level.value === '1') {
           messages.value.push(
             'Посмотри на подсвеченный прибор слева. Нажми на него.'

@@ -86,6 +86,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   @media screen and (max-width: 450px) {
+    bottom: rem(75);
     flex-direction: column;
     align-items: center;
     > button {
@@ -96,5 +97,9 @@ export default {
       }
     }
   }
+}
+
+.btn {
+  height: rem(45) !important;
 }
 </style>

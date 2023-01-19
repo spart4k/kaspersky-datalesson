@@ -91,6 +91,9 @@
   user-select: none;
   &:last-child {
     border-radius: rem(20) rem(20) rem(20) 0;
+    @media screen and (max-width: 450px) {
+      border-radius: rem(20) rem(20) 0 rem(20);
+    }
   }
   @media screen and (max-width: 450px) {
     width: 94%;

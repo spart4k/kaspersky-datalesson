@@ -51,7 +51,7 @@ img {
       height: 100vh;
     }
     @media screen and (max-width: 450px) {
-      height: 75vh;
+      height: 60vh;
     }
   }
   & picture {
@@ -63,5 +63,7 @@ img {
   }
   @media screen and (max-width: 450px) {
     margin-bottom: rem(200) !important;
+    position: absolute !important;
+    top: 0;
   }
 }
