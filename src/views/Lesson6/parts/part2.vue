@@ -100,6 +100,8 @@ export default {
 }
 
 .btn {
-  height: rem(45) !important;
+  @media screen and (max-width: 450px) {
+    height: rem(45) !important;
+  }
 }
 </style>

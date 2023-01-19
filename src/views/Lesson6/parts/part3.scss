@@ -121,7 +121,7 @@
   width: rem(816);
   height: rem(497);
   position: absolute;
-  top: rem(135);
+  top: rem(110);
   left: rem(30);
   z-index: 99;
   background-color: #fff;
@@ -135,6 +135,14 @@
   &.disabled {
     opacity: 0.6;
     pointer-events: none;
+  }
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: rem(-30);
+    left: 0;
+    height: rem(30);
+    width: 100%;
   }
   @media screen and (max-width: 450px) {
     width: 100%;
