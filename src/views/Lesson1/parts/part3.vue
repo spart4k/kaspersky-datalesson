@@ -7,34 +7,9 @@
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
     <!--<v-speaker v-if="stage > 0" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>-->
     <Speakers :speakersList="speakersList"></Speakers>
-    <v-btn v-if="true" sm :class="$style.btn" @click="testMessage">{{ nextBtnText }}</v-btn>
-    <!--<v-btn v-if="isPaused" sm :class="$style.btn" @click="onPaused">Хорошо</v-btn>-->
-    <!--<v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>-->
-    <!--<Panel/>
-    <Phone/>-->
+    <!--<v-btn v-if="true" sm :class="$style.btn" @click="testMessage">{{ nextBtnText }}</v-btn>-->
     <Cast/>
-    <!--<v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" :shift="isMobile ? 5 : 8" />-->
-    <!-- <transition name="fade">
-      <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
-      <v-btn
-        v-if="stage === 2 && activeCards.length >= 4 && !isCheckingInProgress"
-        sm
-        :class="$style.btn"
-        @click="checkCards"
-        >Проверить</v-btn
-      >
-    </transition> -->
-    <!--<v-modal v-if="stage === 0" :isActive="isModalActive" :toggleActive="closeModal">
-      <div :class="$style.modalInner">
-        <img :class="$style.imgModal" src="../assets/prof.svg" alt="" />
-        <p :class="$style.modalText">
-          {{  level === '1' ? 'Погоду изучают метеорологи. Они анализируют погодные явления и прогнозируют их.' : level === '2' ? 'Погоду изучают метеорологи. Они исследуют строение и свойства земной атмосферы и процессы, происходящие в ней.' : level === '3' ? 'Изучением погодных явлений занимаются метеорологи. Они исследуют строение и свойства атмосферы Земли, а также физические и химические процессы, происходящие в ней.' : '' }}
-        </p>
-        <v-btn lg @click="closeModal">Начать</v-btn>
-      </div>
-    </v-modal>-->
-    <!--<Panel/>-->
-    <v-modal v-if="stage === 14" :isActive="isModalActive">
+    <v-modal v-if="false" :isActive="isModalActive">
       <div :class="[$style.modalInner, $style.modalAchieve]">
         <img :class="$style.achieve" src="../assets/achieve.png" alt="" />
         <p :class="[$style.modalText, $style.modalTextBottom]">
@@ -47,7 +22,7 @@
 </template>
 
 <script>
-import { ref, reactive, computed } from 'vue';
+import { ref, reactive, computed, watch, onMounted } from 'vue';
 import Vue from 'vue'
 // import gsap from 'gsap';
 // import Card from '../components/Card/Card.vue';
@@ -75,7 +50,9 @@ export default {
   setup() {
     const store = useStore();
     const isModalActive = ref(true);
-    const stage = ref(0);
+    const stage = computed(() => {
+      return store.state.stage
+    })
     const isCheckingInProgress = ref(false);
     const isSuccess = ref(false);
     const isAnimated = ref(false);
@@ -87,6 +64,7 @@ export default {
     const level = computed(() => store.state.level);
     const lightingHome = ref('')
     const showNextLessonBtn = ref(false)
+    const appList = ref([])
     const speakersList = ref([
       {
         id: 0,
@@ -131,16 +109,11 @@ export default {
       onNext()
     };
     const testMessage = () => {
-      let speaker = speakersList.value.find(el => el.id === 0)
-      const message = {
-        text: 'Верно – это приложение имеет необходимые ему настройки',
-        btn: true
-      }
       //speaker.messages.$set(2,message)
       //Vue.set(speaker, '2', message)
       //console.log(speaker)
-      speaker.messages.push(message)
-      console.log(speaker)
+      //speaker.messages.push(message)
+      onNext()
     }
     const isPaused = ref(false);
     // setTimeout(() => {
@@ -163,13 +136,27 @@ export default {
         scrollTo(element, to, duration - 10);
       }, 10);
     }
-
+    const nextStage = () => {
+      store.commit('changeStage', 'increase')
+    };
     const onNext = (appliance) => {
-      if (stage.value === 2 & appliance !== 'precipitation') return
+      //if (stage.value === 2 & appliance !== 'precipitation') retur
+      if (stage.value === 1) {
+        let speaker = speakersList.value.find(el => el.id === 2)
+        let message = {
+          text: 'Мошенники распространяют вредоносные и нежелательные программы, например троянцы, эти вредоносные программы созданы для уничтожения, блокировки, модификации или кражи информации, нарушения работы устройств.',
+          btn: false
+        }
+        //speaker.messages.$set(2,message)
+        //Vue.set(speaker, '2', message)
+        //console.log(speaker)
+        speaker.messages.push(message)
+        console.log(speaker)
+      }
       if (appliance === 'precipitation' && stage.value !== 2) return
       if (appliance === 'home' && stage.value !== 8 && stage.value !== 11 ) return
       if (appliance === 'mill' && stage.value !== 5) return
-      stage.value += 1;
+      nextStage()
       mobileChatCounter.value += 1
       if (stage.value === 1) {
         mobileChatCounter.value = 0
@@ -447,6 +434,274 @@ export default {
         lightingHome.value = 'termometr'
       }
     }
+    console.log(stage)
+    onMounted(() => {
+      setTimeout(() => {
+        nextStage()
+      }, 1000)
+      initAppsList()
+    })
+    const clearMessage = () => {
+      speakersList.value.forEach((item) => {
+        item.messages = []
+      })
+    }
+    const changeAppLighting = (app, state) => {
+      let targetApp = null
+      appList.value.forEach((item) => {
+        let findedEl = item.find((el) => el.app === app)
+        if (findedEl) targetApp = findedEl
+      })
+      console.log(targetApp)
+      targetApp.lighting = state
+      return targetApp
+    }
+    const initAppsList = () => {
+      const list = [
+        [
+          {
+            app: 'AppBox',
+            transition: 'open-app',
+            position: 1,
+            img: require('@/assets/img/phone/desktop/box.png'),
+            lighting: false
+          },
+          {
+            app: 'AppWallpaper',
+            transition: 'open-app',
+            position: 2,
+            img: require('@/assets/img/phone/desktop/circle.png'),
+            lighting: false
+          },
+          {
+            app: 'AppPhoto',
+            transition: 'open-app',
+            position: 3,
+            img: require('@/assets/img/phone/desktop/photo.png'),
+            lighting: false
+          }
+        ],
+        [],
+        []
+      ]
+      appList.value = list
+      store.commit('setAppList', list)
+    }
+    watch(() => store.state.stage, (current, old) => {
+      console.log(current)
+      if (current === 1) {
+        let speaker = speakersList.value.find(el => el.id === 2)
+        let message = {
+          text: 'Мошенники распространяют вредоносные и нежелательные программы, например троянцы, эти вредоносные программы созданы для уничтожения, блокировки, модификации или кражи информации, нарушения работы устройств.',
+          btn: false
+        }
+        speaker.messages.push(message)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Или скамерские приложения.задача таких программ — выманить у пользователя деньги.',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 1800)
+      }
+      if (current === 2) {
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Моя задача – обнаружить подобные программы среди всего множества приложений, улучшать  технологии защиты и, таким образом, не дать злоумышленникам обмануть людей, помочь обезопасить данные на смартфонах.',
+            btn: false
+          }
+          speaker.messages.push(message)
+        }, 1000)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Давайте посмотрим, что с твоим телефоном. У меня есть идея, что это может быть.',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 2500)
+      }
+      if (current === 3) {
+        store.commit('changePhoneStatus', 'loading')
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Вероятно, во всем виновато вредоносное приложение.',
+            btn: false
+          }
+          speaker.messages.push(message)
+        }, 1000)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Давай посмотрим, какие разрешения есть для установленных приложений.',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 2500)
+      }
+      if (current === 4) {
+        store.commit('changePhoneStatus', 'loaded')
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Давай откроем приложение',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 1000)
+        //setTimeout(() => {
+        //  let speaker = speakersList.value.find(el => el.id === 2)
+        //  let message = {
+        //    text: 'Давай посмотрим, какие разрешения есть для установленных приложений.',
+        //    btn: true
+        //  }
+        //  speaker.messages.push(message)
+        //}, 2500)
+      }
+      if (current === 5) {
+        clearMessage()
+        changeAppLighting('AppBox', true)
+      }
+      if (current === 6) {
+        changeAppLighting('AppBox', false)
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Давай откроем настройки приложения',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 1000)
+      }
+      if (current === 7) {
+        clearMessage()
+      }
+      if (current === 8) {
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 0)
+          let message = {
+            text: 'Это, обычные настройки',
+            btn: false
+          }
+          speaker.messages.push(message)
+        }, 1000)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Верно – это приложение имеет необходимые ему настройки',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 2500)
+      }
+      if (current === 9) {
+        clearMessage()
+        changeAppLighting('AppPhoto', true)
+      }
+      if (current === 10) {
+        clearMessage()
+        changeAppLighting('AppPhoto', false)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Давай откроем настройки приложения',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 1000)
+      }
+      if (current === 11) {
+        clearMessage()
+      }
+      if (current === 12) {
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 0)
+          let message = {
+            text: 'Это, обычные настройки',
+            btn: false
+          }
+          speaker.messages.push(message)
+        }, 1000)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Верно – это приложение имеет необходимые ему настройки',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 2500)
+      }
+      if (current === 13) {
+        clearMessage()
+        changeAppLighting('AppWallpaper', true)
+      }
+      if (current === 14) {
+        clearMessage()
+        changeAppLighting('AppWallpaper', false)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Давай откроем настройки приложения',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 1000)
+      }
+      if (current === 15) {
+        clearMessage()
+      }
+      if (current === 16) {
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 0)
+          let message = {
+            text: 'Тут что не так?',
+            btn: false
+          }
+          speaker.messages.push(message)
+        }, 1000)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Давай отключим эти доступы',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 2500)
+      }
+      if (current === 17) {
+        clearMessage()
+      }
+      if (current === 18) {
+        clearMessage()
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 0)
+          let message = {
+            text: 'Готово!',
+            btn: false
+          }
+          speaker.messages.push(message)
+        }, 1000)
+        setTimeout(() => {
+          let speaker = speakersList.value.find(el => el.id === 2)
+          let message = {
+            text: 'Отлично! Мы нашли его',
+            btn: true
+          }
+          speaker.messages.push(message)
+        }, 2500)
+      }
+
+    })
 
     return {
       isModalActive,
@@ -487,7 +742,12 @@ export default {
       onPaused,
       wrapperRef,
       speakersList,
-      testMessage
+      testMessage,
+      nextStage,
+      clearMessage,
+      appList,
+      initAppsList,
+      changeAppLighting
     };
   },
 };

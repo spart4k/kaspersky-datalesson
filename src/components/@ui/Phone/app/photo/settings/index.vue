@@ -14,7 +14,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useStore } from '@/store';
+
 import Header from '../../header'
 import SettingToggle from '../../settings/toggle'
 
@@ -27,7 +29,14 @@ export default {
   props: {
   },
   setup(props, ctx) {
+    const store = useStore();
     const { emit } = ctx
+    const level = computed(() => {
+      return store.state.level
+    })
+    const stage = computed(() => {
+      return store.state.stage
+    })
     const settings = ref([
       {
         title: 'Камера',
@@ -47,6 +56,7 @@ export default {
       }
     ])
     const back = () => {
+      if (level.value === 1 && stage.value === 12 ) return
       emit('back', 'AppPhoto', 'router-view-back')
     }
     return {

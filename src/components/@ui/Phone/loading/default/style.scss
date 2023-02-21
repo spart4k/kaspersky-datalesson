@@ -7,6 +7,7 @@
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
+  background-color: #242323;
   .logotype {
     position: absolute;
     top: rem(141);
@@ -26,7 +27,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    animation: iosIntro .6s;
+    //animation: iosIntro .6s;
     width: rem(62);
     height: rem(62);
     transform: translate3d(-50%, -50%, 0);

@@ -3,7 +3,7 @@
     <div :class="$style.desktopWrap">
       <div :class="$style.metaInfo">
         <div :class="$style.time">
-          10:22
+          {{ time }}
         </div>
         <div :class="$style.weather">
           <svg :class="$style.weatherIcon" width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -18,7 +18,19 @@
       <div :class="$style.contentWrap">
         <Search :class="$style.search"/>
         <VueSlickCarousel :class="$style.slickWrap" :initialSlide="0" :swipeToSlide="true" :slidesToShow="1" :speed="300" :arrows="false" :dots="true">
-          <div :class="$style.content">
+          <div v-for="(item, index) in appList" :key="index" :class="$style.content">
+            <div :class="$style.apps">
+              <div v-for="(app, index) in item" :key="index" @click="openApp(app.app, app.transition)" :class="[$style.wrapApp, $style.enabled]">
+                <img :src="app.img" alt="">
+                <div v-show="app.lighting" :class="[$style.voice, $style.one]"></div>
+                <div v-show="app.lighting" :class="[$style.voice, $style.two]"></div>
+                <div v-show="app.lighting" :class="[$style.voice, $style.third]"></div>
+              </div>
+              <!--<img @click="openApp('AppWallpaper', 'open-app')" src="@/assets/img/phone/desktop/circle.png" alt="">
+              <img @click="openApp('AppPhoto', 'open-app')" src="@/assets/img/phone/desktop/photo.png" alt="">-->
+            </div>
+          </div>
+          <!--<div :class="$style.content">
             <div :class="$style.apps">
               <img @click="openApp('AppBox', 'open-app')" src="@/assets/img/phone/desktop/box.png" alt="">
               <img @click="openApp('AppWallpaper', 'open-app')" src="@/assets/img/phone/desktop/circle.png" alt="">
@@ -26,14 +38,12 @@
             </div>
           </div>
           <div :class="$style.content">
-            <!--<Search/>-->
             <div :class="$style.apps">
               <img src="@/assets/img/phone/desktop/settings.png" alt="">
             </div>
           </div>
           <div :class="$style.content">
-            <!--<Search/>-->
-          </div>
+          </div>-->
         </VueSlickCarousel>
       </div>
     </div>

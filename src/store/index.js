@@ -6,10 +6,13 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   state: {
     stage: null,
+    phoneStatus: 'droped',
     session: null,
-    level: null,
+    level: 1,
     progress: [0, 0, 0, 0, 0, 0],
     currentLesson: 1,
+    appList: [],
+    time: null
   },
   mutations: {
     setSession(state, session) {
@@ -27,6 +30,7 @@ const store = new Vuex.Store({
       state.currentLesson = lesson
     },
     changeStage(state, type) {
+      console.log(type)
       if (type === 'increase') {
         state.stage++
       }
@@ -36,6 +40,15 @@ const store = new Vuex.Store({
       if (type === 'reset') {
         state.stage = null
       }
+    },
+    changePhoneStatus(state, status) {
+      state.phoneStatus = status
+    },
+    setAppList(state, list) {
+      state.appList = list
+    },
+    setTime(state, value) {
+      state.time = value
     }
   },
   actions: {

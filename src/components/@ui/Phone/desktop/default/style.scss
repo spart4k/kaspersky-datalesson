@@ -72,9 +72,10 @@
       display: flex;
       justify-content: center;
       margin-top: rem(40);
-      img {
+      .wrapApp {
+        position: relative;
         width: rem(50);
-        width: rem(50);
+        height: rem(50);
         margin: rem(0) rem(10);
         user-drag: none;
         -webkit-user-drag: none;
@@ -85,7 +86,55 @@
         &:hover {
           cursor: pointer;
         }
+        &:after {
+          position: absolute;
+          content: '';
+        }
+        .voice {
+          position: absolute;
+          width: rem(50);
+          height: rem(50);
+          top: 0;
+          left: 0;
+          border-radius: rem(50);
+          border: rem(1) solid #fff;
+          transform: scale(.3);
+          animation-name: voiceEcho;
+          animation-duration: 1s;
+          animation-iteration-count: infinite;
+          z-index: 1;
+          &.one {
+            animation-delay: .1s;
+          }
+          &.two {
+            animation-delay: .3s;
+          }
+          &.third {
+            animation-delay: .5s;
+          }
+        }
+        img {
+          width: 100%;
+          height: 100%;
+          position: relative;
+          z-index: 2;
+          -webkit-user-drag: none;
+          user-select: none;
+          -moz-user-select: none;
+          -webkit-user-select: none;
+          -ms-user-select: none;
+        }
       }
     }
+  }
+}
+@keyframes voiceEcho{
+  from {
+    transform: scale(.5);
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
   }
 }

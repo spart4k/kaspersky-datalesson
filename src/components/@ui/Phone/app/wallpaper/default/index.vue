@@ -21,8 +21,9 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import Header from '../../header'
+import { useStore } from '@/store';
 
 export default {
   name: 'Phone-App-Wallpaper',
@@ -32,13 +33,27 @@ export default {
   props: {
   },
   setup(props, ctx) {
+    const store = useStore();
     const { emit } = ctx
+    const level = computed(() => {
+      return store.state.level
+    })
+    const stage = computed(() => {
+      return store.state.stage
+    })
     const back = () => {
+      if (level.value === 1 && (stage.value === 14 || stage.value === 15) ) return
       emit('back', 'Desktop', 'close-app')
     }
     const openSettings = () => {
-      emit('openApp', 'WallpaperSettings', 'router-view' )
+      if (level.value === 1 && stage.value === 15) {
+        nextStage()
+        emit('openApp', 'WallpaperSettings', 'router-view' )
+      }
     }
+    const nextStage = () => {
+      store.commit('changeStage', 'increase')
+    };
     const wallPapers = ref([
       {
         url: require('@/assets/img/phone/wallpaper/backgrounds/Rectangle 133.png')
@@ -128,7 +143,9 @@ export default {
     return {
       back,
       openSettings,
-      wallPapers
+      wallPapers,
+      level,
+      stage
     };
   },
 };

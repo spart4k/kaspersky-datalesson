@@ -65,6 +65,7 @@
         }
       }
       .settings {
+        position: relative;
         width: rem(36);
         height: rem(36);
         padding: rem(8);
@@ -73,10 +74,49 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        svg {
+          z-index: 2;
+          position: relative;
+        }
+        &.enabled {
+          .voice {
+            animation-name: voiceEcho;
+            animation-duration: 1s;
+            animation-iteration-count: infinite;
+          }
+        }
+        .voice {
+          position: absolute;
+          width: rem(36);
+          height: rem(36);
+          z-index: 2;
+          border-radius: rem(50);
+          border: rem(1) solid #fff;
+          transform: scale(.3);
+          &.one {
+            animation-delay: .1s;
+          }
+          &.two {
+            animation-delay: .3s;
+          }
+          &.third {
+            animation-delay: .5s;
+          }
+        }
         &:hover {
           cursor: pointer;
         }
       }
     }
+  }
+}
+@keyframes voiceEcho{
+  from {
+    transform: scale(.5);
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
   }
 }

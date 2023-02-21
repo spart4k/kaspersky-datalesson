@@ -16,7 +16,15 @@
   opacity: 0;
 }
 .testanim-leave-active {
-  transition: all 0s;
+  transition: all .2s;
+}
+
+.testanim-leave-from {
+  opacity: 1;
+}
+
+.testanim-leave-to {
+  opacity: 0;
 }
 
 .testanim-enter-active{

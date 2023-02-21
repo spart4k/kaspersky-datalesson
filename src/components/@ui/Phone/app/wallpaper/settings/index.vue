@@ -8,13 +8,15 @@
       </div>
     </Header>
     <div :class="$style.content">
-      <SettingToggle v-for="(item, index) in settings" :toggle="item" :key="index"/>
+      <SettingToggle v-for="(item, index) in settings" @changeToggle="changeToggle(index, $event)" :toggle="item" :key="index"/>
     </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch, computed } from 'vue';
+import { useStore } from '@/store';
+
 import Header from '../../header'
 import SettingToggle from '../../settings/toggle'
 
@@ -27,6 +29,7 @@ export default {
   props: {
   },
   setup(props, ctx) {
+    const store = useStore();
     const { emit } = ctx
     const settings = ref([
       {
@@ -46,12 +49,36 @@ export default {
         value: true
       }
     ])
+    const level = computed(() => {
+      return store.state.level
+    })
+    const stage = computed(() => {
+      return store.state.stage
+    })
+    const changeToggle = (index, value) => {
+      console.log(index,value)
+      if (level.value === 1 && stage.value !== 17 ) return
+      settings.value[index].value = value
+    }
     const back = () => {
+      if (level.value === 1 && (stage.value === 16 || stage.value === 17) ) return
       emit('back', 'AppWallpaper', 'router-view-back')
     }
+    const nextStage = () => {
+      store.commit('changeStage', 'increase')
+    }
+    watch(settings, (cur) => {
+      console.log(cur)
+      if (cur.every((item) => !item.value)) {
+        console.log('off')
+        nextStage()
+      }
+    }, { deep: true })
     return {
       back,
-      settings
+      settings,
+      changeToggle,
+      nextStage
     };
   },
 };

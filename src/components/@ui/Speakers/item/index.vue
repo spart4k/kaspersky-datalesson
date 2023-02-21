@@ -4,7 +4,7 @@
     <div v-show="speaker.messages.length" :class="[$style.voice, $style.one]"></div>
     <div v-show="speaker.messages.length" :class="[$style.voice, $style.two]"></div>
     <div v-show="speaker.messages.length" :class="[$style.voice, $style.third]"></div>
-    <Chat v-show="speaker.messages.length" :max-height="maxHeight" :messages="speaker.messages"/>
+    <Chat :max-height="maxHeight" :messages="speaker.messages"/>
   </div>
 </template>
 

@@ -19,7 +19,7 @@
             <path fill-rule="evenodd" clip-rule="evenodd" d="M12 10L12 -8.74228e-08L14 0L14 10L12 10Z" fill="black"/>
           </svg>
           <p :class="$style.networkNumber">5G</p>
-          <p :class="$style.oclock">10:22</p>
+          <p :class="$style.oclock">{{ time }}</p>
         </div>
         <div :class="$style.right">
           <svg :class="$style.volume" width="13" height="10" viewBox="0 0 13 10" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +50,10 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { onMounted, ref, computed, watch } from 'vue';
+import { useStore } from '@/store';
+
+
 import Desktop from '../desktop/default'
 import Loading from '../loading/default'
 import AppBox from '../app/box/default'
@@ -77,6 +80,13 @@ export default {
   props: {
   },
   setup(props) {
+    const store = useStore();
+    const stage = computed(() => {
+      return store.state.stage
+    })
+    const time = computed(() => {
+      return store.state.time
+    })
     const screen = ref('Desktop')
     const transitionMode = ref('')
     const openApp = (name, transition) => {
@@ -88,15 +98,32 @@ export default {
       transitionMode.value = transition
       screen.value = name
     }
+    const phoneStatus = computed(() => {
+      return store.state.phoneStatus
+    })
     const boxSettings = () => {
       console.log('settings')
     }
+    onMounted(() => {
+      if (phoneStatus.value === 'loading') {
+        screen.value = 'Loading'
+        console.log(screen.value)
+      }
+      if (phoneStatus.value === 'loaded') screen.value = 'Desktop'
+    })
+    watch(() => store.state.phoneStatus, (current, old) => {
+      if (current === 'loading') screen.value = 'Loading'
+      if (current === 'loaded') screen.value = 'Desktop'
+    })
     return {
       screen,
       openApp,
       back,
       transitionMode,
-      boxSettings
+      boxSettings,
+      stage,
+      phoneStatus,
+      time
     };
   },
 };

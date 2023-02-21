@@ -12,6 +12,7 @@
     justify-content: center;
     background-color: #41444A;
     border-radius: rem(50);
+    transition: .2s;
     &.hand {
       svg {
         width: rem(18);
@@ -25,9 +26,20 @@
       }
     }
     &.cast {
+      &.turnOn {
+        background-color: #25CBFF;
+        svg {
+          path {
+            fill: #000;
+          }
+        }
+      }
       svg {
         width: rem(24);
         height: rem(16);
+        path {
+          transition: .2s;
+        }
       }
     }
     &.microphone {

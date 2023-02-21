@@ -9,10 +9,11 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import part1 from './parts/part1';
 // import part2 from './parts/part2';
 import part3 from './parts/part3';
+import { useStore } from '@/store';
 
 export default {
   name: 'lesson1',
@@ -22,14 +23,18 @@ export default {
     part3,
   },
   setup() {
-    const stage = ref(1);
-
+    const store = useStore();
+    const stage = computed(() => {
+      return store.state.stage
+    })
+    console.log(store)
     const next = () => {
-      stage.value += 1;
+      //stage.value += 1;
+      store.commit('changeStage', 'increase')
     };
-
     const prev = () => {
-      stage.value -= 1;
+      //stage.value -= 1;
+      store.commit('changeStage', 'decrease')
     };
 
     return {

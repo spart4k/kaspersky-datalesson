@@ -14,7 +14,8 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useStore } from '@/store';
 import Header from '../../header'
 import SettingToggle from '../../settings/toggle'
 
@@ -27,6 +28,7 @@ export default {
   props: {
   },
   setup(props, ctx) {
+    const store = useStore();
     const { emit } = ctx
     const settings = ref([
       {
@@ -46,12 +48,21 @@ export default {
         value: true
       }
     ])
+    const level = computed(() => {
+      return store.state.level
+    })
+    const stage = computed(() => {
+      return store.state.stage
+    })
     const back = () => {
+      if (level.value === 1 && stage.value === 8 ) return
       emit('back', 'AppBox', 'router-view-back')
     }
     return {
       back,
-      settings
+      settings,
+      level,
+      stage
     };
   },
 };

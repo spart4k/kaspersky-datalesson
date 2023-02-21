@@ -23,12 +23,14 @@ export default {
       default: () => {}
     }
   },
-  setup(props) {
+  setup(props, ctx) {
     const state = ref(false)
+    const { emit } = ctx
     const changeState = () => {
-      return
-      state.value = !state.value
-      console.log(state.value)
+      //return
+      //state.value = !state.value
+      console.log(!props.toggle.value)
+      emit('changeToggle', !props.toggle.value)
     }
     return {
       state,

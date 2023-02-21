@@ -31,8 +31,10 @@
 </template>
 
 <script>
-import {} from 'vue';
+import { computed } from 'vue';
 import Header from '../../header'
+import { useStore } from '@/store';
+
 export default {
   name: 'Phone-App',
   components: {
@@ -41,16 +43,32 @@ export default {
   props: {
   },
   setup(props, ctx) {
+    const store = useStore();
     const { emit } = ctx
+    const level = computed(() => {
+      return store.state.level
+    })
+    const stage = computed(() => {
+      return store.state.stage
+    })
     const back = () => {
+      if (level.value === 1 && (stage.value === 6 || stage.value === 7) ) return
       emit('back', 'Desktop', 'close-app')
     }
+    const nextStage = () => {
+      store.commit('changeStage', 'increase')
+    };
     const openSettings = () => {
-      emit('openApp', 'boxSettings', 'router-view')
+      if (level.value === 1 && stage.value === 7) {
+        nextStage()
+        emit('openApp', 'boxSettings', 'router-view')
+      }
     }
     return {
       back,
-      openSettings
+      openSettings,
+      level,
+      stage
     };
   },
 };

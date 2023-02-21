@@ -5,10 +5,12 @@
 </template>
 <script>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useStore } from '@/store';
 
 export default {
   name: 'DefaultLayout',
   setup() {
+    const store = useStore();
     const scaleFactorX = ref(null)
 
     const updateFactors = (mode) => {
@@ -25,11 +27,14 @@ export default {
       updateFactors(null)
       window.addEventListener('resize', () => updateFactors('resize'))
       var currentdate = new Date();
-      var datetime =
-                      currentdate.getHours() + ":"
-                      + currentdate.getMinutes() + ":"
-                      + currentdate.getSeconds();
-      console.log(datetime)
+      var datetime = null
+      setInterval(() => {
+        currentdate.setSeconds(currentdate.getSeconds() + 1);
+        datetime = currentdate.getHours() + ":"
+                      + currentdate.getMinutes();
+        console.log(datetime)
+        store.commit('setTime', datetime)
+      }, 1000)
     })
 
     onUnmounted(() => window.removeEventListener('resize', updateFactors))
