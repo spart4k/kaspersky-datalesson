@@ -1,0 +1,46 @@
+.app {
+  padding: rem(15) rem(10);
+  height: 100%;
+  background-color: #fff;
+  .header {
+    display: flex;
+    align-items: center;
+    img {
+      width: rem(37);
+      height: rem(37);
+    }
+    p {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .content {
+    height: 96%;
+    padding-bottom: rem(50);
+    margin-top: rem(25);
+    img {
+      width: 100%;
+    }
+    p {
+      font-size: rem(14);
+      font-weight: 400;
+    }
+    .news {
+      overflow: auto;
+      max-height: 100%;
+      scrollbar-width: none;
+      padding-bottom: rem(30);
+      -webkit-mask-image: -webkit-linear-gradient(bottom,transparent,#000 5%,#000);
+      &::-webkit-scrollbar {
+          display: none;
+      }
+    }
+    .settings {
+      position: sticky;
+      bottom: rem(55);
+      font-size: rem(14);
+      width: 100%;
+      border-radius: rem(30);
+    }
+  }
+}

@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    stage: null,
     session: null,
     level: null,
     progress: [0, 0, 0, 0, 0, 0],
@@ -25,6 +26,17 @@ const store = new Vuex.Store({
     setCurrentLesson(state, lesson) {
       state.currentLesson = lesson
     },
+    changeStage(state, type) {
+      if (type === 'increase') {
+        state.stage++
+      }
+      if (type === 'decrease') {
+        state.stage--
+      }
+      if (type === 'reset') {
+        state.stage = null
+      }
+    }
   },
   actions: {
     updateSession({ commit }, session) {

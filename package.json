@@ -27,6 +27,7 @@
     "vue-inner-image-zoom": "^1.1.1",
     "vue-mq": "^1.0.1",
     "vue-router": "^3.0.3",
+    "vue-slick-carousel": "^1.0.6",
     "vue-slider-component": "^3.2.24",
     "vuedraggable": "^2.24.3",
     "vuelidate": "^0.7.4",

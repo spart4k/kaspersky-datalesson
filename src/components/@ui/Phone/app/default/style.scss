@@ -1,0 +1,55 @@
+.core {
+  &.desktop {
+    //background-image: url(../../../../assets/img/phone/desktop.png);
+    //background-size: cover;
+    background: radial-gradient(169.72% 78.61% at 50% 21.39%, #FFD951 38.54%, #FFA800 75.52%);
+  }
+  .header {
+    font-size: rem(12);
+    padding: rem(13);
+    display: flex;
+    justify-content: space-between;
+    .left {
+      display: flex;
+      align-items: center;
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .network {
+        width: rem(14);
+        height: rem(10);
+        margin-right: rem(5);
+      }
+      .networkNumber {
+        margin-right: rem(10);
+        font-weight: 400;
+      }
+      .oclock {
+        font-weight: 400;
+      }
+    }
+    .right {
+      display: flex;
+      align-items: baseline;
+      .volume {
+        width: rem(12.15);
+        height: rem(10);
+        margin-right: rem(10);
+      }
+      .battery {
+        display: flex;
+        align-items: baseline;
+        .number {
+          font-weight: 400;
+          //margin-right: rem(5);
+          margin: 0 rem(5) 0 0;
+        }
+        &Icon {
+          width: rem(8);
+          height: rem(13);
+        }
+      }
+    }
+  }
+}

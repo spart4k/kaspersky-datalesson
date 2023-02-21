@@ -1,0 +1,46 @@
+.wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background-color: #F5F5F5;
+  padding: rem(12);
+  border-radius: rem(6);
+  &:not(:last-child) {
+   margin-bottom: rem(3);
+  }
+  .label {
+    font-size: rem(14);
+  }
+  .toggle {
+    position: relative;
+    background-color: #E8E8E8;
+    width: rem(35);
+    height: rem(18);
+    border-radius: rem(10);
+    transition: .2s;
+    margin-left: rem(20);
+    &:hover {
+      cursor: pointer;
+    }
+    &.checked {
+      justify-content: flex-end;
+      background-color: #22D1AE;
+      .thumb {
+        transform: translate3d(60%, -50%, 0);
+        background-color: #5EFF00;
+      }
+    }
+    .thumb {
+      width: rem(22);
+      height: rem(22);
+      position: absolute;
+      background-color: #272828;
+      border-radius: 50%;
+      top: 50%;
+      left: 0%;
+      transform: translate3d(-5%, -50%, 0);
+      transition: .2s;
+    }
+  }
+}

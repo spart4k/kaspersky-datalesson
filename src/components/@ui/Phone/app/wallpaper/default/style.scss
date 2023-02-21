@@ -1,0 +1,58 @@
+.app {
+  height: 100%;
+  background-color: #fff;
+  .header {
+    display: flex;
+    align-items: center;
+    padding: rem(15) rem(10) rem(15) rem(10);
+    img {
+      width: rem(37);
+      height: rem(37);
+    }
+    p {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .content {
+    height: 90%;
+    padding-bottom: rem(35);
+    img {
+      width: 100%;
+    }
+    p {
+      font-size: rem(14);
+      font-weight: 400;
+    }
+    .wallpapers {
+      overflow: auto;
+      max-height: 100%;
+      scrollbar-width: none;
+      padding-bottom: rem(60);
+      display: flex;
+      flex-wrap: wrap;
+      -webkit-mask-image: -webkit-linear-gradient(bottom,transparent,#000 5%,#000);
+      &::-webkit-scrollbar {
+          display: none;
+      }
+      .wallpaperItem {
+        width: rem(96.3);
+        height: rem(147);
+        img {
+          width: 100%;
+          height: 100%;
+
+        }
+      }
+    }
+    .settings {
+      position: sticky;
+      bottom: rem(55);
+      font-size: rem(14);
+      width: rem(267);
+      //left: 50%;
+      transform: translate3d(3.5%, 0, 0);
+      border-radius: rem(30);
+    }
+  }
+}

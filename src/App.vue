@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <v-loader v-if="!level"></v-loader>
+      <v-loader v-if="false"></v-loader>
       <bonus v-else-if="bonus" />
       <template v-else>
         <transition name="fade" mode="out-in">

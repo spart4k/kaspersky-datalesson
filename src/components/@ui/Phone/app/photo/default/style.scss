@@ -1,0 +1,82 @@
+.photo {
+  padding: rem(15) rem(0) rem(0) rem(0);
+  height: 100%;
+  background-color: #8BD4FE;
+  .header {
+    //display: flex;
+    //align-items: center;
+    //padding: 0 rem(30);
+    img {
+      width: rem(37);
+      height: rem(37);
+    }
+    p {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .content {
+    height: 98%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    //padding-bottom: rem(35);
+    position: relative;
+    img {
+      width: 100%;
+      pointer-events: none;
+    }
+    .panel {
+      position: absolute;
+      width: rem(289);
+      height: rem(109);
+      left: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.4);
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      padding: rem(21) rem(17) rem(30) rem(17);
+      .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+      .gallery {
+        background-color: #000;
+        border-radius: rem(6);
+        width: rem(36);
+        height: rem(36);
+      }
+      .mainTap {
+        background: #FFFFFF;
+        width: rem(50);
+        height: rem(50);
+        border-radius: 50%;
+        position: relative;
+        .border {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate3d(-50%, -50%, 0);
+          width: rem(58);
+          height: rem(58);
+          border: rem(2) solid #fff;
+          border-radius: 50%;
+        }
+      }
+      .settings {
+        width: rem(36);
+        height: rem(36);
+        padding: rem(8);
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: rem(36);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

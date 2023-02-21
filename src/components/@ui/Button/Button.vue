@@ -1,5 +1,5 @@
 <template>
-  <button :class="[$style.wrapper, sm && $style.sm, md && $style.md, lg && $style.lg]" @click="$emit('click')">
+  <button :class="[$style.wrapper, sm && $style.sm, md && $style.md, lg && $style.lg, black && $style.black]" @click="$emit('click')">
     <slot />
   </button>
 </template>
@@ -11,6 +11,7 @@ export default {
     sm: Boolean,
     md: Boolean,
     lg: Boolean,
+    black: Boolean
   },
 };
 </script>
@@ -47,6 +48,13 @@ export default {
   font-size: rem(18);
   line-height: rem(25);
   color: #000;
+}
+.black {
+  width: rem(210);
+  background-color: #000;
+  border-radius: rem(3.94893);
+  color: #fff;
+  padding: rem(8) 0;
 }
 
 .lg {

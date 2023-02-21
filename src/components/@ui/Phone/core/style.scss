@@ -1,0 +1,90 @@
+.core {
+  //transition: .2s;
+  &.loading {
+    background-color: #242323;
+  }
+  &.desktop {
+    //background-image: url(../../../../assets/img/phone/desktop.png);
+    //background-size: cover;
+    background: radial-gradient(169.72% 78.61% at 50% 21.39%, #FFD951 38.54%, #FFA800 75.52%);
+  }
+  &.app {
+    background-color: #fff;
+  }
+  &.appPhoto {
+    background-color: #8BD4FE;;
+  }
+  .header {
+    font-size: rem(12);
+    padding: rem(13);
+    display: flex;
+    height: rem(40);
+    justify-content: space-between;
+    position: relative;
+    z-index: 20;
+    transform: translate3d(0,0,0);
+    .left {
+      display: flex;
+      align-items: center;
+      p {
+        margin: 0;
+        padding: 0;
+      }
+      .network {
+        width: rem(14);
+        height: rem(10);
+        margin-right: rem(5);
+      }
+      .networkNumber {
+        margin-right: rem(10);
+        font-weight: 400;
+      }
+      .oclock {
+        font-weight: 400;
+      }
+    }
+    .right {
+      display: flex;
+      align-items: baseline;
+      .volume {
+        width: rem(12.15);
+        height: rem(10);
+        margin-right: rem(10);
+      }
+      .battery {
+        display: flex;
+        align-items: baseline;
+        .number {
+          font-weight: 400;
+          //margin-right: rem(5);
+          margin: 0 rem(5) 0 0;
+        }
+        &Icon {
+          width: rem(8);
+          height: rem(13);
+        }
+      }
+    }
+  }
+  .coreWrap {
+    position: relative;
+    height: 100%;
+  }
+  .appWrap {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: 0;
+    height: 100%;
+    //padding-top: rem(40);
+    .transitionWrap {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+    .app {
+      padding-top: rem(40);
+      width: 100%;
+    }
+  }
+}

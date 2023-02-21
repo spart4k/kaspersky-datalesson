@@ -19,7 +19,7 @@ body {
   font-size: rem(18);
   line-height: 1.1666666667;
   font-family: 'Noto Sans', sans-serif;
-  font-weight: 500;
+  font-weight: 400;
   // height: 100%;
   min-height: 100vh;
   min-height: -webkit-fill-available;
@@ -39,7 +39,58 @@ img {
   right: 0;
   bottom: 0;
 }
-
+.slick-list {
+  height: 90%;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.slick-track {
+  display: flex !important;
+  align-items: flex-end;
+  //height: 100%;
+}
+.slick-slide {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.slick-dots {
+  position: unset !important;
+  margin-block-start: 0;
+  margin-block-end: 0;
+  padding-inline-start: 0;
+  height: rem(6);
+  bottom: 0;
+  margin-bottom: rem(46);
+  li {
+    margin: rem(0) rem(5);
+    width: unset !important;
+    height: unset !important;
+    &.slick-active {
+      button {
+        &:before {
+          transform: scale(1.2);
+        }
+      }
+    }
+    button {
+      padding: 0 !important;
+      width: rem(6);
+      height: rem(6);
+      position: relative;
+      transition: .2s;
+      &:before {
+        transition: .2s;
+        width: 100% !important;
+        height: 100% !important;
+        font-size: 0;
+        background-color: #fff;
+        border-radius: 50%;
+      }
+    }
+  }
+}
 .comics {
   width: 100%;
   display: flex;

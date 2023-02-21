@@ -1,0 +1,50 @@
+.panel {
+  display: flex;
+  justify-content: space-between;
+  width: rem(320);
+  //position: absolute;
+  margin-top: rem(32);
+  > div {
+    width: rem(50);
+    height: rem(50);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #41444A;
+    border-radius: rem(50);
+    &.hand {
+      svg {
+        width: rem(18);
+        height: rem(20);
+      }
+    }
+    &.video {
+      svg {
+        width: rem(24);
+        height: rem(14);
+      }
+    }
+    &.cast {
+      svg {
+        width: rem(24);
+        height: rem(16);
+      }
+    }
+    &.microphone {
+      svg {
+        width: rem(13);
+        height: rem(21);
+      }
+    }
+    &.phone {
+      background-color: #FB4141;
+      svg {
+        width: rem(30);
+        height: rem(30);
+      }
+    }
+    &:last-child {
+      width: rem(80);
+    }
+  }
+}

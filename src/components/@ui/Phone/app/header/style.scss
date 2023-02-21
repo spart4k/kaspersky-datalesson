@@ -1,0 +1,37 @@
+.header {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 400;
+  &.single {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: rem(36);
+    width: rem(36);
+    height: rem(36);
+    justify-content: center;
+    margin-left: rem(30);
+    position: relative;
+    &:hover {
+      cursor: pointer;
+    }
+    .back {
+      //position: absolute;
+      //left: 48%;
+      //top: 50%;
+      transform: translate3d(-15%, 0%, 0);
+      //fill: #fff;
+      margin-right: 0;
+      path {
+        stroke: #fff;
+        //fill: #fff;
+      }
+    }
+  }
+  .back {
+    width: rem(8);
+    height: rem(16);
+    margin-right: rem(25);
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

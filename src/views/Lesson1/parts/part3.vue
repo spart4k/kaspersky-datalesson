@@ -4,61 +4,16 @@
     stage < 2 ? $style.blur : '',
     zoom === 'all' ? $style.zoomAll : $style.zoomSingle
   ]" ref="wrapperRef">
-    <v-progress :class="$style.progress"></v-progress>
-    <Diary ref="diaryComp" :stage="stage"/>
-    <div v-if="zoom === 'all'" :class="$style.paginations">
-      <div :class="$style.button">
-        <svg :class="[ $style.arrow, $style.left ]" width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11 20L2 11L11 2" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>  
-      </div>
-      <div :class="$style.button">
-        <svg :class="[ $style.arrow, $style.right ]" width="13" height="22" viewBox="0 0 13 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M2 2L11 11L2 20" stroke="black" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>  
-      </div>      
-    </div>
     <!-- <img :class="$style.prof" src="../assets/prof.svg" alt="" /> -->
-    <v-speaker v-if="stage > 0" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>
-    <v-btn v-if="showNextBtn" sm :class="$style.btn" @click="onNext">{{ nextBtnText }}</v-btn>
-    <v-btn v-if="isPaused" sm :class="$style.btn" @click="onPaused">Хорошо</v-btn>
-    <v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>
-    <div :class="[
-      $style.appliances,
-    ]">
-      <div v-if="zoom === 'all'" :class="$style.wrap">
-        <div :class="[
-          $style.precipitation,
-          stage < 2 ? $style.blur : '',
-          isShowPrecipitation['precipitation'] ? $style.lighting : ''
-        ]">
-          <img @click="onNext('precipitation')" src="../assets/precipitation.svg" alt="">
-        </div>
-        <div :class="[
-          $style.home,
-          stage < 2 ? $style.blur : '',
-          isShowPrecipitation['home'] ? $style.lighting : ''
-        ]">
-          <img @click="onNext('home')" src="../assets/home.svg" alt="">
-        </div>
-        <div :class="[
-          $style.mill,
-          stage < 2 ? $style.blur : '',
-          isShowPrecipitation['mill'] ? $style.lighting : ''
-        ]">
-          <img @click="onNext('mill')" src="../assets/mill.svg" alt="">
-        </div>
-      </div>
-    </div>
-    <div v-if="precipitationChoosed" :class="[
-      $style.wrapSingle,
-      $style[precipitationChoosed]
-    ]">
-      <div :class="$style.wrap">
-        <component @successAnswer="successAnswer" @addMessage="addMessage" @emitClick="successSingle" :lightingHome="lightingHome" :is="precipitationChoosed" :isPaused="isPaused"></component>
-      </div>
-    </div>
-    <v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" :shift="isMobile ? 5 : 8" />
+    <!--<v-speaker v-if="stage > 0" @toggle="toggleMobileChat" :counter="mobileChatCounter"/>-->
+    <Speakers :speakersList="speakersList"></Speakers>
+    <v-btn v-if="true" sm :class="$style.btn" @click="testMessage">{{ nextBtnText }}</v-btn>
+    <!--<v-btn v-if="isPaused" sm :class="$style.btn" @click="onPaused">Хорошо</v-btn>-->
+    <!--<v-btn v-if="showNextLessonBtn" sm :class="$style.btn" @click="$emit('next')">Продолжить</v-btn>-->
+    <!--<Panel/>
+    <Phone/>-->
+    <Cast/>
+    <!--<v-popup-msg :items="messages" :isOpened="isMobileChatOpened" @toggle="toggleMobileChat" :task="messages" :class="$style.popupMsg" :shift="isMobile ? 5 : 8" />-->
     <!-- <transition name="fade">
       <v-btn v-if="stage === 1" sm :class="$style.btn" @click="onNext">Хорошо</v-btn>
       <v-btn
@@ -69,19 +24,16 @@
         >Проверить</v-btn
       >
     </transition> -->
-    <v-modal v-if="stage === 0" :isActive="isModalActive" :toggleActive="closeModal">
+    <!--<v-modal v-if="stage === 0" :isActive="isModalActive" :toggleActive="closeModal">
       <div :class="$style.modalInner">
         <img :class="$style.imgModal" src="../assets/prof.svg" alt="" />
         <p :class="$style.modalText">
           {{  level === '1' ? 'Погоду изучают метеорологи. Они анализируют погодные явления и прогнозируют их.' : level === '2' ? 'Погоду изучают метеорологи. Они исследуют строение и свойства земной атмосферы и процессы, происходящие в ней.' : level === '3' ? 'Изучением погодных явлений занимаются метеорологи. Они исследуют строение и свойства атмосферы Земли, а также физические и химические процессы, происходящие в ней.' : '' }}
         </p>
-        <!-- <p :class="$style.modalText">
-          Давай научимся отличать источники, необходимые для прогноза, от тех, которые в прогнозе не
-          требуются.
-        </p> -->
         <v-btn lg @click="closeModal">Начать</v-btn>
       </div>
-    </v-modal>
+    </v-modal>-->
+    <!--<Panel/>-->
     <v-modal v-if="stage === 14" :isActive="isModalActive">
       <div :class="[$style.modalInner, $style.modalAchieve]">
         <img :class="$style.achieve" src="../assets/achieve.png" alt="" />
@@ -96,6 +48,7 @@
 
 <script>
 import { ref, reactive, computed } from 'vue';
+import Vue from 'vue'
 // import gsap from 'gsap';
 // import Card from '../components/Card/Card.vue';
 import { useStore } from '@/store';
@@ -103,9 +56,11 @@ import Diary from '../components/Diary/index.vue';
 import home from '../components/home/index.vue';
 import mill from '../components/mill/index.vue';
 import precipitation from '../components/precipitation/index.vue'
-import speaker from '@/components/@ui/Speaker/Speaker.vue'
+import Speakers from '@/components/@ui/Speakers/default'
 import useMobile from '@/hooks/useMobile';
 import markFirstTask from '@/services/markFirstTask';
+import Cast from '@/components/@ui/Cast/default'
+
 export default {
   name: 'part3',
   components: {
@@ -113,7 +68,8 @@ export default {
     home,
     precipitation,
     mill,
-    speaker
+    Speakers,
+    Cast,
     // Card,
   },
   setup() {
@@ -131,6 +87,30 @@ export default {
     const level = computed(() => store.state.level);
     const lightingHome = ref('')
     const showNextLessonBtn = ref(false)
+    const speakersList = ref([
+      {
+        id: 0,
+        img: require('@/assets/img/speakers/blue.png'),
+        messages: [
+        ]
+      },
+      {
+        id: 1,
+        img: require('@/assets/img/speakers/purple.png'),
+        messages: []
+      },
+      {
+        id: 2,
+        img: require('@/assets/img/speakers/green.png'),
+        messages: []
+      },
+      {
+        id: 3,
+        img: require('@/assets/img/speakers/petya.png'),
+        messages: [
+        ]
+      }
+    ])
     const isShowPrecipitation = reactive({
       precipitation: false,
       home: false,
@@ -150,12 +130,24 @@ export default {
       isModalActive.value = false;
       onNext()
     };
+    const testMessage = () => {
+      let speaker = speakersList.value.find(el => el.id === 0)
+      const message = {
+        text: 'Верно – это приложение имеет необходимые ему настройки',
+        btn: true
+      }
+      //speaker.messages.$set(2,message)
+      //Vue.set(speaker, '2', message)
+      //console.log(speaker)
+      speaker.messages.push(message)
+      console.log(speaker)
+    }
     const isPaused = ref(false);
     // setTimeout(() => {
     //   messages.value.push(
     //     'На метеостанции, где мы находимся, для этого существуют специальные приборы.'
     //   )
-      
+
     // }, 2500)
 
     const wrapperRef = ref(null);
@@ -191,12 +183,12 @@ export default {
             messages.value.push(
               'Чтобы прогнозировать погоду, метеорологи измеряют температуру воздуха, количество осадков, скорость ветра и другие метеорологические параметры.'
             )
-          } 
+          }
           if (level.value === '3') {
             messages.value.push(
               'Чтобы создать прогноз погоды, метеорологи собирают текущие данные о температуре воздуха, количестве осадков, атмосферном давлении, скорости ветра, а также берут во внимание и многие другие параметры.'
             )
-          } 
+          }
         }, 1000)
       setTimeout(() => {
         messages.value.push(
@@ -206,7 +198,7 @@ export default {
         showNextBtn.value = true
       }, 2500)
       }
-      if (stage.value == 2) { 
+      if (stage.value == 2) {
         showAppliance('precipitation')
         setTimeout(() => {
           scrollTo(wrapperRef.value, 100, 200)
@@ -218,7 +210,7 @@ export default {
           messages.value.push(
             'Посмотри на подсвеченный прибор слева. Нажми на него.'
           )
-        } 
+        }
         showNextBtn.value = false
         if (isMobile) {
           isMobileChatOpened.value = false
@@ -233,7 +225,7 @@ export default {
         showSigleAppliance('precipitation')
         changeZoom('single')
         isPaused.value = true
-      } 
+      }
       if (stage.value === 4) {
         messages.value.push('Да, это верные показания.')
         let input = diaryComp.value.form.find((el) => el.title === "Кол-во осадков" )
@@ -253,9 +245,9 @@ export default {
           messages.value.push(
             'Посмотри на подсвеченный прибор справа. Кликни на него.'
           )
-        } 
+        }
         showNextBtn.value = false
-      } 
+      }
       if (stage.value === 6) {
         // messages.value.push('Термометр: показывает температуру в градусах Цельсия (°С).')
         // setTimeout(() => {
@@ -278,7 +270,7 @@ export default {
         showSigleAppliance('mill')
         changeZoom('single')
         isPaused.value = true
-      } 
+      }
       if (stage.value === 7) {
         messages.value.push('Да, это верные показания.')
         hideSigleAppliance('home')
@@ -286,7 +278,7 @@ export default {
         let input = diaryComp.value.form.find((el) => el.title === "Скорость ветра" )
         input.value = input.answer
         showNextBtn.value = true
-      } 
+      }
       if (stage.value === 8) {
         showNextBtn.value = false
         showAppliance('home')
@@ -294,8 +286,8 @@ export default {
           messages.value.push(
             'Посмотри на подсвеченное жёлтым сооружение в центре. Это метеобудка. Нажми на неё.'
           )
-        } 
-      } 
+        }
+      }
       if (stage.value === 9) {
         // messages.value.push('Анемометр: помогает измерить скорость ветра в метрах в секунду (м/с).')
         // setTimeout(() => {
@@ -310,7 +302,7 @@ export default {
         if (level.value === '1') messages.value.push('Термометр: показывает температуру в градусах Цельсия (°С).')
         if (level.value === '2') messages.value.push('Термометр: Прибор для измерения температуры воздуха. Единицей измерения температуры является градус Цельсия (°С).')
         if (level.value === '3') messages.value.push('Термометр: Прибор для измерения температуры воздуха. Единицей измерения температуры является градус Цельсия (°С).')
-        
+
         // setTimeout(() => {
         //   messages.value.push('Посмотри внимательно, где заканчивается ртутный столбик на приборе.')
         // }, 1000)
@@ -318,7 +310,7 @@ export default {
         showSigleAppliance('home')
         changeZoom('single')
         isPaused.value = true
-      } 
+      }
       if (stage.value === 10) {
         messages.value.push('Да, это верные показания.')
         lightingHome.value = ''
@@ -327,10 +319,10 @@ export default {
         let input = diaryComp.value.form.find((el) => el.title === "Температура" )
         input.value = input.answer
         showNextBtn.value = true
-      } 
+      }
       // if (stage.value === 11) {
       //   showNextBtn.value = false
-      // } 
+      // }
       if (stage.value === 11) {
         if (level.value === '1') messages.value.push('Гигрометр: измеряет влажность воздуха в процентах (%).')
         if (level.value === '2') messages.value.push('Гигрометр: Прибор для измерения относительной влажности воздуха. Единицей измерения относительной влажности воздуха является процент (%).')
@@ -346,7 +338,7 @@ export default {
         showSigleAppliance('home')
         changeZoom('single')
         showNextBtn.value = false
-      } 
+      }
       if (stage.value === 12) {
         lightingHome.value = ''
         messages.value.push('Да, это верные показания.')
@@ -355,7 +347,7 @@ export default {
         let input = diaryComp.value.form.find((el) => el.title === "Влажность" )
         input.value = input.answer
         showNextBtn.value = true
-      } 
+      }
       if (stage.value === 13) {
         showNextBtn.value = false
         if (level.value === '1') messages.value.push('Барометр: показывает атмосферное давление в миллиметрах ртутного столба (мм рт. ст.) или гектопаскалях (гПа).')
@@ -368,7 +360,7 @@ export default {
           messages.value.push('Барометр находится справа. Где на приборе отображается его значение? Нажми туда.')
           lightingHome.value = 'barometr'
         }, 2500)
-      } 
+      }
       if (stage.value === 14) {
         messages.value.push('Да, это верные показания.')
         hideSigleAppliance('home')
@@ -376,7 +368,7 @@ export default {
         let input = diaryComp.value.form.find((el) => el.title === "Атм. давление" )
         input.value = input.answer
         // showNextBtn.value = true
-        
+
         setTimeout(() => {
           messages.value.push('Отличная работа! Мы записали всё, что нужно. ')
         }, 1000)
@@ -493,7 +485,9 @@ export default {
       nextBtnText,
       isPaused,
       onPaused,
-      wrapperRef
+      wrapperRef,
+      speakersList,
+      testMessage
     };
   },
 };

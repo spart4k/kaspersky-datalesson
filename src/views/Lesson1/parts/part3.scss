@@ -1,40 +1,10 @@
 .wrapper {
+  width: 100%;
   height: 100%;
-  overflow: hidden;
+  //overflow: hidden;
   position: relative;
-  background-color: $lesson1bgColor;
-  @media (max-width: $mobileWidth) { 
+  @media (max-width: $mobileWidth) {
     overflow: auto;
-  }
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0%;
-    width: rem(360);
-    height: 100%;
-    max-height: 100%;
-    background-image: url('../assets/bg.svg');
-    background-size: cover;
-    // background-position: -12% 43%;
-    background-repeat: no-repeat;
-    pointer-events: none;
-    @media (max-width: $mobileWidth) { 
-      display: none;
-    }
-  }
-  &::before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0%;
-    width: rem(900);
-    height: rem(570);
-    background-image: url('../assets/earth.svg');
-    background-size: cover;
-    background-position: 0% 0%;
-    background-repeat: no-repeat;
-    pointer-events: none;
   }
   &.blur {
     &::before {
@@ -93,7 +63,7 @@
         &.blur {
           opacity: 0.5;
         }
-        
+
       }
       .precipitation {
         width: rem(120);
@@ -159,7 +129,7 @@
           width: rem(246);
         }
         @media (max-width: $mobileWidth) {
-          
+
         }
       }
       .mill {
@@ -243,7 +213,7 @@
             }
           }
         }
-        
+
       }
       .wrap {
         height: 100%;
@@ -254,7 +224,7 @@
       }
     }
     &.mill {
-      
+
       .wrap {
         height: 100%;
         svg {
@@ -283,7 +253,7 @@
         }
       }
     }
-    
+
   }
 }
 
@@ -418,7 +388,7 @@
     svg {
       display: block;
       margin: auto;
-      
+
       // width: rem(42);
       // height: rem(42);
       // padding: 1rem;
@@ -434,7 +404,7 @@
       display: none;
     }
   }
-  
+
 }
 
 .imgModal {

@@ -1,0 +1,42 @@
+.message {
+  position: relative;
+  font-size: rem(13);
+  font-weight: 400;
+  background-color: #fff;
+  padding: rem(12);
+  border-radius: rem(10);
+  &:first-child {
+    margin-top: auto !important;
+  }
+  .btn {
+    margin-top: rem(12);
+  }
+  &:not(:first-child) {
+    margin-top: rem(10);
+  }
+  &::before {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate3d(rem(-10), -50%, 0) rotate(45deg);
+    width: rem(10);
+    height: rem(10);
+    background-color: #fff;
+    z-index: 10;
+    transition: transform .2s;
+  }
+  &:last-child {
+    &::before {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translate3d(50%, -50%, 0) rotate(45deg);
+      width: rem(10);
+      height: rem(10);
+      background-color: #fff;
+      z-index: 10;
+    }
+  }
+}

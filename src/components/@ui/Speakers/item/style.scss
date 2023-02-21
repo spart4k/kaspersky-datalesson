@@ -1,0 +1,52 @@
+.item {
+  position: relative;
+  width: rem(234);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: rem(10);
+  height: 23.5%;
+  min-height: rem(80);
+  &.enabled {
+    .voice {
+      animation-name: voiceEcho;
+      animation-duration: 1s;
+      animation-iteration-count: infinite;
+    }
+  }
+  .voice {
+    position: absolute;
+    width: rem(74);
+    height: rem(74);
+    border-radius: rem(50);
+    border: rem(1) solid #fff;
+    transform: scale(.3);
+    &.one {
+      animation-delay: .1s;
+    }
+    &.two {
+      animation-delay: .3s;
+    }
+    &.third {
+      animation-delay: .5s;
+    }
+  }
+  .image {
+    width: rem(75);
+    height: rem(75);
+    max-height: 100%;
+    position: relative;
+    z-index: 2;
+  }
+}
+@keyframes voiceEcho{
+  from {
+    transform: scale(.5);
+  }
+
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}

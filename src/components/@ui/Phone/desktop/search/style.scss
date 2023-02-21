@@ -1,0 +1,29 @@
+.search {
+  .wrap {
+    background-color: #fff;
+    padding: rem(13) rem(20);
+    display: flex;
+    position: relative;
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+    border-radius: rem(45);
+    input {
+      background-color: transparent;
+      outline: none;
+      border: none;
+      font-size: rem(14);
+      &::placeholder {
+        color: #333333;
+        font-size: rem(14);
+        font-weight: 400;
+      }
+    }
+    .searchIcon {
+      position: absolute;
+      right: rem(20);
+      top: 50%;
+      transform: translate3d(0, -50%, 0);
+      width: rem(18);
+      height: rem(18);
+    }
+  }
+}

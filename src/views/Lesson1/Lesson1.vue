@@ -1,9 +1,9 @@
 <template>
   <div :class="$style.wrapper">
     <transition name="fade" mode="out-in">
-      <part1 v-if="stage === 1" @next="next"></part1>
+      <part1 v-if="false" @next="next"></part1>
       <!-- <part2 v-if="stage === 2" @prev="prev" @next="next"></part2> -->
-      <part3 v-if="stage === 2" @next="$emit('next-lesson')"></part3>
+      <part3 v-if="true" @next="$emit('next-lesson')"></part3>
     </transition>
   </div>
 </template>
@@ -47,6 +47,11 @@ export default {
 <style lang="scss" module>
 .wrapper {
   min-height: 100%;
-  overflow: hidden;
+  padding: rem(35) rem(30);
+  //overflow: hidden;
+  background-image: url('../../assets/img/meta.png');
+  background-size: cover;
+  background-position: 0% 0%;
+  background-repeat: no-repeat;
 }
 </style>
