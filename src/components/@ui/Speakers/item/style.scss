@@ -8,6 +8,7 @@
   border-radius: rem(10);
   height: 23.5%;
   min-height: rem(80);
+  filter: drop-shadow(0px 1px 3px rgba(0, 0, 0, 0.1));
   &.enabled {
     .voice {
       animation-name: voiceEcho;

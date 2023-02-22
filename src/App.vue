@@ -1,18 +1,14 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <v-loader v-if="false"></v-loader>
-      <bonus v-else-if="bonus" />
-      <template v-else>
-        <transition name="fade" mode="out-in">
-          <lesson-1 v-if="stage === 1" @next-lesson="onNext" />
-          <lesson-2 v-if="stage === 2" @next-lesson="onNext" />
-          <lesson-3 v-if="stage === 3" @next-lesson="onNext" />
-          <lesson-4 v-if="stage === 4" @next-lesson="onNext" />
-          <lesson-5 v-if="stage === 5" @next-lesson="onNext" />
-          <lesson-6 v-if="stage === 6" />
-        </transition>
-      </template>
+      <transition name="fade" mode="out-in">
+        <lesson-1 v-if="stage === 1" @next-lesson="onNext" />
+        <lesson-2 v-if="stage === 2" @next-lesson="onNext" />
+        <lesson-3 v-if="stage === 3" @next-lesson="onNext" />
+        <lesson-4 v-if="stage === 4" @next-lesson="onNext" />
+        <lesson-5 v-if="stage === 5" @next-lesson="onNext" />
+        <lesson-6 v-if="stage === 6" />
+      </transition>
     </component>
     <PortalTarget name="popup" multiple></PortalTarget>
   </div>

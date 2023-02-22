@@ -27,10 +27,6 @@ import Vue from 'vue'
 // import gsap from 'gsap';
 // import Card from '../components/Card/Card.vue';
 import { useStore } from '@/store';
-import Diary from '../components/Diary/index.vue';
-import home from '../components/home/index.vue';
-import mill from '../components/mill/index.vue';
-import precipitation from '../components/precipitation/index.vue'
 import Speakers from '@/components/@ui/Speakers/default'
 import useMobile from '@/hooks/useMobile';
 import markFirstTask from '@/services/markFirstTask';
@@ -39,15 +35,12 @@ import Cast from '@/components/@ui/Cast/default'
 export default {
   name: 'part3',
   components: {
-    Diary,
-    home,
-    precipitation,
-    mill,
     Speakers,
     Cast,
     // Card,
   },
-  setup() {
+  setup(props, ctx) {
+    const { emit } = ctx
     const store = useStore();
     const isModalActive = ref(true);
     const stage = computed(() => {
@@ -500,7 +493,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Или скамерские приложения.задача таких программ — выманить у пользователя деньги.',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 1800)
@@ -519,7 +516,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Давайте посмотрим, что с твоим телефоном. У меня есть идея, что это может быть.',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 2500)
@@ -539,7 +540,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Давай посмотрим, какие разрешения есть для установленных приложений.',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 2500)
@@ -551,18 +556,14 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Давай откроем приложение',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 1000)
-        //setTimeout(() => {
-        //  let speaker = speakersList.value.find(el => el.id === 2)
-        //  let message = {
-        //    text: 'Давай посмотрим, какие разрешения есть для установленных приложений.',
-        //    btn: true
-        //  }
-        //  speaker.messages.push(message)
-        //}, 2500)
       }
       if (current === 5) {
         clearMessage()
@@ -575,7 +576,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Давай откроем настройки приложения',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 1000)
@@ -597,7 +602,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Верно – это приложение имеет необходимые ему настройки',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 2500)
@@ -613,7 +622,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Давай откроем настройки приложения',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 1000)
@@ -635,7 +648,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Верно – это приложение имеет необходимые ему настройки',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 2500)
@@ -651,7 +668,11 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Давай откроем настройки приложения',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 1000)
@@ -660,28 +681,6 @@ export default {
         clearMessage()
       }
       if (current === 16) {
-        clearMessage()
-        setTimeout(() => {
-          let speaker = speakersList.value.find(el => el.id === 0)
-          let message = {
-            text: 'Тут что не так?',
-            btn: false
-          }
-          speaker.messages.push(message)
-        }, 1000)
-        setTimeout(() => {
-          let speaker = speakersList.value.find(el => el.id === 2)
-          let message = {
-            text: 'Давай отключим эти доступы',
-            btn: true
-          }
-          speaker.messages.push(message)
-        }, 2500)
-      }
-      if (current === 17) {
-        clearMessage()
-      }
-      if (current === 18) {
         clearMessage()
         setTimeout(() => {
           let speaker = speakersList.value.find(el => el.id === 0)
@@ -695,14 +694,22 @@ export default {
           let speaker = speakersList.value.find(el => el.id === 2)
           let message = {
             text: 'Отлично! Мы нашли его',
-            btn: true
+            btn: {
+              availability: true,
+              type: 'next',
+              text: 'Продолжить'
+            }
           }
           speaker.messages.push(message)
         }, 2500)
       }
-
+      if (current === 17) {
+        clearMessage()
+        emit('next-lesson')
+        store.commit('setCurrentLesson', 2)
+      }
     })
-
+    //console.log(router)
     return {
       isModalActive,
       closeModal,

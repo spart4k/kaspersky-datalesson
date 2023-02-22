@@ -3,8 +3,8 @@
     <p>
       {{ $props.message.text }}
     </p>
-    <v-btn v-if="$props.message.btn" @click="nextStage" :class="$style.btn" black>
-      Продолжить
+    <v-btn v-if="$props.message.btn" @click="clickBtn" :class="$style.btn" black>
+      {{ $props.message.btn.text }}
     </v-btn>
   </div>
 </template>
@@ -30,13 +30,18 @@ export default {
   setup(props) {
     const store = useStore();
     const isMobile = useMobile();
+    const clickBtn = () => {
+      console.log(props.message.btn)
+      if (props.message.btn.type === 'next') nextStage()
+    }
     const nextStage = () => {
       //stage.value += 1;
       store.commit('changeStage', 'increase')
     };
     return {
       isMobile,
-      nextStage
+      nextStage,
+      clickBtn
     };
   },
 };

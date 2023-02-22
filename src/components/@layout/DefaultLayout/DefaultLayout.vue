@@ -30,8 +30,17 @@ export default {
       var datetime = null
       setInterval(() => {
         currentdate.setSeconds(currentdate.getSeconds() + 1);
-        datetime = currentdate.getHours() + ":"
-                      + currentdate.getMinutes();
+        let hours = currentdate.getHours();
+        let minutes = currentdate.getMinutes();
+        if (hours.toString().length === 1) {
+          hours = '0'+hours
+        }
+        console.log(minutes.toString().length)
+        if (minutes.toString().length === 1) {
+          minutes = '0'+minutes
+        }
+        datetime = hours + ':' + minutes
+        console.log(minutes)
         console.log(datetime)
         store.commit('setTime', datetime)
       }, 1000)

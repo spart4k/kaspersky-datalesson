@@ -1,0 +1,23 @@
+.statement {
+  font-size: rem(18);
+  width: rem(289);
+  padding: rem(20);
+  background-color: #fff;
+  box-shadow: 0px rem(1) rem(3) rgba(0, 0, 0, 0.1);
+  border-radius: rem(15);
+  transition: .2s;
+  border: rem(2) solid #fff;
+  &.selected {
+    width: rem(261);
+    font-size: rem(16);
+    border: rem(2) solid #9747FF;
+    padding: rem(10) rem(20);
+  }
+  &:not(:last-child) {
+    margin-bottom: rem(10);
+  }
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.03);
+  }
+}

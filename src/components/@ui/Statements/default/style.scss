@@ -1,0 +1,14 @@
+.statements {
+  margin-right: rem(70);
+  .label {
+    font-size: rem(24);
+    width: rem(289);
+    margin-bottom: rem(26);
+    font-weight: 700;
+  }
+  .list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}

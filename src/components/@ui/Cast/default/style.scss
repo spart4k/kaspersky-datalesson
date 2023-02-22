@@ -5,4 +5,10 @@
   justify-content: flex-end;
   height: 100%;
   padding-right: rem(234);
+  .wrap {
+    display: flex;
+    &.isStatements {
+      margin-left: rem(-100);
+    }
+  }
 }
